@@ -1,0 +1,453 @@
+<div class="wrapper">
+    <nav id="sidebar">
+        <ul id="sidebar_menu" class="metismenu sidebar_content" *ngIf="RoleName === 'administrator'">
+            <li>
+                <a routerLink="/dashboard" routerLinkActive="active">
+                    <i class='fas fa-home icon_alert'></i>
+                    <span class="dashboard_space">{{'Sidebar.dashboard' | translate}}</span>
+                </a>
+            </li>
+            <li>
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-alerts" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class='fas fa-exclamation-circle icon_alert'></i>
+                    <span class="alert_space">{{'Sidebar.alerts' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-alerts">
+                    <ul class="nav_content">
+                        <li><a routerLink="/create-alerts"
+                            [ngClass]="{'active': authService.TitleName === 'Create Alert'}"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.createAlerts' | translate}}
+                            </a>
+                        </li>
+                        <li><a routerLink="/message" routerLinkActive="active"><i
+                            class='fas fa-caret-right image'></i>{{'Sidebar.messageTemplates' | translate}}</a>
+                        </li>
+                        <!-- <li><a routerLink="/create-alerts/multiple" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.createMultiples' | translate}}</a>
+                        </li> -->
+                        <li><a routerLink="/create-alerts/sent" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.sentAlert' | translate}}</a></li>
+                        <li><a routerLink="/create-alerts/draft" routerLinkActive="active"><i
+                            class='fas fa-caret-right image'></i>{{'Sidebar.draftAlert' | translate}}</a></li>
+                        <li><a routerLink="/create-alerts/expiry" routerLinkActive="active"><i
+                            class='fas fa-caret-right image'></i>{{'Sidebar.expiryAlert' | translate}}</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li>
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-Digital" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class='fas fa-tv icon_device'></i>
+                    <span class="digitalSignage_space">{{'Sidebar.digitalSignage' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-Digital">
+                    <ul class="nav_content">
+                        <li><a routerLink="/device"
+                            [ngClass]="{'active': authService.TitleName === 'Digital signage devices'}"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.digitalSignageDevices' |
+                                translate}}</a></li>
+                        <li><a routerLink="/device/send-content" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.digitalSignageSentContent' |
+                                translate}}</a>
+                        </li>
+                        <li><a routerLink="/device/sent-list" routerLinkActive="active"><i
+                            class='fas fa-caret-right image'></i>Sent</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li>
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-survey" aria-expanded="false"
+                    aria-controls="ui-basic">
+
+                    <i class='far fa-file-alt icon_survey'></i>
+                    <span class="survey_space">{{'Sidebar.surveys' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-survey">
+                    <ul class="nav_content">
+                        <li><a routerLink="/create-survey" [ngClass]="{'active': authService.TitleName === 'Create Survey'}"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.createSurveys' | translate}}</a>
+                        </li>
+                        <li><a routerLink="/create-survey/active" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.activeSurvey' | translate}}</a></li>
+                        <li><a routerLink="/create-survey/archived" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.archivedSurvey' | translate}}</a>
+                        </li>
+                        <li><a routerLink="/create-survey/survey-template" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.surveyTemplates' | translate}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <!-- <li>
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-Screensavers" aria-expanded="false"
+                    aria-controls="ui-basic">
+
+                    <i class='fas fa-laptop icon_screensaver'></i>
+                    <span class="screensaver_space">{{'Sidebar.screensaver' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-Screensavers">
+                    <ul class="nav_content">
+                        <li><a routerLink="/screensaver/add" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.createScreensaver' | translate}}</a>
+                        </li>
+                        <li><a routerLink="/screensaver" [ngClass]="{'active': authService.TitleName === 'Screensavers List'}"><i
+                                    class='fas fa-caret-right image_synchronization'></i>
+                                {{'Sidebar.screensaverList' | translate}}</a></li>
+                        <li><a routerLink="/screensaver/draft" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image_screensaver_draft'></i>{{'Sidebar.screensaverDraft'
+                                | translate}}</a></li>
+                    </ul>
+                </div>
+            </li> -->
+
+            <!-- <li>
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-Valerts" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class='fas fa-video icon_screensaver'></i>
+                    <span class="video_space">{{'Sidebar.videoAlerts' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-Valerts">
+                    <ul class="nav_content">
+                        <li><a routerLink="/video-alerts" [ngClass]="{'active': authService.TitleName === 'Create Video Alert'}"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.createVideoAlerts' | translate}}</a>
+                        </li>
+                        <li><a routerLink="/video-alerts/list" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.videoList' |
+                                translate}}</a></li>
+                    </ul>
+                </div>
+            </li> -->
+
+            <!-- <li>
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-Wallpaper" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class='fas fa-photo-video icon_screensaver'></i>
+                    <span class="wallpaper_space">{{'Sidebar.wallpaper' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-Wallpaper">
+                    <ul class="nav_content">
+                        <li><a routerLink="/wallpaper/add" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image_wallpaper'></i>
+                                {{'Sidebar.createWallpaper' | translate}}</a></li>
+                        <li><a routerLink="/wallpaper" [ngClass]="{'active': authService.TitleName === 'Wallpapers List'}"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.wallpaperList' | translate}}</a>
+                        </li>
+                        <li><a routerLink="/wallpaper/draft" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.wallpaperDraft' | translate}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-LockScreen" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class='fas fa-laptop icon_screensaver'></i>
+                    <span class="lockscreen_space">{{'Sidebar.lockscreen' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-LockScreen">
+                    <ul class="nav_content">
+                        <li><a routerLink="/lockscreen/add" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>
+                                {{'Sidebar.createLockscreen' | translate}}</a></li>
+                        <li><a routerLink="/lockscreen" [ngClass]="{'active': authService.TitleName === 'Lockscreens List'}"><i
+                                    class='fas fa-caret-right image'></i>
+                                {{'Sidebar.lockscreenList' | translate}}</a></li>
+                        <li><a routerLink="/lockscreen/draft" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>
+                                {{'Sidebar.draftLockscreen' | translate}}</a></li>
+                    </ul>
+                </div>
+            </li> -->
+            <!-- <li>
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-opt" aria-expanded="false"
+                    aria-controls="ui-basic">
+
+                    <i class='far fa-file-alt icon_screensaver'></i>
+                    <span class="opt_space">{{'Sidebar.subscription' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-opt">
+                    <ul class="nav_content">
+                        <li><a routerLink="/opt-list" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.subscriptionList' | translate}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li> -->
+            <!-- <li>
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-Skin" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class="fa fa-edit icon_skin"></i>
+                    <span class="skin_space"> {{'Sidebar.skinEditor' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-Skin">
+                    <ul class="nav_content">
+                        <li><a routerLink="/skin-list/add" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>
+                                {{'Sidebar.createSkin' | translate}}</a></li>
+                        <li><a routerLink="/skin-list" [ngClass]="{'active': authService.TitleName === 'Skin List'}"><i
+                                    class='fas fa-caret-right image'></i>
+                                {{'Sidebar.skinList' |
+                                translate}}</a></li>
+                    </ul>
+                </div>
+            </li> -->
+
+            <li>
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-activeDirectory" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class='fas fa-sitemap icon_activeDirectory'></i>
+                    <span class="activeDirectory_space"> {{'Sidebar.activeDirectory' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-activeDirectory">
+                    <ul class="nav_content">
+                        <li><a routerLink="/domains" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.domains' |
+                                translate}}</a></li>
+                        <li><a routerLink="/synchronizations" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image_synchronization'></i>
+                                {{'Sidebar.synchronizations' | translate}}</a></li>
+                        <li><a routerLink="/organization" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.organization/Audience' |
+                                translate}}</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-emergency" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class="fa fa-exclamation-circle icon_emergency"></i>
+                    <span class="emergency_space">{{'Sidebar.emergencyAlert' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-emergency">
+                    <ul class="nav_content">
+                        <li><a routerLink="/emergency/emergency" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.createEmergencyAlert' |
+                                translate}}</a></li>
+                        <li><a routerLink="/emergency/send-now" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.sendNow' | translate}}</a></li>
+                        <li><a routerLink="/emergency" [ngClass]="{'active': authService.TitleName === 'Color Codes'}"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.colorCodes' |
+                                translate}}</a></li>
+                        <li><a routerLink="/emergency/shortcut" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.createShortcut' | translate}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li>
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-Publishers" aria-expanded="false"
+                    aria-controls="ui-basic">
+
+                    <i class='fas fa-user-friends icon_publisher'></i>
+                    <span class="publisher_space"> {{'Sidebar.publishers' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-Publishers">
+                    <ul class="nav_content">
+                        <li><a routerLink="/publisher-list" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>
+                                {{'Sidebar.publishersList' | translate}}</a></li>
+                        <li><a routerLink="/policies" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.policies'
+                                |
+                                translate}}</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li>
+                <a routerLink="/reports" routerLinkActive="active">
+                    <i class='far fa-newspaper icon_reports'></i>
+                    <span class="emergency_space">{{'Sidebar.reports' | translate}}</span>
+                </a>
+            </li>
+            <li>
+                <a routerLink="/approval" routerLinkActive="active">
+                    <i class='fas fa-file-signature icon_reports'></i>
+                    <span class="approval_space">{{'Sidebar.contentApproving' | translate}}</span>
+                </a>
+            </li>
+
+        </ul>
+        <ul id="sidebar_menu" class="metismenu" *ngIf="RoleName === 'publisher'">
+            <li>
+                <a routerLink="/dashboard" routerLinkActive="active">
+                    <i class='fas fa-home icon_alert'></i>
+                    <span class="dashboard_space">{{'Sidebar.dashboard' | translate}}</span>
+                </a>
+            </li>
+
+            <li *ngIf="RoleAssign[0].view || RoleAssign[0].create">
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-alerts" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class='fas fa-exclamation-circle icon_alert'></i>
+                    <span class="alert_space">{{'Sidebar.alerts' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-alerts">
+                    <ul class="nav_content">
+                        <li *ngIf="RoleAssign[0].create">
+                            <a routerLink="/create-alerts"
+                            [ngClass]="{'active': authService.TitleName === 'Create Alert'}"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.createAlerts' | translate}}
+                            </a>
+                        </li>
+                        <li *ngIf="RoleAssign[7].view || RoleAssign[7].create || RoleAssign[7].edit"><a routerLink="/message" routerLinkActive="active"><i
+                            class='fas fa-caret-right image'></i>{{'Sidebar.messageTemplates' | translate}}</a>
+                        </li>
+                        <li *ngIf="RoleAssign[0].view"><a routerLink="/create-alerts/sent" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.sentAlert'
+                                | translate}}</a></li>
+                        <li *ngIf="RoleAssign[0].view"><a routerLink="/create-alerts/draft" routerLinkActive="active"><i
+                                class='fas fa-caret-right image'></i>{{'Sidebar.draftAlert'
+                            | translate}}</a>
+                        </li>
+                        <li *ngIf="RoleAssign[0].view"><a routerLink="/create-alerts/expiry" routerLinkActive="active"><i
+                            class='fas fa-caret-right image'></i>{{'Sidebar.expiryAlert' | translate}}</a></li>
+                        
+                        
+                    </ul>
+                </div>
+            </li>
+
+
+            <li *ngIf="RoleAssign[4].view || RoleAssign[4].create">
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-survey" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class='far fa-file-alt icon_survey'></i>
+                    <span class="survey_space">{{'Sidebar.surveys' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-survey">
+                    <ul>
+                        <li *ngIf="RoleAssign[4].create"><a routerLink="/create-survey" [ngClass]="{'active': authService.TitleName === 'Create Survey'}"><i
+                                    class='fas fa-caret-right survey_icon'></i>{{'Sidebar.createSurveys' | translate}}</a>
+                        </li>
+                        <li *ngIf="RoleAssign[4].view">
+                            <a routerLink="/create-survey/active" routerLinkActive="active"><i
+                                    class='fas fa-caret-right survey_icon'></i>{{'Sidebar.activeSurvey' | translate}}</a></li>
+                        <li *ngIf="RoleAssign[4].view">
+                            <a routerLink="/create-survey/archived" routerLinkActive="active"><i
+                                    class='fas fa-caret-right survey_icon'></i>{{'Sidebar.archivedSurvey' | translate}}</a>
+                        </li>
+                        <li *ngIf="RoleAssign[11].view || RoleAssign[11].create">
+                            <a routerLink="/create-survey/survey-template" routerLinkActive="active"><i
+                            class='fas fa-caret-right survey_icon'></i>{{'Sidebar.surveyTemplates' | translate}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <!-- <li *ngIf="RoleAssign[9].view">
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-Screensavers" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class='fas fa-laptop icon_screensaver'></i>
+                    <span class="screensaver_space"><i class='fas fa-caret-right image'></i>{{'Sidebar.screensaver' |
+                        translate}}</span>
+                </a>
+                <div class="collapse" id="ui-Screensavers">
+                    <ul>
+                        <li *ngIf="RoleAssign[9].create"><a routerLink="/screensaver/add" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.createScreensaver' | translate}}</a>
+                        </li>
+                        <li><a routerLink="/screensaver" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image_synchronization'></i>{{'Sidebar.screensaverList' |
+                                translate}}</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li *ngIf="RoleAssign[10].view">
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-Wallpaper" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class='fas fa-photo-video icon_screensaver'></i>
+                    <span class="wallpaper_space">{{'Sidebar.wallpaper' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-Wallpaper">
+                    <ul>
+                        <li *ngIf="RoleAssign[10].create"><a routerLink="/wallpaper/add" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image_wallpaper'></i>{{'Sidebar.createWallpaper' |
+                                translate}}</a></li>
+                        <li><a routerLink="/wallpaper" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>
+                                {{'Sidebar.wallpaperList' | translate}}</a></li>
+                        <li><a routerLink="/wallpaper/draft" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.wallpaperDraft' | translate}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li *ngIf="RoleAssign[11].view">
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-LockScreen" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class='fas fa-laptop icon_screensaver'></i>
+                    <span class="lockscreen_space">{{'Sidebar.lockscreen' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-LockScreen">
+                    <ul>
+                        <li *ngIf="RoleAssign[11].create"><a routerLink="/lockscreen/add" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>{{'Sidebar.createLockscreen' | translate}}</a>
+                        </li>
+                        <li><a routerLink="/lockscreen" routerLinkActive="active"><i
+                                    class='fas fa-caret-right image'></i>
+                                {{'Sidebar.lockscreenList' | translate}}</a></li>
+                    </ul>
+                </div>
+            </li> -->
+
+            <li *ngIf="RoleAssign[9].view || RoleAssign[9].create || RoleAssign[10].view">
+                <a class="has-arrow" data-bs-toggle="collapse" href="#ui-emergency" aria-expanded="false"
+                    aria-controls="ui-basic">
+                    <i class="fa fa-exclamation-circle icon_emergency"></i>
+                    <span class="emergency_space">{{'Sidebar.emergencyAlert' | translate}}</span>
+                </a>
+                <div class="collapse" id="ui-emergency">
+                    <ul class="nav_content">
+                        <li *ngIf="RoleAssign[9].create">
+                            <a routerLink="/emergency/emergency" routerLinkActive="active"><i
+                                    class='fas fa-caret-right emergency_icon'></i>{{'Sidebar.createEmergencyAlert' |
+                                translate}}</a>
+                        </li>
+                        <li  *ngIf="RoleAssign[9].view">
+                            <a routerLink="/emergency/send-now" routerLinkActive="active"><i
+                                    class='fas fa-caret-right emergency_icon'></i>{{'Sidebar.sendNow' | translate}}</a></li>
+                        <li *ngIf="RoleAssign[10].view || RoleAssign[10].create">
+                            <a routerLink="/emergency" [ngClass]="{'active': authService.TitleName === 'Color Codes'}"><i
+                                    class='fas fa-caret-right emergency_icon'></i>{{'Sidebar.colorCodes' |
+                                translate}}</a>
+                        </li>
+                        <li *ngIf="RoleAssign[9].view">
+                            <a routerLink="/emergency/shortcut" routerLinkActive="active"><i
+                                    class='fas fa-caret-right emergency_icon'></i>{{'Sidebar.createShortcut' | translate}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li *ngIf="RoleAssign[8].view">
+                <a routerLink="/reports" routerLinkActive="active">
+                    <i class='far fa-newspaper icon_reports'></i>
+                    <span class="emergency_space">{{'Sidebar.reports' | translate}}</span>
+                </a>
+            </li>
+
+            <li *ngIf="RoleAssign[0].approve || RoleAssign[4].approve">
+                <a routerLink="/approval" routerLinkActive="active">
+                    <i class='fas fa-file-signature icon_reports'></i>
+                    <span class="approval_space">{{'Sidebar.contentApproving' | translate}}</span>
+                </a>
+            </li>
+
+            <li *ngIf="!RoleAssign[0].approve || !RoleAssign[4].approve">
+                <a routerLink="/rejected" routerLinkActive="active">
+                    <i class='fas fa-ban icon image-icon'></i>
+                    <span> {{'Sidebar.rejectedAlert' | translate}}</span>
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+</div>

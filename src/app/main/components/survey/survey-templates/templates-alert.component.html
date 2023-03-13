@@ -1,0 +1,85 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <label> {{'SurveyTemplates.searchTemplate' | translate}}</label>
+                <div class="row">
+                    <div class="col-md-9">
+                        <form [formGroup]="formSurveyTemplate" (ngSubmit)="onSearchSurveyTemplate(formSurveyTemplate.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" formControlName="search" placeholder=" {{'SurveyTemplates.templateSearchPlaceholder' | translate}}" type="search"
+                                        id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                </div>
+                                <button type="submit" class="btn btn-success ml-3">
+                                    {{'SurveyTemplates.templateSearchButton' | translate}}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3 text-right" *ngIf="RoleAssign[11].create">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success" routerLink="/create-survey"> {{'SurveyTemplates.addTemplateButton' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{'SurveyTemplates.templateListName' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'SurveyTemplates.templateListActions' | translate}}
+                                        </th>
+                                    </tr>
+
+                                <tbody>
+                                    <tr *ngFor="let template of SurveyTemplateList | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        <td>
+                                            {{template.name}}
+                                        </td>
+                                        <td class="marg">
+                                            <span class="mr-2 cursor" title="Edit Survey Alert"  *ngIf="RoleAssign[11].edit"
+                                            [routerLink]="['/create-survey', template.id, template.type, 'Alert', 'EditTemplate']">
+                                                <img src="assets/img/sent-alert-action/duplicate.png" alt="">
+                                            </span>
+                                            <span class="text-danger cursor" (click)="delete(template.id)"
+                                            *ngIf="RoleAssign[11].delete">
+                                                <i class="far fa-trash-alt"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="SurveyTemplateList.length === 0">
+                                        {{'SurveyTemplates.templateListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChange($event, '1')"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

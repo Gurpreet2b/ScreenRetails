@@ -1,0 +1,77 @@
+.right-side {
+    background: #f5f5f5;
+}
+
+.alert-change {
+    border: 4px solid #00838f;
+    padding: 5px;
+    /* height: 250px; */
+}
+
+/* .DAGreen {
+    border: 4px solid green;
+}
+
+.DARed {
+    border: 4px solid red;
+}
+
+.DABlue {
+    border: 4px solid blue;
+}
+
+.DAYellow {
+    border: 4px solid yellow;
+} */
+
+.accord {
+    color: #676b84;
+}
+.bbpt-4 {
+    padding-top: 1.8rem!important;
+}
+
+.box{
+    border: 1px solid;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 0 !important;
+    background: #f7faff;;
+    text-align: center;
+}
+
+.table td {
+    border-bottom: 1px solid #dee2e6;
+    text-align: center;
+}
+
+.dragarea {
+    font-size: 1.5rem;
+    border: 3px solid #bbb;
+    padding: 1.5rem;
+    background-color: #fff;
+    color: #bbb;
+}
+
+.droparea {
+  font-size: 1.5rem;
+  border: 3px dashed #bbb;
+  padding: 1.5rem;
+  background-color: #eff;
+  color: #aaa;
+}
+.success {
+    color: green;
+}
+.size {
+    border: 1px solid #dddbdb;
+    background: #f7f7f7;
+    color: #676b84;
+}
+.video_alert_button{
+    margin-top: 2em;
+}
+
+

@@ -1,0 +1,2566 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <div class="row mb_30">
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs dash-tabs" role="tablist">
+                            <li class="nav-item active">
+                                <a class="nav-link active accord" data-bs-toggle="tab" href="#overall" role="tab">
+                                    {{'Reports.overallReportTab' | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item" (click)="GetAlertReportList(1)">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#alert" role="tab">
+                                    {{'Reports.alertReportTab' | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item" (click)="GetUsersList(1)">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#users" role="tab">
+                                    {{'Reports.userReportTab' | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item" (click)="GetSurveysList(1)">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#survey" role="tab">
+                                    {{'Reports.surveyReportTab' | translate}}
+                                </a>
+                            </li>
+                            <!-- <li class="nav-item" (click)="GetScreensaverList(1)">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#screensaver" role="tab">
+                                    {{'Reports.screensaverReportTab' | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item" (click)="GetWallpaperList(1)">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#wallpaper" role="tab">
+                                    {{'Reports.wallpaperReportTab' | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item" (click)="GetLockscreenList(1)">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#lockscreen" role="tab">
+                                    {{'Reports.lockscreenReportTab' | translate}}
+                                </a>
+                            </li> -->
+                        </ul>
+
+                        <div class="tab-content" style="width: 100%;">
+                            <div class="tab-pane active" id="overall" role="tabpanel">
+                                <div class="card mt-2">
+                                    <div class="card-body">
+
+                                        <button (click)="AddWidget()" class="btn btn-info mb-3" type="checkbox">
+                                            {{'Dashboard.ADDWIDGET' | translate}}
+                                        </button>
+
+                                        <div *ngIf="IsWidget" class="container-fluid p-0" id="divshow">
+                                            <div class="row">
+                                                <div class="col-md-3 mt-2 ">
+                                                    <div class="card mb-3" style="max-width: 18rem;">
+                                                        <div class="card-header bg-transparent bg-success text-white">
+                                                            {{'Dashboard.USERS' | translate}}
+                                                        </div>
+                                                        <div class="card-body text-success text-center">
+                                                            <img src="https://t3.ftcdn.net/jpg/04/46/99/32/240_F_446993243_64HTAd6RAahjgopijmS3RQCqtAse5M73.jpg"
+                                                                class="float-start" alt="mail" width="150" height="150">
+                                                        </div>
+                                                        <button (click)="userDetails()" class="btn btn-outline-info ">
+                                                            {{'Dashboard.ADD' | translate}} </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mt-2">
+                                                    <div class="card mb-3" style="max-width: 18rem;">
+                                                        <div class="card-header bg-transparent bg-success text-white">
+                                                            {{'Dashboard.STATS' | translate}} </div>
+                                                        <div class="card-body text-success text-center">
+                                                            <img src="https://cdn-icons-png.flaticon.com/512/893/893220.png"
+                                                                class="float-start" alt="mail" width="160" height="150">
+                                                        </div>
+                                                        <button (click)=" userStatistics()"
+                                                            class="btn btn-outline-info ">
+                                                            {{'Dashboard.ADD' | translate}} </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mt-2">
+                                                    <div class="card mb-3" style="max-width: 18rem;">
+                                                        <div class="card-header bg-transparent bg-success text-white">
+                                                            {{'Dashboard.ALERT' | translate}}
+                                                        </div>
+                                                        <div class="card-body text-success text-center">
+                                                            <img src="https://cdn-icons-png.flaticon.com/128/1150/1150562.png"
+                                                                class="float-start" alt="mail" width="170" height="150">
+                                                        </div>
+                                                        <button (click)="alertDetails()" class="btn btn-outline-info ">
+                                                            {{'Dashboard.ADD' | translate}} </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 mt-2">
+                                                    <div class="card mb-3" style="max-width: 18rem;">
+                                                        <div class="card-header bg-transparent bg-success text-white">
+                                                            {{'Dashboard.SURVEY' | translate}}
+                                                        </div>
+                                                        <div class="card-body text-success text-center">
+                                                            <img src="https://cdn-icons-png.flaticon.com/128/1265/1265775.png"
+                                                                class="float-start" alt="mail" width="160" height="150">
+                                                        </div>
+                                                        <button (click)="surveyDetails()" class="btn btn-outline-info ">
+                                                            {{'Dashboard.ADD' | translate}} </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3  ">
+                                                    <div class="card mb-3" style="max-width: 18rem;">
+                                                        <div class="card-header bg-transparent bg-success text-white">
+                                                            {{'Dashboard.CLIENT' | translate}}</div>
+                                                        <div class="card-body text-success text-center">
+                                                            <img src="https://cdn-icons-png.flaticon.com/128/1265/1265775.png"
+                                                                class="float-start" alt="mail" width="160" height="150">
+                                                        </div>
+                                                        <button (click)="clientVersions()"
+                                                            class="btn btn-outline-info ">
+                                                            {{'Dashboard.ADD' | translate}} </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div *ngIf="!IsWidget">
+                                            <div class="row">
+                                                <div class="col-md-6 form-group" *ngIf="isUserDetails">
+                                                    <div class="card">
+                                                        <div class="card-body letter-cursive">
+                                                            <div class="header-color">
+                                                                <button (click)="userButton()" class="close-button"
+                                                                    data-bs-dismiss="modal" style="background-color: transparent;
+                                                        border: 0; font-size:  40px;">&times;</button>
+                                                                <h4 class="card-header text-left bg-success text-white">
+                                                                    {{'Dashboard.USERS' | translate}}</h4>
+                                                            </div>
+                                                            <hr>
+                                                            <form [formGroup]="formUser"
+                                                                (ngSubmit)="onSearchUser(formUser.value)">
+                                                                <div class="input-group mb-3">
+                                                                    <div class="form-outline">
+                                                                        <input id="search-input"
+                                                                            formControlName="search"
+                                                                            placeholder=" {{'Dashboard.USERSEARCHERE1' | translate}}"
+                                                                            type="search" id="form" class="form-control"
+                                                                            style="padding: 17px; width: 200px;" />
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-info ml-3">
+                                                                        {{'Dashboard.SEARCH' | translate}}
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                            <div class="userDetails-scroll">
+                                                                <div *ngIf="loading_UserDetails" class="dot-opacity-loader">
+                                                                    <span></span>
+                                                                    <span></span>
+                                                                    <span></span>
+                                                                </div>
+                                                                <div class="table-size">
+                                                                    <table class="table">
+                                                                        <thead class="thead-black">
+                                                                            <tr>
+                                                                                <th class="text-left">
+                                                                                    {{'Dashboard.USERNAME' | translate}}
+                                                                                </th>
+                                                                            </tr>
+                                                                        <tbody>
+                                                                            <tr
+                                                                                *ngFor="let user of UserList | paginate: { id:'first', itemsPerPage: 10, currentPage: currentPageUserDetail, totalItems: totalItemsUserDetail }; let i=index">
+
+                                                                                <td class="text-left">
+                                                                                    <span class="cursor"
+                                                                                        (click)="IsUserDetailById(user)"
+                                                                                        data-bs-toggle="modal"
+                                                                                        data-bs-target="#UserDetailChartListModal">
+                                                                                        <u>{{user.username}}</u>
+                                                                                    </span>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr *ngIf="UserList?.length === 0">
+                                                                                {{'Dashboard.LISTRECORD' | translate}}
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="width: 100%">
+                                                            <div class="col-md-10 text-right">
+                                                                <pagination-controls
+                                                                    (pageChange)="onPageChangeUserDetails($event, '1')"
+                                                                    id="first">
+                                                                </pagination-controls>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <select id="PerPage" class="form-control-user"
+                                                                    (change)="onPageChangeUserDetails($event, '2')">
+                                                                    <option
+                                                                        *ngFor="let item of PageTotalNumberUserDetail"
+                                                                        [value]="item">
+                                                                        {{ item }}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 form-group" *ngIf="isUserStatistics">
+                                                    <div class="card">
+                                                        <div class="card-body letter-cursive">
+                                                            <div class="form-group">
+                                                                <div class="header-color">
+                                                                    <button (click)="statisticsButton()"
+                                                                        class="close-button" data-bs-dismiss="modal" style="background-color: transparent;
+                                                            border: 0; font-size:  40px;">&times;</button>
+                                                                    <h4
+                                                                        class="card-header text-left bg-success text-white">
+                                                                        {{'Dashboard.STATS' | translate}} </h4>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="row">
+                                                                    <div class="col-md-12 userStat_pie_chart">
+                                                                        <ngx-charts-pie-chart [results]="UserStats"
+                                                                            [view]="[400, 300]">
+                                                                        </ngx-charts-pie-chart>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="userStats-scroll">
+                                                                            <div class="bg-color-user">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-4 uss">
+                                                                                        <div
+                                                                                            class="maroon-box square">
+                                                                                            <div class="col-auto ml-3">
+                                                                                                <span id="textExample2"
+                                                                                                    class="form-text uss">
+                                                                                                    {{'Dashboard.ONLINE'
+                                                                                                    | translate}}
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-7 text-right">
+                                                                                        <label>{{UserStats[0]?.value}}</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-4 uss">
+                                                                                        <div class="steelblue-box square">
+                                                                                            <div class="col-auto ml-3">
+                                                                                                <label>{{'Dashboard.OFFLINE'
+                                                                                                    |
+                                                                                                    translate}}</label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-7 text-right">
+                                                                                        <label>{{UserStats[1]?.value}}</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-5 uss">
+                                                                                        <div class="never-box square ">
+                                                                                            <div class="col-auto ml-3">
+                                                                                                <label>
+                                                                                                    {{ 'Dashboard.NeverConnected' | translate}}
+                                                                                                  
+                                                                                                </label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-6 text-right">
+                                                                                        <label>{{ UserStats[2]?.value }}</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-4 uss">
+                                                                                        <div class="light-maroon-box square ">
+                                                                                            <div class="col-auto ml-3">
+                                                                                                <label>
+                                                                                                    {{ 'Dashboard.UnknownUsers' | translate}}
+                                                                                                </label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-7 text-right">
+                                                                                        <label>{{ UserStats[3]?.value }}</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 form-group" *ngIf="isClientVersion">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="table">
+                                                                <div class="header-color">
+                                                                    <button (click)="clientButton()"
+                                                                        class="close-button" data-bs-dismiss="modal" style="background-color: transparent;
+                                                            border: 0; font-size:  40px;">&times;</button>
+                                                                    <h4
+                                                                        class="card-header text-left bg-success text-white">
+                                                                        {{'Dashboard.CLIENT' | translate}} </h4>
+                                                                </div>
+                                                                <hr>
+                                                                <div class="row client_pie_chart">
+                                                                    <div class="col-md-6">
+                                                                        <ngx-charts-pie-chart [results]="clientStats"
+                                                                            [view]="[500, 300]">
+                                                                        </ngx-charts-pie-chart>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12  pl-5 pr-5 clientVersion-scroll">
+                                                                            <div class="bg-color-client">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-6 uss">
+                                                                                        <strong> {{'Dashboard.CLIENT'
+                                                                                                | translate}}
+                                                                                            </strong>
+                                                                                    </div>
+                                                                                    <div class="col-md-6 text-right">
+                                                                                        <strong>
+                                                                                                {{'Dashboard.USERCOUNT'
+                                                                                                |
+                                                                                                translate}}</strong>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="row" *ngFor="let notinstall of NotInstalled">
+                                                                                    <div class="col-md-7 uss">
+                            
+                                                                                        <label>{{notinstall.name}}</label>
+                            
+                                                                                    </div>
+                                                                                    <div class="col-md-5 text-right">
+                                                                                        <label>{{notinstall.count}}</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                
+                                                                                <!-- <div class="row">
+                                                                                    <div class="col-md-7">
+                                                                                        <label>{{'Dashboard.WEBCLIENT' |
+                                                                                            translate}}</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-5">
+                                                                                        <label>4</label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-7">
+                                                                                        <label>9.16.7.1</label>
+                                                                                    </div>
+                                                                                    <div class="col-md-5">
+                                                                                        <label>3</label>
+                                                                                    </div>
+                                                                                </div> -->
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 form-group" *ngIf="isAlertDetails">
+                                                    <div class="card">
+                                                        <div class="card-body letter-cursive">
+                                                            <div class="header-color">
+                                                                <button (click)="alertButton()" class="close-button"
+                                                                    data-bs-dismiss="modal" style="background-color: transparent;
+                                                            border: 0; font-size:  40px;">&times;</button>
+                                                                <h4 class="card-header text-left bg-success text-white">
+                                                                    {{'Dashboard.ALERT' | translate}}</h4>
+                                                            </div>
+                                                            <hr>
+                                                            <form [formGroup]="formAlert"
+                                                                (ngSubmit)="onSearchAlertDetail(formAlert.value)">
+                                                                <div class="input-group mb-3">
+                                                                    <div class="form-outline">
+                                                                        <input id="search-input"
+                                                                            formControlName="search"
+                                                                            placeholder="{{'Dashboard.USERSEARCHERE1' | translate}}"
+                                                                            type="search" id="form" class="form-control"
+                                                                            style="padding: 17px; width: 200px;" />
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-info ml-3">
+                                                                        {{'Dashboard.SEARCH' | translate}}
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                            <div class="alertDetails-scroll">
+                                                                <div *ngIf="loading_AlertDetails" class="dot-opacity-loader">
+                                                                    <span></span>
+                                                                    <span></span>
+                                                                    <span></span>
+                                                                </div>
+                                                                <table class="table ">
+                                                                    <thead class="thead-black">
+                                                                        <tr>
+                                                                            <th class="text-left">
+                                                                                {{'Dashboard.TITLE' | translate}}
+                                                                            </th>
+                                                                            <th>
+                                                                                {{'Dashboard.DATE' | translate}}
+                                                                            </th>
+                                                                        </tr>
+                                                                    <tbody>
+                                                                        <tr
+                                                                            *ngFor="let alert of AlertList | paginate: { id:'second', itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                                                            <td class="text-left">
+                                                                                <span
+                                                                                    *ngIf="alert.alert_type === 'PopupAlert'"
+                                                                                    class="cursor" data-bs-toggle="modal"
+                                                                                    data-bs-target="#ColumnChartModal"
+                                                                                    (click)="GetGraphStats(alert, 'alert')">
+                                                                                    <u>{{alert.name}}</u>
+                                                                                </span>
+                                                                                <span
+                                                                                    *ngIf="alert.alert_type === 'TickerAlert'"
+                                                                                    class="cursor" data-bs-toggle="modal"
+                                                                                    data-bs-target="#ColumnChartModal"
+                                                                                    (click)="GetGraphStats(alert, 'alert')">
+                                                                                    <u>{{alert.name}}</u>
+                                                                                </span>
+                                                                                <span
+                                                                                    *ngIf="alert.alert_type === 'RsvpAlert'"
+                                                                                    class="cursor"
+                                                                                    title="RSVP Alert Details"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#RSVPPieChartModal"
+                                                                                    (click)="GetGraphStats(alert, 'RSVP')">
+                                                                                    <u>{{alert.name}}</u>
+                                                                                </span>
+                                                                            </td>
+                                                                            <td>{{dateformat(alert.created_date)}},
+                                                                                {{Timeformat(alert.created_date)}}</td>
+                                                                        </tr>
+                                                                        <tr *ngIf="AlertList?.length === 0">
+                                                                            {{'Dashboard.LISTRECORD' | translate}}
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="width: 100%">
+                                                            <div class="col-md-10 text-right">
+                                                                <pagination-controls
+                                                                    (pageChange)="onPageChange($event, '1')"
+                                                                    id="second">
+                                                                </pagination-controls>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <select id="PerPage" class="form-control-user"
+                                                                    (change)="onPageChange($event, '2')">
+                                                                    <option *ngFor="let item of PageTotalNumber"
+                                                                        [value]="item">
+                                                                        {{ item }}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6 form-group" *ngIf="isSurveyDetails">
+                                                    <div class="card">
+                                                        <div class="card-body letter-cursive">
+                                                            <div class="header-color">
+                                                                <button (click)="surveyButton()" class="close-button"
+                                                                    data-bs-dismiss="modal" style="background-color: transparent;
+                                                            border: 0; font-size:  40px;">&times;</button>
+                                                                <h4 class="card-header text-left bg-success text-white">
+                                                                    {{'Dashboard.SURVEY' | translate}}</h4>
+                                                            </div>
+                                                            <hr>
+                                                            <form [formGroup]="formSurveyDetail"
+                                                                (ngSubmit)="onSearchSurveyDetail(formSurveyDetail.value)">
+                                                                <div class="input-group mb-3">
+                                                                    <div class="form-outline">
+                                                                        <input id="search-input"
+                                                                            formControlName="search"
+                                                                            placeholder="{{'Dashboard.SEARCHERE' | translate}}"
+                                                                            type="search" id="form" class="form-control"
+                                                                            style="padding: 17.7px; width: 200px;" />
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-info ml-3">
+                                                                        {{'Dashboard.SEARCH' | translate}}
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                            <div class="userDetails-scroll">
+                                                                <div *ngIf="loading_SurveyDetails" class="dot-opacity-loader">
+                                                                    <span></span>
+                                                                    <span></span>
+                                                                    <span></span>
+                                                                </div>
+                                                                <table class="table ">
+                                                                    <thead class="thead-black">
+                                                                        <tr>
+                                                                            <th class="text-left">
+                                                                                {{'Dashboard.TITLE' | translate}}
+                                                                            </th>
+                                                                            <th>
+                                                                                {{'Dashboard.DATE' | translate}}
+                                                                            </th>
+                                                                        </tr>
+                                                                    <tbody>
+                                                                        <tr
+                                                                            *ngFor="let survey of SurveyList | paginate: { id:'third', itemsPerPage: 10, currentPage: currentPageSurveyDetail, totalItems: totalItemsSurveyDetail }; let i=index">
+                                                                            <td class="text-left">
+                                                                                <span class="cursor" data-bs-toggle="modal"
+                                                                                    data-bs-target="#SurveyChartModal"
+                                                                                    (click)="GetGraphStatsSurvey(survey, survey)">
+                                                                                    <u>{{survey.name}}</u>
+                                                                                </span>
+                                                                            </td>
+                                                                            <td>{{dateformat(survey.created_date)}},
+                                                                                {{Timeformat(survey.created_date)}}</td>
+                                                                        </tr>
+                                                                        <tr *ngIf="SurveyList?.length === 0">
+                                                                            {{'Dashboard.LISTRECORD' | translate}}
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="width: 100%">
+                                                            <div class="col-md-10 text-right">
+                                                                <pagination-controls
+                                                                    (pageChange)="onPageChangeSurveyDetail($event, '1')"
+                                                                    id="third">
+                                                                </pagination-controls>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <select id="PerPage" class="form-control-user"
+                                                                    (change)="onPageChangeSurveyDetail($event, '2')">
+                                                                    <option
+                                                                        *ngFor="let item of PageTotalNumberSurveyDetail"
+                                                                        [value]="item">
+                                                                        {{ item }}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="alert" role="tabpanel">
+                                <form [formGroup]="formAlertReport"
+                                    (ngSubmit)="onSearchAlertReport(formAlertReport.value)">
+                                    <div class="row mt-3">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" formControlName="from_date">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" formControlName="to_date">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-success">
+                                                    {{'Reports.showButton' | translate}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="card">
+                                    <div class="card-body ">
+                                        <div class="table-responsive">
+                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                                            <table class="table table-hover">
+                                                <thead class="thead-black">
+                                                    <tr>
+                                                        <th>
+                                                            {{'Reports.alertListType' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListTitle' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListCreationDate' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListSentDate' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListSentBy' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListRecipients' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListOpenRatio' | translate}}
+                                                        </th>
+                                                    </tr>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let alert of AlertReportList | paginate: { id:'forth', itemsPerPage: 10, currentPage: currentPageAlerts, totalItems: totalItemsAlerts }; let i=index">
+
+                                                        <td>
+                                                            <span *ngIf="alert.alert_type === 'PopupAlert'"
+                                                                title="Alert">
+                                                                <img src="assets/img/sent-alert-action/alert.png"
+                                                                    alt="">
+                                                            </span>
+                                                            <span *ngIf="alert.alert_type === 'TickerAlert'"
+                                                                title="Ticker">
+                                                                <img src="assets/img/sent-alert-action/ticker.png"
+                                                                    alt="">
+                                                            </span>
+                                                            <span *ngIf="alert.alert_type === 'RsvpAlert'" title="RSVP">
+                                                                <img src="assets/img/sent-alert-action/rsvp.png" alt="">
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span *ngIf="alert.alert_type === 'PopupAlert'"
+                                                                class="cursor" data-bs-toggle="modal"
+                                                                data-bs-target="#ColumnChartModal"
+                                                                (click)="GetGraphStats(alert, 'alert')">
+                                                                <u>{{alert.name}}</u>
+                                                            </span>
+                                                            <span *ngIf="alert.alert_type === 'TickerAlert'"
+                                                                class="cursor" data-bs-toggle="modal"
+                                                                data-bs-target="#ColumnChartModal"
+                                                                (click)="GetGraphStats(alert, 'alert')">
+                                                                <u>{{alert.name}}</u>
+                                                            </span>
+                                                            <span *ngIf="alert.alert_type === 'RsvpAlert'"
+                                                                class="cursor" title="RSVP Alert Details"
+                                                                data-bs-toggle="modal" data-bs-target="#RSVPPieChartModal"
+                                                                (click)="GetGraphStats(alert, 'RSVP')">
+                                                                <u>{{alert.name}}</u>
+                                                            </span>
+                                                        </td>
+                                                        <td>{{dateformat(alert.created_date)}},
+                                                            {{Timeformat(alert.created_date)}}</td>
+                                                        <td>{{dateformat(alert.sent_date)}},
+                                                            {{Timeformat(alert.sent_date)}}</td>
+                                                        <td>{{alert.sent_by}}</td>
+                                                        <td>
+                                                            <span *ngIf="alert.alert_type === 'PopupAlert'"
+                                                                class="cursor" data-bs-toggle="modal"
+                                                                data-bs-target="#ColumnChartModal"
+                                                                (click)="OnChangeAlertReport('list','total_recipients_list', alert)">
+                                                                <u>{{alert.recipients}}</u>
+                                                            </span>
+                                                            <span *ngIf="alert.alert_type === 'TickerAlert'"
+                                                                class="cursor" data-bs-toggle="modal"
+                                                                data-bs-target="#ColumnChartModal"
+                                                                (click)="OnChangeAlertReport('list','total_recipients_list', alert)">
+                                                                <u>{{alert.recipients}}</u>
+                                                            </span>
+                                                            <span *ngIf="alert.alert_type === 'RsvpAlert'"
+                                                                class="cursor" data-bs-toggle="modal"
+                                                                data-bs-target="#ColumnChartModal"
+                                                                (click)="OnChangeAlertReport('list', 'total_recipients_list', alert)">
+                                                                <u>{{alert.recipients}}</u>
+                                                            </span>
+                                                        </td>
+                                                        <td>{{alert.open_ratio}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="AlertReportList?.length === 0">
+                                                        {{'Reports.alertListRecord' | translate}}
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+                                            <div class="row" style="width: 100%">
+                                                <div class="col-md-10 text-right">
+                                                    <pagination-controls (pageChange)="onPageChangeAlert($event, '1')"
+                                                        id="forth">
+                                                    </pagination-controls>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <select id="PerPage" class="form-control"
+                                                        (change)="onPageChangeAlert($event, '2')">
+                                                        <option *ngFor="let item of PageTotalNumberAlerts"
+                                                            [value]="item">
+                                                            {{ item }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="tab-pane" id="users" role="tabpanel">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <form [formGroup]="formUsersReport"
+                                                (ngSubmit)="onSearchUsersReport(formUsersReport.value)">
+                                                <div class="input-group mb-3">
+                                                    <div class="form-outline">
+                                                        <input id="search-input"
+                                                            formControlName="search"
+                                                            placeholder=" {{'Dashboard.USERSEARCHERE1' | translate}}"
+                                                            type="search" id="form" class="form-control"
+                                                            style="padding: 17px; width: 200px;" />
+                                                    </div>
+                                                    <button type="submit" class="btn btn-info ml-3">
+                                                        {{'Dashboard.SEARCH' | translate}}
+                                                    </button>
+                                                </div>
+                                            </form>
+                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                                            <table class="table table-hover">
+                                                <thead class="thead-black">
+                                                    <tr>
+                                                        <th>
+                                                            {{'Reports.userListUsername' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.userListStatus' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.userListRegDate' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.userListLastActivity' | translate}}
+                                                        </th>
+                                                    </tr>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let users of UsersList | paginate: { id:'fifth', itemsPerPage: 10, currentPage: currentPageUsers, totalItems: totalItemsUsers }; let i=index">
+
+                                                        <td>
+                                                            <span class="cursor"
+                                                                (click)="IsUserDetailById(users)"
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#UserDetailChartListModal">
+                                                                <u>{{users.username}}</u>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <img src="assets/img/animation_500_l7srpppy.gif" alt="" width="20"
+                                                                height="20" *ngIf="users.online">
+                                                            <img src="assets/img/31120-live-icon.gif" alt="" width="20"
+                                                                height="20" *ngIf="!users.online">
+                                                        </td>
+                                                        <td>
+                                                            {{dateformat(users.reg_date)}},
+                                                            {{Timeformat(users.reg_date)}}
+                                                        </td>
+                                                        <td>
+                                                            {{dateformat(users.last_online_time)}} <span *ngIf="users.last_online_time">, </span>
+                                                            {{Timeformat(users.last_online_time)}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr *ngIf="UsersList?.length === 0">
+                                                        {{'Reports.alertListRecord' | translate}}
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+                                            <div class="row" style="width: 100%">
+                                                <div class="col-md-10 text-right">
+                                                    <pagination-controls
+                                                        (pageChange)="onPageChangeUser($event, '1')" id="fifth">
+                                                    </pagination-controls>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <select id="PerPage" class="form-control"
+                                                        (change)="onPageChangeUser($event, '2')">
+                                                        <option *ngFor="let item of PageTotalNumberUsers"
+                                                            [value]="item">
+                                                            {{ item }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="survey" role="tabpanel">
+                                <form [formGroup]="formSurvey" (ngSubmit)="onSearchSurvey(formSurvey.value)">
+                                    <div class="row mt-3">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" formControlName="from_date">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" formControlName="to_date">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-success">
+                                                    {{'Reports.showButton' | translate}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                                            <table class="table table-hover">
+                                                <thead class="thead-black">
+                                                    <tr>
+                                                        <th>
+                                                            {{'Reports.alertListType' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListTitle' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListCreationDate' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListSentDate' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListSentBy' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListRecipients' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListOpenRatio' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListAnonymousSurvey' | translate}}
+                                                        </th>
+                                                    </tr>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let surveys of SurveysList | paginate: { id:'sixth', itemsPerPage: 10, currentPage: currentPageSurveys, totalItems: totalItemsSurveys }; let i=index">
+                                                        <td>
+                                                            <span *ngIf="surveys.alert_type === 'SurveyAlert'"
+                                                                title="Survey Alert">
+                                                                <img src="assets/img/sent-alert-action/rsvp.png" alt="">
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="cursor" data-bs-toggle="modal"
+                                                                data-bs-target="#SurveyChartModal"
+                                                                (click)="GetGraphStatsSurvey(surveys, surveys)">
+                                                                <u>{{surveys.name}}</u>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            {{dateformat(surveys.created_date)}},
+                                                            {{Timeformat(surveys.created_date)}}
+                                                        </td>
+                                                        <td>
+                                                            {{dateformat(surveys.sent_date)}},
+                                                            {{Timeformat(surveys.sent_date)}}
+                                                        </td>
+                                                        <td>
+                                                            {{surveys.sent_by}}
+                                                        </td>
+                                                        <td>
+                                                            <span class="cursor" data-bs-toggle="modal"
+                                                                data-bs-target="#ColumnChartModal"
+                                                                (click)="OnChangeAlertReport('list','total_recipients_list', surveys)">
+                                                                <u>{{surveys.recipients}}</u>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            {{surveys.open_ratio}}
+                                                        </td>
+                                                        <td>
+                                                            {{surveys.anonymous_survey}}
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr *ngIf="SurveysList?.length === 0">
+                                                        {{'Reports.alertListRecord' | translate}}
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="row" style="width: 100%">
+                                            <div class="col-md-10 text-right">
+                                                <pagination-controls (pageChange)="onPageChangeSurvey($event, '1')"
+                                                    id="sixth">
+                                                </pagination-controls>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <select id="PerPage" class="form-control"
+                                                    (change)="onPageChangeSurvey($event, '2')">
+                                                    <option *ngFor="let item of PageTotalNumberSurveys" [value]="item">
+                                                        {{ item }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="tab-pane" id="screensaver" role="tabpanel">
+                                <form [formGroup]="formScreensaver"
+                                    (ngSubmit)="onSearchScreensaver(formScreensaver.value)">
+                                    <div class="row mt-3">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" formControlName="from_date">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" formControlName="to_date">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-success">
+                                                    {{'Reports.showButton' | translate}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                                            <table class="table table-hover">
+                                                <thead class="thead-black">
+                                                    <tr>
+                                                        <th>
+                                                            {{'Reports.alertListType' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListTitle' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListCreationDate' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListSentDate' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListSentBy' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListRecipients' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListOpenRatio' | translate}}
+                                                        </th>
+                                                    </tr>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let screensaver of ScreensaverList | paginate: { id:'seventh', itemsPerPage: 10, currentPage: currentPageScreenSaver, totalItems: totalItemsScreenSaver }; let i=index">
+                                                        <td>
+                                                            <span *ngIf="screensaver.alert_type === 'ScreensaverAlert'"
+                                                                title="Screensaver Alert">
+                                                                <img src="assets/img/sent-alert-action/fullscreen.png"
+                                                                    alt="">
+                                                            </span>
+                                                        </td>
+
+                                                        <td>
+                                                            <span class="cursor" data-bs-toggle="modal"
+                                                                data-bs-target="#ScreenSaverColumnChartModal"
+                                                                (click)="GetGraphStatsScreensaver(screensaver.id, 'screensaveralert')">
+                                                                <u> {{screensaver.name}}</u>
+                                                            </span>
+                                                        </td>
+                                                        <td>{{dateformat(screensaver.created_date)}},
+                                                            {{Timeformat(screensaver.created_date)}}</td>
+                                                        <td>{{dateformat(screensaver.sent_date)}},
+                                                            {{Timeformat(screensaver.sent_date)}}
+                                                        </td>
+                                                        <td>
+                                                            {{screensaver.sent_by}}
+                                                        </td>
+                                                        <td class="cursor" data-bs-toggle="modal"
+                                                        data-bs-target="#ColumnChartModal"
+                                                            (click)="OnChangeAlertReport('list','total_recipients_list', screensaver)">
+                                                            <u>{{screensaver.recipients}}</u>
+                                                        </td>
+                                                        <td>{{screensaver.open_ratio}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="ScreensaverList?.length === 0">
+                                                        {{'Reports.alertListRecord' | translate}}
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="row" style="width: 100%">
+                                            <div class="col-md-10 text-right">
+                                                <pagination-controls (pageChange)="onPageChangeScreensaver($event, '1')"
+                                                    id="seventh">
+                                                </pagination-controls>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <select id="PerPage" class="form-control"
+                                                    (change)="onPageChangeScreensaver($event, '2')">
+                                                    <option *ngFor="let item of PageTotalNumberScreenSaver"
+                                                        [value]="item">
+                                                        {{ item }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="tab-pane" id="wallpaper" role="tabpanel">
+                                <form [formGroup]="formWallpaper" (ngSubmit)="onSearchWallpaper(formWallpaper.value)">
+                                    <div class="row mt-3">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" formControlName="from_date">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" formControlName="to_date">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-success">
+                                                    {{'Reports.showButton' | translate}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                                            <table class="table table-hover">
+                                                <thead class="thead-black">
+                                                    <tr>
+                                                        <th>
+                                                            {{'Reports.alertListType' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListTitle' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListCreationDate' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListSentDate' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListSentBy' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListRecipients' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListOpenRatio' | translate}}
+                                                        </th>
+                                                    </tr>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let wallpaper of WallpaperList | paginate: { id:'eigth', itemsPerPage: 10, currentPage: currentPageWallpaper, totalItems: totalItemsWallpaper }; let i=index">
+                                                        <td>
+                                                            <span *ngIf="wallpaper.alert_type === 'WallpaperAlert'"
+                                                                title="Wallpaper Alert">
+                                                                <img src="assets/img/sent-alert-action/fullscreen.png"
+                                                                    alt="">
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="cursor" data-bs-toggle="modal"
+                                                                data-bs-target="#ScreenSaverColumnChartModal"
+                                                                (click)="GetGraphStatsScreensaver(wallpaper.id, 'wallpaperalert')">
+                                                                <u> {{wallpaper.name}}</u>
+                                                            </span>
+                                                        </td>
+                                                        <td>{{dateformat(wallpaper.created_date)}},
+                                                            {{Timeformat(wallpaper.created_date)}}</td>
+                                                        <td>{{dateformat(wallpaper.sent_date)}},
+                                                            {{Timeformat(wallpaper.sent_date)}}
+                                                        </td>
+                                                        <td>
+                                                            {{wallpaper.sent_by}}
+                                                        </td>
+                                                        <td class="cursor" data-bs-toggle="modal"
+                                                        data-bs-target="#ColumnChartModal"
+                                                            (click)="OnChangeAlertReport('list','total_recipients_list', wallpaper)">
+                                                            <u>{{wallpaper.recipients}}</u>
+                                                        </td>
+                                                        <td>{{wallpaper.open_ratio}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="WallpaperList?.length === 0">
+                                                        {{'Reports.alertListRecord' | translate}}
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="row" style="width: 100%">
+                                            <div class="col-md-10 text-right">
+                                                <pagination-controls (pageChange)="onPageChangeWallpaper($event, '1')"
+                                                    id="eigth">
+                                                </pagination-controls>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <select id="PerPage" class="form-control"
+                                                    (change)="onPageChangeWallpaper($event, '2')">
+                                                    <option *ngFor="let item of PageTotalNumberWallpaper"
+                                                        [value]="item">
+                                                        {{ item }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="tab-pane" id="lockscreen" role="tabpanel">
+                                <form [formGroup]="formLockscreen"
+                                    (ngSubmit)="onSearchLockscreen(formLockscreen.value)">
+                                    <div class="row mt-3">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" formControlName="from_date">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <input type="date" class="form-control" formControlName="to_date">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-success">
+                                                    {{'Reports.showButton' | translate}}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                                            <table class="table table-hover">
+                                                <thead class="thead-black">
+                                                    <tr>
+                                                        <th>
+                                                            {{'Reports.alertListType' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListTitle' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListCreationDate' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListSentDate' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListSentBy' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListRecipients' | translate}}
+                                                        </th>
+                                                        <th>
+                                                            {{'Reports.alertListOpenRatio' | translate}}
+                                                        </th>
+                                                    </tr>
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let lockscreen of LockscreenList | paginate: { id:'ninth', itemsPerPage: 10, currentPage: currentPageLockscreen, totalItems: totalItemsLockscreen }; let i=index">
+                                                        <td>
+                                                            <span *ngIf="lockscreen.alert_type === 'LockscreenAlert'"
+                                                                title="Lockscreen Alert">
+                                                                <img src="assets/img/sent-alert-action/fullscreen.png"
+                                                                    alt="">
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <span class="cursor" data-bs-toggle="modal"
+                                                                data-bs-target="#ScreenSaverColumnChartModal"
+                                                                (click)="GetGraphStatsScreensaver(lockscreen.id, 'lockscreenalert')">
+                                                                <u> {{lockscreen.name}}</u>
+                                                            </span>
+                                                        </td>
+                                                        <td>{{dateformat(lockscreen.created_date)}},
+                                                            {{Timeformat(lockscreen.created_date)}}</td>
+                                                        <td>{{dateformat(lockscreen.sent_date)}},
+                                                            {{Timeformat(lockscreen.sent_date)}}
+                                                        </td>
+                                                        <td>
+                                                            {{lockscreen.sent_by}}
+                                                        </td>
+                                                        <td class="cursor" data-bs-toggle="modal"
+                                                        data-bs-target="#ColumnChartModal"
+                                                            (click)="OnChangeAlertReport('list','total_recipients_list', lockscreen)">
+                                                            <u>{{lockscreen.recipients}}</u>
+                                                        </td>
+                                                        <td>{{lockscreen.open_ratio}}</td>
+                                                    </tr>
+                                                    <tr *ngIf="LockscreenList?.length === 0">
+                                                        {{'Reports.alertListRecord' | translate}}
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <div class="row" style="width: 100%">
+                                            <div class="col-md-10 text-right">
+                                                <pagination-controls (pageChange)="onPageChangeLockscreen($event, '1')"
+                                                    id="ninth">
+                                                </pagination-controls>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <select id="PerPage" class="form-control"
+                                                    (change)="onPageChangeLockscreen($event, '2')">
+                                                    <option *ngFor="let item of PageTotalNumberLockscreen"
+                                                        [value]="item">
+                                                        {{ item }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="ScreenSaverColumnChartModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <div class="scroll p-3">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{GraphStatName}}</h4>
+                    <div class="col-md-2 right-side">
+                        <button type="button" class="close text-white" data-bs-dismiss="modal" style="background-color: transparent;
+                    border: 0; font-size: 40px;">&times;</button>
+                    </div>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" *ngIf="!IsChartAndList">
+                    <div class="row mb-2">
+                        <div class="col-md-12 text-right">
+                            <b> {{'Reports.sentTotalRecipients' | translate}} <u class="cursor"
+                                    (click)="OnChangeChartAndList('list','total_recipients_list')">{{TotalRecipients}}</u></b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ngx-charts-bar-vertical [results]="saleScreenSaverData" [view]="[700,400]"
+                                [showXAxisLabel]="true" [showYAxisLabel]="true" [legend]="false" [xAxis]="false"
+                                [yAxis]="true">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 ml-4 mt-3">
+                            <div class="bg-color">
+                                <h3> {{'Reports.sentAlerts' | translate}} </h3>
+                                <!-- <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentRecieved' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','recieved_users_list_w_l_s')"><u>{{Recieved}}</u></label>
+                                    </div>
+                                </div> -->
+
+
+                                <div class="row">
+                                    <div class="col-lg-5 uss">
+                                        <div class="cornblue-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentNotRecieved' |
+                                                    translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','not_recieved_users_list_w_l_s')"><u>{{NotRecieved}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="purple-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentUsersLink' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"><u>{{UserLinks}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5 uss ">
+                                        <div class="light-maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">
+                                                    {{'Reports.sentAcknowledged' | translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"><u>{{Acknowledged}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentLikesCount' |
+                                                    translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"><u>{{Liked}}</u></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-md-5 ml-4 mt-3 text-right">
+                            <div class="cursor" (click)="ExportToExcel()">
+                                {{'Reports.exportToExcel' | translate}}
+                            </div>
+                            <div class="cursor" (click)="downloadCSV()">
+                                {{'Reports.exportToCsv' | translate}}
+                            </div>
+                        </div> -->
+                    </div>
+
+                </div>
+
+                <div class="modal-body" *ngIf="IsChartAndList">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <form [formGroup]="formRSVP" (ngSubmit)="onSearchRSVP(formRSVP.value)">
+                                <div class="input-group">
+                                    <div class="form-outline">
+                                        <input id="search-input" formControlName="search" placeholder="Search here"
+                                            type="search" id="form" class="form-control"
+                                            style="padding: 17.7px; width: 210px;" />
+                                    </div>
+                                    <button type="submit" class="btn btn-success ml-3">
+                                        {{'Reports.searchButton' | translate}}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- <div class="col-md-5 text-right">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success"
+                                    (click)="OnChangeChartAndList('chart', '')"> {{'Reports.returnButton' |
+                                    translate}}</button>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{'Reports.chartListName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData !== 'total_recipients_list' && VariableData !== 'not_recieved_users_list'">
+                                            {{'Reports.chartListComputerName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Reports.alertListType' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Reports.chartListDisplayName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Reports.chartListDomain' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Reports.chartListOnline' | translate}}
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let alert of AlertDetailList | paginate: { id:'tenth', itemsPerPage: 10, currentPage: currentPageChart, totalItems: totalItemsChart }; let i=index">
+
+                                        <td>
+                                            {{alert.username}}
+                                        </td>
+                                        <td
+                                            *ngIf="VariableData !== 'total_recipients_list' && VariableData !== 'not_recieved_users_list'">
+                                            {{alert.computer_name}}
+                                        </td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{alert.type}}</td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{alert.display_name}}</td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{alert.domain}}</td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            <img src="assets/img/animation_500_l7srpppy.gif" alt="" width="20"
+                                                height="20" *ngIf="alert.online">
+                                            <img src="assets/img/31120-live-icon.gif" alt="" width="20"
+                                                height="20" *ngIf="!alert.online">
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="AlertDetailList.length === 0">
+                                        {{'Reports.alertListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChartChange($event, '1')" id="tenth">
+                                    </pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChartChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumberChart" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="ColumnChartModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <div class="scroll p-3">
+                <div class="modal-header">
+                    <h4 class="modal-title"> {{'Reports.sentAlertDetails' | translate}} - {{AlertName}}</h4>
+                    <div class="col-md-2 right-side">
+                        <button type="button" class="close text-white" data-bs-dismiss="modal" style="background-color: transparent;
+                    border: 0; font-size: 40px;">&times;</button>
+                    </div>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" *ngIf="!IsChartAndList">
+                    <div class="row mb-2">
+                        <div class="col-md-12 text-right">
+                            <b> {{'Reports.sentTotalRecipients' | translate}}<u class="cursor"
+                                    (click)="OnChangeChartAndList('list','total_recipients_list')">{{TotalRecipients}}</u></b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ngx-charts-bar-vertical [results]="saleData" [view]="[700,400]" [showXAxisLabel]="true"
+                                [showYAxisLabel]="true" [legend]="false" [xAxis]="false" [yAxis]="true">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 ml-4 mt-3">
+                            <div class="bg-color">
+                                <h3> {{'Reports.sentAlerts' | translate}}</h3>
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">{{'Reports.chartSent' |
+                                                    translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','sent_users_list')"><u>{{Sent}}</u></label>
+                                    </div>
+                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="cornblue-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentRecieved' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','recieved_users_list')"><u>{{Recieved}}</u></label>
+                                    </div>
+                                </div> -->
+
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="purple-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentDisplay' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','displayed_users_list')"><u>{{Displayed}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-5 uss">
+                                        <div class="light-maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentNotRecieved' |
+                                                    translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','not_recieved_users_list')"><u>{{NotRecieved}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5 uss ">
+                                        <div class="voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">
+                                                    {{'Reports.sentAcknowledged' | translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','acknowledged_users_list')"><u>{{Acknowledged}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="not-voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentLikesCount' |
+                                                    translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','liked_users_list')"><u>{{Liked}}</u></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-md-5 ml-4 mt-3 text-right">
+                            <div class="cursor" (click)="ExportToExcel()">
+                                {{'Reports.exportToExcel' | translate}}
+                            </div>
+                            <div class="cursor" (click)="downloadCSV()">
+                                {{'Reports.exportToCsv' | translate}}
+                            </div>
+                        </div> -->
+                    </div>
+
+                </div>
+
+                <div class="modal-body" *ngIf="IsChartAndList">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <form [formGroup]="formRSVP" (ngSubmit)="onSearchRSVP(formRSVP.value)">
+                                <div class="input-group">
+                                    <div class="form-outline">
+                                        <input id="search-input" formControlName="search" placeholder="Search here"
+                                            type="search" id="form" class="form-control"
+                                            style="padding: 17.7px; width: 210px;" />
+                                    </div>
+                                    <button type="submit" class="btn btn-success ml-3">
+                                        {{'Reports.searchButton' | translate}}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- <div class="col-md-5 text-right">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success"
+                                    (click)="OnChangeChartAndList('chart', '')">{{'Reports.returnButton' |
+                                    translate}}</button>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{'Reports.chartListName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData !== 'total_recipients_list' && VariableData !== 'not_recieved_users_list'">
+                                            {{'Reports.chartListComputerName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Reports.alertListType' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Reports.chartListDisplayName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Reports.chartListDomain' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Reports.chartListOnline' | translate}}
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let alert of AlertDetailList | paginate: { id:'one', itemsPerPage: 10, currentPage: currentPageChart, totalItems: totalItemsChart }; let i=index">
+
+                                        <td>
+                                            {{alert.username}}
+                                        </td>
+                                        <td
+                                            *ngIf="VariableData !== 'total_recipients_list' && VariableData !== 'not_recieved_users_list'">
+                                            {{alert.computer_name}}
+                                        </td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{alert.type}}</td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{alert.display_name}}</td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{alert.domain}}</td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            <img src="assets/img/animation_500_l7srpppy.gif" alt="" width="20"
+                                                height="20" *ngIf="alert.online">
+                                            <img src="assets/img/31120-live-icon.gif" alt="" width="20"
+                                                height="20" *ngIf="!alert.online">
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="AlertDetailList.length === 0">
+                                        {{'Reports.alertListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChartChange($event, '1')" id="one">
+                                    </pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChartChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumberChart" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="RSVPPieChartModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <div class="scroll p-3">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{'Reports.rsvpAlertDetails' | translate}}</h4>
+                    <div class="col-md-2 right-side">
+                        <button type="button" class="close text-white" data-bs-dismiss="modal" style="background-color: transparent;
+                    border: 0; font-size: 40px;">&times;</button>
+                    </div>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" *ngIf="!IsChartAndList">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <b>{{'Reports.sentTotalRecipients' | translate}}<u class="cursor"
+                                    (click)="OnChangeChartAndList('list', 'total_recipients_list')">{{TotalRecipients}}</u></b>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <b>{{'Reports.sentTotalQuestion' | translate}} {{TotalQuestion}} </b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 p-0">
+                            <ngx-charts-bar-vertical [results]="RSVPChartData" [view]="[400,300]"
+                                [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxis]="false" [yAxis]="true">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                        <div class="col-md-6">
+                            <ngx-charts-pie-chart [results]="PieChartData" [view]="[400, 300]">
+                            </ngx-charts-pie-chart>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <div class="bg-color">
+                                <h4>Alerts</h4>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">{{'Reports.chartSent' |
+                                                    translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','sent_users_list')"><u>{{Sent}}</u></label>
+                                    </div>
+                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="cornblue-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentRecieved' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','recieved_users_list')"><u>{{Recieved}}</u></label>
+                                    </div>
+                                </div> -->
+
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="purple-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentDisplay' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','displayed_users_list')"><u>{{Displayed}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-5 uss">
+                                        <div class="light-maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentNotRecieved' |
+                                                    translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','not_recieved_users_list')"><u>{{NotRecieved}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentVoted' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','voted_users_list')"><u>{{Voted}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-8 uss">
+                                        <div class="not-voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentNotVoted' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','not_voted_users_list')"><u>{{RecievedNotVoted}}</u></label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <div class="bg-color">
+                                <h4>{{QuestionText}}</h4>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">{{'Reports.QuesOptionYes' |
+                                                    translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','rsvp_first_option_users_list')"><u>{{Option1Count}}</u></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="cornblue-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.QuesOptionNo' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','rsvp_second_option_users_list')"><u>{{Option2Count}}</u></label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-body" *ngIf="IsChartAndList">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <form [formGroup]="formRSVP" (ngSubmit)="onSearchRSVP(formRSVP.value)">
+                                <div class="input-group">
+                                    <div class="form-outline">
+                                        <input id="search-input" formControlName="search"
+                                            placeholder="{{'Reports.searchButtonPlaceholder' | translate}}"
+                                            type="search" id="form" class="form-control"
+                                            style="padding: 17.7px; width: 210px;" />
+                                    </div>
+                                    <button type="submit" class="btn btn-success ml-3">
+                                        {{'Reports.searchButton' | translate}}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" placeholder="Search.." class="form-control" name="" id="">
+                            </div>
+                        </div>
+    
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success">Search</button>
+                            </div>
+                        </div> -->
+                        <!-- <div class="col-md-5 text-right">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success"
+                                    (click)="OnChangeChartAndList('chart', '')">{{'Reports.returnButton' |
+                                    translate}}</button>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{'Reports.chartListName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData !== 'total_recipients_list' && VariableData !== 'not_recieved_users_list'">
+                                            {{'Reports.chartListComputerName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Reports.alertListType' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Reports.chartListDisplayName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Reports.chartListDomain' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Reports.chartListOnline' | translate}}
+                                        </th>
+                                        <th *ngIf="VariableData === 'voted_users_list'">
+                                            {{'Reports.chartListFirstAns' | translate}}
+                                        </th>
+                                        <th *ngIf="VariableData === 'voted_users_list'">
+                                            {{'Reports.chartListSecondAns' | translate}}
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let alert of AlertDetailList | paginate: { id:'two', itemsPerPage: 10, currentPage: currentPageChart, totalItems: totalItemsChart }; let i=index">
+
+                                        <td>
+                                            {{alert.username}}
+                                        </td>
+                                        <td
+                                            *ngIf="VariableData !== 'total_recipients_list' && VariableData !== 'not_recieved_users_list'">
+                                            {{alert.computer_name}}
+                                        </td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{alert.type}}</td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{alert.display_name}}</td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{alert.domain}}</td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            <!-- {{alert.online}} -->
+                                            <img src="assets/img/animation_500_l7srpppy.gif" alt="" width="20"
+                                                height="20" *ngIf="alert.online">
+                                            <img src="assets/img/31120-live-icon.gif" alt="" width="20"
+                                                height="20" *ngIf="!alert.online">
+                                        </td>
+                                        <td *ngIf="VariableData === 'voted_users_list'">
+                                            {{alert.first_answer}}</td>
+                                        <td *ngIf="VariableData === 'voted_users_list'">
+                                            {{alert.second_answer}}</td>
+
+                                    </tr>
+                                    <tr *ngIf="AlertDetailList.length === 0">
+                                        {{'Reports.alertListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChartChange($event, '1')" id="two">
+                                    </pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChartChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumberChart" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="SurveyChartModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 3rem; width: 990px;">
+            <div class="scroll p-3">
+                <div class="modal-header">
+                    <h4 class="modal-title"> {{'Reports.surveyAlertDetail' | translate}} - {{SurveyAlertName}}</h4>
+                    <div class="col-md-2 right-side">
+                        <button type="button" class="close text-white" data-bs-dismiss="modal" style="background-color: transparent;
+border: 0; font-size: 40px;">&times;</button>
+                    </div>
+                </div>
+                <div *ngIf="loading" class="dot-opacity-loader">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" *ngIf="!IsChartAndListSurvey">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <b> {{'Reports.sentTotalRecipients' | translate}} <u class="cursor"
+                                    (click)="OnChangeChartAndListSurvey('list', 'total_recipients_list')">{{TotalRecipients}}</u></b>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <b> {{'Reports.sentTotalQuestion' | translate}} {{TotalQuestion}} </b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7 p-0">
+                            <ngx-charts-bar-vertical [results]="RSVPChartData" [view]="[500,300]"
+                                [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxis]="false" [yAxis]="true">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="bg-color">
+                                <h4>Alerts</h4>
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">{{'Reports.chartSent' |
+                                                    translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndListSurvey('list','sent_users_list')"><u>{{Sent}}</u></label>
+                                    </div>
+                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-md-5 uss ">
+                                        <div class="cornblue-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentRecieved' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndListSurvey('list','recieved_users_list')"><u>{{Recieved}}</u></label>
+                                    </div>
+                                </div> -->
+
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="purple-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentDisplay' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndListSurvey('list','displayed_users_list')"><u>{{Displayed}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-5 uss">
+                                        <div class="light-maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentNotRecieved' |
+                                                    translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndListSurvey('list','not_recieved_users_list')"><u>{{NotRecieved}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentVoted' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndListSurvey('list','survey_voted_users_list')"><u>{{Voted}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-8 uss">
+                                        <div class="not-voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentNotVoted' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndListSurvey('list','survey_not_voted_users_list')"><u>{{RecievedNotVoted}}</u>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3"
+                        *ngFor="let ques of TotalQuestionList; let i=index; let first = first; let last = last;">
+                        <div *ngIf="i === showChart">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <b> {{'Reports.surveyResult' | translate}}</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <b> {{'Reports.questionText' | translate}} {{ques.question_text}}
+                                    </b>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <b> {{'Reports.sentTotalQuestion' | translate}}
+                                        {{TotalQuestion}} </b>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-7">
+                                    <ngx-charts-pie-chart [results]="PieChartData" [view]="[500, 300]">
+                                    </ngx-charts-pie-chart>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="bg-color">
+                                        <h4> {{'Reports.pieChartQues' | translate}} <img *ngIf="ques.image"
+                                                src="{{ques.image}}" alt="Logo" width="25" height="25">
+                                            {{ques.question_text}}</h4>
+                                        <div class="ques-sroll">
+                                            <div class="row" *ngFor="let ans of PieChartData; let ansIndex=index">
+                                                <div class="col-md-9">
+                                                    <div class="dflex">
+                                                        <div class="maroon-box{{ansIndex}} mr-2">
+                                                        </div>
+                                                        <img *ngIf="ans.option_image" src="{{ans.option_image}}"
+                                                            alt="Logo" width="25" height="25">
+                                                        <span>{{ans.name}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 text-right">
+                                                    <label class="cursor"
+                                                        (click)="SurveyPieChartAns(ques.question_text, ans, 'survey_selected_option_user_list')"><u>{{ans.value}}</u></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button class="btn btn-success" (click)="OnNextChartSubmit(i, 'Previous', first)">
+                                        {{'Reports.previewQues' | translate}}
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-success" (click)="OnNextChartSubmit(i, 'Next', first)">
+                                        {{'Reports.nextQues' | translate}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-body" *ngIf="IsChartAndListSurvey">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <form [formGroup]="formSurveyChart" (ngSubmit)="onSearchSurveyChart(formSurveyChart.value)">
+                                <div class="input-group">
+                                    <div class="form-outline">
+                                        <input id="search-input" formControlName="search"
+                                            placeholder="{{'Reports.searchButtonPlaceholder' | translate}} "
+                                            type="search" id="form" class="form-control"
+                                            style="padding: 17.7px; width: 210px;" />
+                                    </div>
+                                    <button type="submit" class="btn btn-success ml-3">
+                                        {{'Reports.searchButton' | translate}}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- <div class="col-md-5 text-right">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success"
+                                    (click)="OnChangeChartAndListSurvey('chart', '')"> {{'Reports.returnButton' |
+                                    translate}}</button>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{'Reports.chartListName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableDataSurvey !== 'total_recipients_list' && VariableDataSurvey !== 'not_recieved_users_list'">
+                                            {{'Reports.chartListComputerName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableDataSurvey === 'total_recipients_list' || VariableDataSurvey === 'not_recieved_users_list'">
+                                            {{'Reports.alertListType' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableDataSurvey === 'total_recipients_list' || VariableDataSurvey === 'not_recieved_users_list'">
+                                            {{'Reports.chartListDisplayName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableDataSurvey === 'total_recipients_list' || VariableDataSurvey === 'not_recieved_users_list'">
+                                            {{'Reports.chartListDomain' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableDataSurvey === 'total_recipients_list' || VariableDataSurvey === 'not_recieved_users_list'">
+                                            {{'Reports.chartListOnline' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableDataSurvey === 'survey_voted_users_list' && IsQuiz === 'quiz'">
+                                            {{'Reports.correctAns' | translate}}
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let alert of AlertDetailListSurvey | paginate: { id:'three', itemsPerPage: 10, currentPage: currentPageChartSurvey, totalItems: totalItemsChartSurvey }; let i=index">
+
+                                        <td
+                                            *ngIf="VariableDataSurvey !== 'survey_voted_users_list' && VariableDataSurvey !== 'survey_selected_option_user_list'">
+                                            {{alert.username}}
+                                        </td>
+                                        <td *ngIf="VariableDataSurvey === 'survey_voted_users_list'">
+                                            {{alert.logon_name}}</td>
+                                        <td *ngIf="VariableDataSurvey === 'survey_selected_option_user_list'">
+                                            {{alert.logon_name}}</td>
+                                        <td
+                                            *ngIf="VariableDataSurvey !== 'total_recipients_list' && VariableDataSurvey !== 'not_recieved_users_list'">
+                                            {{alert.computer_name}}
+                                        </td>
+                                        <td
+                                            *ngIf="VariableDataSurvey === 'total_recipients_list' || VariableDataSurvey === 'not_recieved_users_list'">
+                                            {{alert.type}}</td>
+                                        <td
+                                            *ngIf="VariableDataSurvey === 'total_recipients_list' || VariableDataSurvey === 'not_recieved_users_list'">
+                                            {{alert.display_name}}</td>
+                                        <td
+                                            *ngIf="VariableDataSurvey === 'total_recipients_list' || VariableDataSurvey === 'not_recieved_users_list'">
+                                            {{alert.domain}}</td>
+                                        <td
+                                            *ngIf="VariableDataSurvey === 'total_recipients_list' || VariableDataSurvey === 'not_recieved_users_list'">
+                                            <!-- {{alert.online}} -->
+                                            <img src="assets/img/animation_500_l7srpppy.gif" alt="" width="20"
+                                                height="20" *ngIf="alert.online">
+                                            <img src="assets/img/31120-live-icon.gif" alt="" width="20"
+                                                height="20" *ngIf="!alert.online">
+                                        </td>
+                                        <td *ngIf="VariableDataSurvey === 'survey_voted_users_list' && IsQuiz === 'quiz'"
+                                            data-bs-toggle="modal" data-bs-target="#SurveyQuizModal"
+                                            (click)="IsQuizList(alert)" class="cursor">
+                                            <u>{{alert.correct_answers}}</u>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="AlertDetailListSurvey.length === 0">
+                                        {{'Reports.alertListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChartChangeSurvey($event, '1')" id="three">
+                                    </pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control"
+                                        (change)="onPageChartChangeSurvey($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumberChartSurvey" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="UserDetailChartListModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <div class="">
+                <div class="modal-header">
+                    <h4 class="modal-title"> {{'Reports.userDetails' | translate}} - {{UserAlertName}}</h4>
+                    <div class="col-md-2 right-side">
+                        <button type="button" class="close text-white" data-bs-dismiss="modal" style="background-color: transparent;
+border: 0; font-size: 40px;">&times;</button>
+                    </div>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" *ngIf="!IsUserDetailChartAndList">
+                    <div class="row mb-2">
+                        <div class="col-md-12 text-right">
+                            <b> {{'Reports.sentTotalRecipients' | translate}} <u class="cursor"
+                                    (click)="OnChangeUserDetailChartAndList('list','total_alerts')">{{TotalRecipients}}</u></b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ngx-charts-bar-vertical [results]="saleUserDetailData" [view]="[400,400]"
+                                [showXAxisLabel]="true" [showYAxisLabel]="true" [legend]="false" [xAxis]="false"
+                                [yAxis]="true">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                        <div class="col-md-6 mt-3">
+                            <div class="bg-color">
+                                <h3>Alerts</h3>
+
+                                <!-- <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentRecieved' |
+                                                    translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeUserDetailChartAndList('list','recieved_alerts')"><u>{{Recieved}}</u></label>
+                                    </div>
+                                </div> -->
+
+                                <div class="row">
+                                    <div class="col-lg-5 uss">
+                                        <div class="cornblue-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Reports.sentNotRecieved' |
+                                                    translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeUserDetailChartAndList('list','not_recieved')"><u>{{NotRecieved}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-5 uss ">
+                                        <div class="purple1-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">
+                                                    {{'Reports.sentAcknowledged' | translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeUserDetailChartAndList('list','acknowledged_alerts')"><u>{{Acknowledged}}</u></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-body" *ngIf="IsUserDetailChartAndList">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <form [formGroup]="formUserDetail" (ngSubmit)="onSearchUserDetail(formUserDetail.value)">
+                                <div class="input-group">
+                                    <div class="form-outline">
+                                        <input id="search-input" formControlName="search"
+                                            placeholder="{{'Reports.searchButtonPlaceholder' | translate}}"
+                                            type="search" id="form" class="form-control"
+                                            style="padding: 17.7px; width: 210px;" />
+                                    </div>
+                                    <button type="submit" class="btn btn-success ml-3">
+                                        {{'Reports.searchButton' | translate}}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- <div class="col-md-5 text-right">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success"
+                                    (click)="OnChangeUserDetailChartAndList('chart', '')"> {{'Reports.returnButton' |
+                                    translate}}</button>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{'Reports.chartListName' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'Reports.chartListCreatedDate' | translate}}
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let user of UserChartListDetailList | paginate: { id:'for', itemsPerPage: 10, currentPage: currentPageUserChart, totalItems: totalItemsUserChart }; let i=index">
+
+                                        <td>
+                                            {{user.name}}
+                                        </td>
+                                        <td>
+                                            {{dateformat(user.created_date)}},
+                                            {{Timeformat(user.created_date)}}
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="UserChartListDetailList.length === 0">
+                                        {{'Reports.alertListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageUserChartChange($event, '1')" id="for">
+                                    </pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control"
+                                        (change)="onPageUserChartChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumberUserChart" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,364 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <h6>{{'EmergencySendUser.chooseRecipient&Send' | translate}}</h6>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <select class="form-control" (change)="onSelectedUserType($event)">
+                                <option value="" selected>{{'EmergencySendUser.selectAlertType' | translate}}</option>
+                                <option value="broadcast" *ngIf="RecipientListChoice === 'all'">
+                                    {{'EmergencySendUser.broadcastAlertType' | translate}}</option>
+                                <option value="select-recipients"> {{'EmergencySendUser.recipientAlertType' |
+                                    translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4" *ngIf="UsersList.length">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                data-bs-target="#SelctedEmrgncyGroupAndOtherModal"> You have selected
+                                {{UsersList.length}} objects</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="UserType === 'broadcast'">
+                    <p>
+                        {{'EmergencySendUser.sendContentViaBroadcast' | translate}}
+                    </p>
+                    <p>
+                        {{'EmergencySendUser.alertRecievedByComputer' | translate}}
+                    </p>
+                    <p>
+                        {{'EmergencySendUser.emailDeliverByEmailAddress' | translate}}
+                    </p>
+                </div>
+
+                <div class="row" *ngIf="UserType === 'select-recipients'">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <ngx-treeview [config]="config" [items]="items"
+                                (selectedChange)="onSelectedChange($event, items)">
+                            </ngx-treeview>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <form [formGroup]="formSendUser" (ngSubmit)="onSearchSendUser(formSendUser.value)">
+                                    <div class="input-group">
+                                        <div class="form-outline">
+                                            <input id="search-input" formControlName="search"
+                                                placeholder="{{'WallpaperSendUser.searchButtonPlaceholder' | translate}}"
+                                                type="search" id="form" class="form-control"
+                                                style="padding: 17.7px; width: 190px;" />
+                                        </div>
+                                        <button type="submit" class="btn btn-success ml-2">
+                                            {{'EmergencySendUser.searchButton' | translate}}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="text" placeholder="Search.." class="form-control" name="" id="">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-success"> {{'EmergencySendUser.searchButton' | translate}}</button>
+                                </div>
+                            </div> -->
+                            <div class="col-md-6">
+                                {{'EmergencySendUser.type' | translate}}
+                                <input type="radio" value="users" [(ngModel)]="ReturnDataType"
+                                    [ngModelOptions]="{standalone: true}" (change)="IsSelectedUsers()" />
+                                {{'EmergencySendUser.showUsers' | translate}}
+                                <input type="radio" value="groups" [(ngModel)]="ReturnDataType"
+                                    [ngModelOptions]="{standalone: true}" (change)="IsSelectedUsers()" />
+                                {{'EmergencySendUser.showGroups' | translate}}
+                                <input type="radio" value="computers" [(ngModel)]="ReturnDataType"
+                                    [ngModelOptions]="{standalone: true}" (change)="IsSelectedUsers()" />
+                                {{'EmergencySendUser.showComputers' | translate}}
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <div *ngIf="loading" class="dot-opacity-loader">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                    <table class="table table-hover ">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>
+                                                    #
+                                                </th>
+                                                <th>
+                                                    {{'EmergencySendUser.userListName' | translate}}
+                                                </th>
+                                                <th>
+                                                    {{'EmergencySendUser.userListType' | translate}}
+                                                </th>
+                                                <th>
+                                                    {{'EmergencySendUser.userListDisplayName' | translate}}
+                                                </th>
+                                                <th>
+                                                    {{'EmergencySendUser.userListDomain' | translate}}
+                                                </th>
+                                                <th>
+                                                    {{'EmergencySendUser.userListOnline' | translate}}
+                                                </th>
+                                                <th *ngIf="ReturnDataType === 'groups'">
+                                                    Users
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                *ngFor="let org of OrganizationList | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                                <td>
+                                                    <input type="checkbox" [(ngModel)]="org.selected"
+                                                        (change)="IsSelectedOrgList($event, org)" />
+                                                </td>
+                                                <td>
+                                                    {{org.name}}
+                                                </td>
+                                                <td>
+                                                    {{org.type}}
+                                                </td>
+                                                <td>
+                                                    {{org.display_name}}
+                                                </td>
+                                                <td>
+                                                    {{org.domain}}
+                                                </td>
+                                                <td>
+                                                    <img src="assets/img/animation_500_l7srpppy.gif" alt="" width="20"
+                                                        height="20" *ngIf="org.online">
+                                                    <img src="assets/img/31120-live-icon.gif" alt="" width="20"
+                                                        height="20" *ngIf="!org.online">
+                                                </td>
+                                                <td *ngIf="ReturnDataType === 'groups'">
+                                                    <img src="assets/img/users.png" alt="" width="27" height="27"
+                                                        class="cursor" title="Show Group Users" data-bs-toggle="modal"
+                                                        data-bs-target="#GroupUserListModalEmergency"
+                                                        (click)="GetGroupUserList( 1, org)">
+                                                </td>
+                                            </tr>
+
+                                            <tr *ngIf="OrganizationList.length === 0">
+                                                {{'EmergencySendUser.userListRecord' | translate}}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row" style="width: 100%">
+                                        <div class="col-md-10 text-right">
+                                            <pagination-controls (pageChange)="onPageChange($event, '1')">
+                                            </pagination-controls>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <select id="PerPage" class="form-control"
+                                                (change)="onPageChange($event, '2')">
+                                                <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                                    {{ item }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <div class="bbpt-4 text-right">
+                            <button type="submit" class="btn btn-success" (click)="SendAlert()">
+                                {{'EmergencySendUser.sendButton' | translate}} </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="SelctedEmrgncyGroupAndOtherModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title mt-2">List of recipients</h4>
+                <button type="button" class="close text-white" style="font-size: 30px;"
+                    data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <div class="table-responsive" style="max-height: 275px;">
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Type
+                                </th>
+                                <th>
+                                    Action
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let userList of UsersList; let i=index">
+                                <td>
+                                    {{i+1}}
+                                </td>
+                                <td>
+                                    {{userList.name}}
+                                </td>
+                                <td>
+                                    {{userList.type}}
+                                </td>
+                                <td (click)="DeleteSelectedGroupAndUser(i, userList)">
+                                    <i class="fa fa-trash cursor"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="GroupUserListModalEmergency" data-bs-backdrop="static"
+    data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title mt-2"><span *ngIf="GroupName">{{GroupName}} - </span> User List</h4>
+                <button type="button" class="close text-white" style="font-size: 30px;"
+                    data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <div class="col-md-6 mb-2 p-0">
+                                <form [formGroup]="formGroupUserList"
+                                    (ngSubmit)="onSearchGroupUserList(formGroupUserList.value)">
+                                    <div class="input-group">
+                                        <div class="form-outline">
+                                            <input id="search-input" formControlName="search" placeholder="Search Users"
+                                                type="search" id="form" class="form-control"
+                                                style="padding: 17.7px; width: 190px;" />
+                                        </div>
+                                        <button type="submit" class="btn btn-success ml-2">
+                                            {{'EmergencySendUser.searchButton' | translate}}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <table class="table table-hover ">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>
+                                            {{'Organization.organizationListUsername' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'Organization.organizationListDisplayName' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'Organization.organizationListDomain' | translate}}
+                                        </th>
+                                        <th>
+                                            Unobtrusive
+                                        </th>
+
+                                        <th>
+                                            {{'Organization.organizationListOnline' | translate}}
+                                        </th>
+
+                                        <th>
+                                            {{'Organization.organizationListLastActivity' | translate}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let groupUser of GroupUserList | paginate: { id:'second', itemsPerPage: 10, currentPage: currentUserPage, totalItems: totalItemsUsers }; let i=index">
+                                        <td>
+                                            {{groupUser.username}}
+                                        </td>
+                                        <td>
+                                            {{groupUser.display_name}}
+                                        </td>
+                                        <td>
+                                            {{groupUser.domain}}
+                                        </td>
+                                        <td>
+                                            {{groupUser.unobtrusive_mode}}
+                                        </td>
+
+                                        <td>
+                                            <img src="assets/img/animation_500_l7srpppy.gif" alt="" width="20"
+                                                height="20" *ngIf="groupUser.online">
+                                            <img src="assets/img/31120-live-icon.gif" alt="" width="20" height="20"
+                                                *ngIf="!groupUser.online">
+                                        </td>
+
+                                        <td>
+                                            {{groupUser.last_online_time | date}}<span
+                                                *ngIf="groupUser.last_online_time">,</span>
+                                            {{groupUser.last_online_time | date:'shortTime'}}
+                                        </td>
+                                    </tr>
+
+                                    <tr *ngIf="GroupUserList.length === 0">
+                                        {{'Organization.organizationListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row" style="width: 100%">
+                            <div class="col-md-10 text-right">
+                                <pagination-controls (pageChange)="onPageGroupUserChange($event, '1')" id="second">
+                                </pagination-controls>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="PerPage" class="form-control" (change)="onPageGroupUserChange($event, '2')">
+                                    <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                        {{ item }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,790 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <div class="row mb_30">
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs dash-tabs" role="tablist" *ngIf="AlertType">
+                            <li class="nav-item" *ngIf="AlertType === 'ppt'"
+                                [ngClass]="{'active': IsActivePptAlert === true}">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#pawerPoint" role="tab"
+                                    [ngClass]="{'active': IsActivePptAlert === true}">
+                                    {{'CreateScreensaver.powerpointTab' | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item" *ngIf="AlertType === 'image'"
+                                [ngClass]="{'active': IsActiveImageAlert === true}">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#screensaver" role="tab"
+                                    [ngClass]="{'active': IsActiveImageAlert === true}">
+                                    {{'CreateScreensaver.useImageAsScreensaver' | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item" *ngIf="AlertType === 'video'"
+                                [ngClass]="{'active': IsActiveVideoAlert === true}">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#video" role="tab"
+                                    [ngClass]="{'active': IsActiveVideoAlert === true}">
+                                    {{'CreateScreensaver.useImageAsVideo' | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item" *ngIf="AlertType === 'html'"
+                                [ngClass]="{'active': IsActiveHTMLAlert === true}">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#html" role="tab"
+                                    [ngClass]="{'active': IsActiveHTMLAlert === true}">
+                                    {{'CreateScreensaver.html/multimediaScreensaver' | translate}}
+                                </a>
+                            </li>
+                        </ul>
+
+                        <ul class="nav nav-tabs dash-tabs" role="tablist" *ngIf="!AlertType">
+                            <li class="nav-item active">
+                                <a class="nav-link active accord" data-bs-toggle="tab" href="#pawerPoint" role="tab">
+                                    {{'CreateScreensaver.powerpointTab' | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#screensaver" role="tab">
+                                    {{'CreateScreensaver.useImageAsScreensaver' | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#video" role="tab">
+                                    {{'CreateScreensaver.useImageAsVideo' | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#html" role="tab">
+                                    {{'CreateScreensaver.html/multimediaScreensaver' | translate}}
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" style="width: 100%;">
+                            <div class="tab-pane" id="pawerPoint" role="tabpanel"
+                                [ngClass]="{'active': IsActivePptAlert === true}">
+                                <form [formGroup]="powerPointForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mt-3">
+                                            <div class="form-group">
+                                                {{'CreateScreensaver.addScreensaverSteps' | translate}}
+                                                <strong>{{'CreateScreensaver.addScreensaver' | translate}}</strong> <br>
+                                                <!-- <h4> {{'CreateScreensaver.addScreensaver' | translate}}</h4> -->
+                                                <label
+                                                    for="exampleFormControlInput1">{{'CreateScreensaver.screensaverName'
+                                                    | translate}}</label>
+                                                <input type="text"
+                                                    placeholder="{{'CreateScreensaver.screensaverNamePlaceholder' | translate}}"
+                                                    class="form-control" formControlName="name"
+                                                    [ngClass]="{'error': submitted && myPowerPointForm.name.errors}">
+                                                <div class="invalid-feedback"
+                                                    *ngIf="submitted && myPowerPointForm.name.errors?.required">
+                                                    <sup>*</sup>{{'CreateScreensaver.screensaverEnterName' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <ul class="nav nav-tabs dash-tabs mb-3" role="tablist">
+                                                <li class="nav-item active">
+                                                    <a class="nav-link active accord" data-bs-toggle="tab" href="#content"
+                                                        role="tab">{{'CreateScreensaver.screensaverContents' |
+                                                        translate}}
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link accord" data-bs-toggle="tab" href="#Options"
+                                                        role="tab">{{'CreateScreensaver.screensaverOptions' |
+                                                        translate}}
+                                                    </a>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content" style="width: 100%;">
+                                                <div class="tab-pane active" id="content" role="tabpanel">
+                                                    <h3> {{'CreateScreensaver.screensaverContentOpt' | translate}}</h3>
+                                                    <h3> {{'CreateScreensaver.screensaverContentOptForSaveFile' |
+                                                        translate}} </h3>
+                                                    <h3> {{'CreateScreensaver.screensaverContentOptForSelectSave' |
+                                                        translate}}
+                                                    </h3>
+                                                    <h3> {{'CreateScreensaver.screensaverContentOptForUploadFile' |
+                                                        translate}} </h3>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-success" data-bs-toggle="modal"
+                                                            data-bs-target="#FileUploadModal" (click)="OnFileVideoModel()">
+                                                            Choose Video File
+                                                        </button>
+                                                    </div>
+                                                    <span *ngIf="VideoUrlSelected">{{VideoUrlSelected}}</span>
+                                                </div>
+
+                                                <div class="tab-pane" id="Options" role="tabpanel">
+                                                    <div>
+                                                        {{'CreateScreensaver.optionDisplayTime' | translate}}
+                                                        <input type="number" class="input-collape"
+                                                            formControlName="display_time" style="width: 50px;" />
+                                                        <label class="ml-1">{{'CreateScreensaver.optionForTimeSec' |
+                                                            translate}}</label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <p>{{'CreateScreensaver.numberOfSecondsToDisplay' | translate}}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-4">
+                                                            <input type="checkbox" formControlName="scheduled">
+                                                            {{'CreateScreensaver.optionForStart&EndDate&Time' |
+                                                            translate}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="">
+                                                        <div>
+                                                            {{'CreateScreensaver.optionForStartDate&Time' |
+                                                            translate}}
+                                                            <input type="datetime-local" class="input-collape"
+                                                                formControlName="start_date_time" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="ml-2">
+                                                            {{'CreateScreensaver.optionForEndDate&Time' | translate}}
+                                                            <input type="datetime-local" class="input-collape mt-1"
+                                                                formControlName="end_date_time" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12">
+                                            <div class="bbpt-4 text-right">
+                                                <button type="button" class="btn btn-outline-secondary mr-1"
+                                                    (click)="OnSubmit('save')"> {{'CreateScreensaver.saveButton'
+                                                    | translate}} </button>
+                                                <button type="submit" class="btn btn-success"
+                                                    (click)="OnSubmit('next')">
+                                                    {{'CreateScreensaver.save&NextButton' | translate}}</button>
+                                                <img src="../../../../../../assets/img/loader.gif" *ngIf="loading">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                            <div class="tab-pane" id="screensaver" role="tabpanel"
+                                [ngClass]="{'active': IsActiveImageAlert === true}">
+                                <form [formGroup]="ScreensaverForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mt-3">
+                                            <div class="form-group">
+                                                {{'CreateScreensaver.addScreensaverSteps' | translate}}
+                                                <strong>{{'CreateScreensaver.addScreensaver' | translate}}</strong> <br>
+                                                <!-- <h4>{{'CreateScreensaver.addScreensaver' | translate}} </h4> -->
+                                                <label
+                                                    for="exampleFormControlInput1">{{'CreateScreensaver.screensaverName'
+                                                    | translate}} </label>
+                                                <input type="text"
+                                                    placeholder=" {{'CreateScreensaver.screensaverNamePlaceholder' | translate}} "
+                                                    class="form-control" formControlName="name"
+                                                    [ngClass]="{'error': submitted && myScreensaverForm.name.errors}">
+                                                <div class="invalid-feedback"
+                                                    *ngIf="submitted && myScreensaverForm.name.errors?.required">
+                                                    <sup>*</sup>{{'CreateScreensaver.screensaverEnterName' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <ul class="nav nav-tabs dash-tabs mb-3" role="tablist">
+                                                <li class="nav-item active">
+                                                    <a class="nav-link active accord" data-bs-toggle="tab"
+                                                        href="#imgcontent"
+                                                        role="tab">{{'CreateScreensaver.screensaverContents' |
+                                                        translate}}
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link accord" data-bs-toggle="tab" href="#imgOptions"
+                                                        role="tab">{{'CreateScreensaver.screensaverOptions' |
+                                                        translate}}
+                                                    </a>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content" style="width: 100%;">
+                                                <div class="tab-pane active" id="imgcontent" role="tabpanel">
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <img *ngIf="ScreensaverUrl" src="{{ScreensaverUrl}}"
+                                                                    alt="Wallpaper pic"
+                                                                    style="width: 200px; height: 200px;">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <div class="form-group">
+                                                                <div *ngIf="SelectedName">
+                                                                    {{'CreateScreensaver.screensaverFileName' |
+                                                                    translate}}
+                                                                    {{SelectedName}}
+                                                                </div>
+                                                                <div *ngIf="SelectedSize">
+                                                                    {{'CreateScreensaver.screensaverFileSize' |
+                                                                    translate}}{{SelectedSize | number: '.0-2'}} MB
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-4">
+                                                            <div class="form-group">
+                                                                <!-- <input type="file" id="picture" accept="image/*" 
+                                                            (change)="onFileScreensaverChange($event)"> -->
+                                                                <button class="btn btn-success" data-bs-toggle="modal"
+                                                                    data-bs-target="#FileUploadImageModal"
+                                                                    (click)="OnFileImageModel()">
+                                                                    Choose Image File
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="imgOptions" role="tabpanel">
+                                                    <div>
+                                                        {{'CreateScreensaver.optionDisplayTime' | translate}}
+                                                        <input type="number" class="input-collape"
+                                                            formControlName="display_time" style="width: 50px;" />
+                                                        <label class="ml-1">{{'CreateScreensaver.optionForTimeSec' |
+                                                            translate}}</label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <p>The number of seconds to display screensaver before
+                                                                switch to next active screensaver</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-4">
+                                                            <input type="checkbox" formControlName="scheduled">
+                                                            {{'CreateScreensaver.optionForStart&EndDate&Time' |
+                                                            translate}}
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        {{'CreateScreensaver.optionForStartDate&Time' |
+                                                        translate}}
+                                                        <input type="datetime-local" class="input-collape"
+                                                            formControlName="start_date_time" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="ml-2">
+                                                            {{'CreateScreensaver.optionForEndDate&Time' | translate}}
+                                                            <input type="datetime-local" class="input-collape mt-1"
+                                                                formControlName="end_date_time" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12">
+                                            <div class="bbpt-4 text-right">
+                                                <button type="button" class="btn btn-outline-secondary mr-1"
+                                                    (click)="OnSubmitScreenSaver('save')">
+                                                    {{'CreateScreensaver.saveButton' | translate}} </button>
+                                                <button type="submit" class="btn btn-success"
+                                                    (click)="OnSubmitScreenSaver('next')">{{'CreateScreensaver.save&NextButton'
+                                                    | translate}} </button>
+                                                <img src="../../../../../../assets/img/loader.gif" *ngIf="loading">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+
+                            <div class="tab-pane" id="video" role="tabpanel"
+                                [ngClass]="{'active': IsActiveVideoAlert === true}">
+                                <form [formGroup]="VideoScreensaverForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mt-3">
+                                            <div class="form-group">
+                                                {{'CreateScreensaver.addScreensaverSteps' | translate}}
+                                                <strong>{{'CreateScreensaver.addScreensaver' | translate}}</strong> <br>
+                                                <!-- <h4>{{'CreateScreensaver.addScreensaver' | translate}} </h4> -->
+                                                <label for="exampleFormControlInput1">
+                                                    {{'CreateScreensaver.screensaverName' | translate}} </label>
+                                                <input type="text"
+                                                    placeholder=" {{'CreateScreensaver.screensaverNamePlaceholder' | translate}} "
+                                                    class="form-control" formControlName="name"
+                                                    [ngClass]="{'error': submitted && myVideoScreensaverForm.name.errors}">
+                                                <div class="invalid-feedback"
+                                                    *ngIf="submitted && myVideoScreensaverForm.name.errors?.required">
+                                                    <sup>*</sup>{{'CreateScreensaver.screensaverEnterName' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <ul class="nav nav-tabs dash-tabs mb-3" role="tablist">
+                                                <li class="nav-item active">
+                                                    <a class="nav-link active accord" data-bs-toggle="tab"
+                                                        href="#videocontent"
+                                                        role="tab">{{'CreateScreensaver.screensaverContents' |
+                                                        translate}}
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link accord" data-bs-toggle="tab" href="#videoOptions"
+                                                        role="tab">{{'CreateScreensaver.screensaverOptions' |
+                                                        translate}}
+                                                    </a>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content" style="width: 100%;">
+                                                <div class="tab-pane active" id="videocontent" role="tabpanel">
+                                                    <div class="mt-4">
+                                                        <h3> {{'CreateScreensaver.screensaverVideo' | translate}}
+                                                        </h3>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <!-- <input type="file" id="picture" accept="video/*" 
+                                                    (change)="onFileVideoScreensaverChange($event)"> -->
+                                                        <button class="btn btn-success" data-bs-toggle="modal"
+                                                            data-bs-target="#FileUploadModal" (click)="OnFileVideoModel()">
+                                                            Choose Video File
+                                                        </button>
+                                                    </div>
+                                                    <span *ngIf="VideoUrlSelected">{{VideoUrlSelected}}</span>
+                                                </div>
+
+
+                                                <div class="tab-pane" id="videoOptions" role="tabpanel">
+                                                    <div class="tab-pane" id="imgOptions" role="tabpanel">
+                                                        <div>
+                                                            {{'CreateScreensaver.optionDisplayTime' | translate}}
+                                                            <input type="number" class="input-collape"
+                                                                formControlName="display_time" style="width: 50px;" />
+                                                            <label class="ml-1">{{'CreateScreensaver.optionForTimeSec' |
+                                                                translate}}</label>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <p>The number of seconds to display screensaver before
+                                                                    switch to next active screensaver</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-4">
+                                                                <input type="checkbox" formControlName="scheduled">
+                                                                {{'CreateScreensaver.optionForStart&EndDate&Time' |
+                                                                translate}}
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            {{'CreateScreensaver.optionForStartDate&Time' |
+                                                            translate}}
+                                                            <input type="datetime-local" class="input-collape"
+                                                                formControlName="start_date_time" />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="ml-2">
+                                                                {{'CreateScreensaver.optionForEndDate&Time' |
+                                                                translate}}
+                                                                <input type="datetime-local" class="input-collape mt-1"
+                                                                    formControlName="end_date_time" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12">
+                                            <div class="bbpt-4 text-right">
+                                                <button type="button" class="btn btn-outline-secondary mr-1"
+                                                    (click)="OnSubmitVideoScreenSaver('save')">{{'CreateScreensaver.saveButton'
+                                                    | translate}} </button>
+                                                <button type="submit" class="btn btn-success"
+                                                    (click)="OnSubmitVideoScreenSaver('next')">{{'CreateScreensaver.save&NextButton'
+                                                    | translate}} </button>
+                                                <img src="../../../../../../assets/img/loader.gif" *ngIf="loading">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="tab-pane" id="html" role="tabpanel"
+                                [ngClass]="{'active': IsActiveHTMLAlert === true}">
+                                <form [formGroup]="htmlScreensaverForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mt-3">
+                                            <div class="form-group">
+                                                {{'CreateScreensaver.addScreensaverSteps' | translate}}
+                                                <strong>{{'CreateScreensaver.addScreensaver' | translate}}</strong> <br>
+                                                <!-- <h4> {{'CreateScreensaver.addScreensaver' | translate}} </h4> -->
+                                                <label for="exampleFormControlInput1">Name</label>
+                                                <input type="text"
+                                                    placeholder="{{'CreateScreensaver.screensaverNamePlaceholder' | translate}} "
+                                                    class="form-control" formControlName="name"
+                                                    [ngClass]="{'error': submitted && myHtmlScreensaverForm.name.errors}">
+                                                <div class="invalid-feedback"
+                                                    *ngIf="submitted && myHtmlScreensaverForm.name.errors?.required">
+                                                    <sup>*</sup>{{'CreateScreensaver.screensaverEnterName' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <ul class="nav nav-tabs dash-tabs mb-3" role="tablist">
+                                                <li class="nav-item active">
+                                                    <a class="nav-link active accord" data-bs-toggle="tab"
+                                                        href="#htmlcontent"
+                                                        role="tab">{{'CreateScreensaver.screensaverContents' |
+                                                        translate}}
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link accord" data-bs-toggle="tab" href="#htmlOptions"
+                                                        role="tab">{{'CreateScreensaver.screensaverOptions' |
+                                                        translate}}
+                                                    </a>
+                                                </li>
+                                            </ul>
+
+                                            <div class="tab-content" style="width: 100%;">
+                                                <div class="tab-pane active" id="htmlcontent" role="tabpanel">
+                                                    <div class="form-group">
+                                                        <label for="exampleFormControlInput1"></label>
+                                                        <angular-editor [config]="Vconfig" formControlName="html"
+                                                            [ngClass]="{'error': submitted && myHtmlScreensaverForm.html.errors}">
+                                                        </angular-editor>
+                                                        <div class="invalid-feedback"
+                                                            *ngIf="submitted && myHtmlScreensaverForm.html.errors?.required">
+                                                            <sup>*</sup> {{'CreateScreensaver.enterHtml' | translate}}
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="htmlOptions" role="tabpanel">
+                                                    <div>
+                                                        {{'CreateScreensaver.optionDisplayTime' | translate}}
+                                                        <input type="number" class="input-collape"
+                                                            formControlName="display_time" style="width: 50px;" />
+                                                        <label class="ml-1">{{'CreateScreensaver.optionForTimeSec' |
+                                                            translate}}</label>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <p>The number of seconds to display screensaver before
+                                                                switch to next active screensaver</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-4">
+                                                            <input type="checkbox" formControlName="scheduled">
+                                                            {{'CreateScreensaver.optionForStart&EndDate&Time' |
+                                                            translate}}
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        {{'CreateScreensaver.optionForStartDate&Time' |
+                                                        translate}}
+                                                        <input type="datetime-local" class="input-collape"
+                                                            formControlName="start_date_time" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="ml-2">
+                                                            {{'CreateScreensaver.optionForEndDate&Time' | translate}}
+                                                            <input type="datetime-local" class="input-collape mt-1"
+                                                                formControlName="end_date_time" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-md-12">
+                                            <div class="bbpt-4 text-right">
+                                                <button type="button" class="btn btn-outline-secondary mr-1"
+                                                    (click)="OnSubmitHtmlScreenSaver('save')">
+                                                    {{'CreateScreensaver.saveButton' | translate}} </button>
+                                                <button type="submit" class="btn btn-success"
+                                                    (click)="OnSubmitHtmlScreenSaver('next')">{{'CreateScreensaver.save&NextButton'
+                                                    | translate}} </button>
+                                                <img src="../../../../../../assets/img/loader.gif" *ngIf="loading">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg" id="FileUploadImageModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <div class="modal-header">
+                <h4 class="modal-title">File Upload</h4>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid plr_30  pt_30">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label> <b>Upload Image File</b> </label>
+                                <input type="file" id="picture" accept="image/*"
+                                    (change)="onFileScreensaverChange($event)">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="mb-5"></label>
+                                <button type="submit" class="btn btn-success" (click)="UploadImageDatebase()">
+                                    Upload
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <form [formGroup]="formImageScreenSaver"
+                                            (ngSubmit)="onSearchImageScreenSaver(formImageScreenSaver.value)">
+                                            <div class="input-group">
+                                                <div class="form-outline">
+                                                    <input id="search-input" formControlName="search"
+                                                        placeholder="{{'DraftScreensaver.searchButtonPlaceholder' | translate}}"
+                                                        type="search" id="form" class="form-control"
+                                                        style="padding: 17.7px; width: 230px;" />
+                                                </div>
+                                               
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-success ml-3">
+                                            {{'DraftScreensaver.searchButton' | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                                            <table class="table table-hover ">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th class="text-left">
+                                                            Image
+                                                        </th>
+                                                        <th>
+                                                            File Name
+                                                        </th>
+                                                        <th>
+                                                            {{'DraftScreensaver.draftActions' | translate}}
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let image of ScreenSaverImageList  | paginate: { itemsPerPage: 10, currentPage: currentPageImage, totalItems: totalItemsImage }; let i=index">
+
+                                                        <td class="text-left">
+                                                            <img src="{{image.image.thumbnail}}" alt="{{image.name}}"
+                                                                width="30" height="30">
+                                                        </td>
+                                                        <td>
+                                                            <span class="cursor"
+                                                                (click)="IsImageUrlSelected(image)"><u>{{image.name}}</u></span>
+                                                        </td>
+                                                        <td class="marg">
+                                                            <span class="text-danger cursor"
+                                                                (click)="deleteImage(image.id)">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </span>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr *ngIf="ScreenSaverVideoList.length === 0">
+                                                        {{'DraftScreensaver.draftListRecord' | translate}}
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="row" style="width: 100%">
+                                                <div class="col-md-10 text-right">
+                                                    <pagination-controls (pageChange)="onPageImageChange($event, '1')">
+                                                    </pagination-controls>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <select id="PerPage" class="form-control"
+                                                        (change)="onPageImageChange($event, '2')">
+                                                        <option *ngFor="let item of PageTotalNumberImage"
+                                                            [value]="item">
+                                                            {{ item }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="FileUploadModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <div class="modal-header">
+                <h4 class="modal-title">File Upload</h4>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid plr_30  pt_30">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label> <b>Upload Video File</b> </label>
+                                <input type="file" id="picture" accept="video/*" (change)="onFileChange($event)">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="mb-5"></label>
+                                <button type="submit" class="btn btn-success" (click)="UploadVideoDatebase()">
+                                    Upload
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <form [formGroup]="formVideoScreenSaver"
+                                            (ngSubmit)="onSearchVideoScreenSaver(formVideoScreenSaver.value)">
+                                            <div class="input-group">
+                                                <div class="form-outline">
+                                                    <input id="search-input" formControlName="search"
+                                                        placeholder="{{'DraftScreensaver.searchButtonPlaceholder' | translate}}"
+                                                        type="search" id="form" class="form-control"
+                                                        style="padding: 17.7px; width: 230px;" />
+                                                </div>
+                                               
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="btn btn-success ml-1">
+                                            {{'DraftScreensaver.searchButton' | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                                            <table class="table table-hover ">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th class="text-left">
+                                                            File Name
+                                                        </th>
+                                                        <th>
+                                                            {{'DraftScreensaver.draftActions' | translate}}
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let video of ScreenSaverVideoList  | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+
+                                                        <td class="text-left">
+                                                            <span class="cursor"
+                                                                (click)="IsVideoUrlSelected(video)"><u>{{video.name}}</u>
+                                                            </span>
+                                                        </td>
+                                                        <td class="marg">
+                                                            <span class="text-danger cursor" (click)="delete(video.id)">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </span>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr *ngIf="ScreenSaverVideoList.length === 0">
+                                                        {{'DraftScreensaver.draftListRecord' | translate}}
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="row" style="width: 100%">
+                                                <div class="col-md-10 text-right">
+                                                    <pagination-controls (pageChange)="onPageChange($event, '1')">
+                                                    </pagination-controls>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <select id="PerPage" class="form-control"
+                                                        (change)="onPageChange($event, '2')">
+                                                        <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                                            {{ item }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

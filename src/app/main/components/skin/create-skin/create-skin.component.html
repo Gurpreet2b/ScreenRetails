@@ -1,0 +1,322 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <form [formGroup]="skinForm" (ngSubmit)="OnSubmit()">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <h6>{{ 'CreateSkin.skinName' | translate}}</h6>
+                                        <input type="text" class="form-control" placeholder="{{ 'CreateSkin.skinName' | translate}}"
+                                        formControlName="name" [ngClass]="{'error': submitted && mySkinForm.name.errors}">
+                                        <div class="invalid-feedback" *ngIf="submitted && mySkinForm.name.errors?.required">
+                                            <sup>*</sup>{{ 'CreateSkin.skinNameEnter' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <h6 class="alert-heading">{{ 'CreateSkin.skinBorder' | translate}}</h6>
+                                        <label for="exampleFormControlInput1"> {{ 'CreateSkin.skinThickness' | translate}}</label>
+                                        <input type="number" class="form-control" (keyup)="IsBorder($event)"
+                                        formControlName="border_thickness">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <label> {{ 'CreateSkin.skinColor' | translate}}</label>
+                                        <input type="color" class="form-control" (blur)="IsColor($event)"
+                                        formControlName="border_color">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <h6 class="alert-heading">{{ 'CreateSkin.skinHeader' | translate}}</h6>
+                                        <label for="exampleFormControlInput1"> {{ 'CreateSkin.skinHeaderTitle' | translate}}</label>
+                                        <input type="text" class="form-control" (keyup)="IsHeaderTitle($event)"
+                                        formControlName="header_custom_message">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <label> {{ 'CreateSkin.skinHeaderFont' | translate}}</label>
+                                        <input type="number" class="form-control" (keyup)="IsHeaderFontSize($event)"
+                                        formControlName="header_custom_message_font_color">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <label> {{ 'CreateSkin.skinHeaderBg' | translate}}</label>
+                                        <input type="color" class="form-control" (blur)="IsHeaderBgColor($event)"
+                                        formControlName="header_background_color">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <label> {{ 'CreateSkin.skinAlertBg' | translate}}</label>
+                                        <input type="color" class="form-control" (blur)="IsAlertBgColor($event)"
+                                        formControlName="alert_background_color">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <label> {{ 'CreateSkin.skinAlertBgImage' | translate}}</label> <br>
+                                        <input type="file" (change)="onFileChangeAlertImg($event)" accept="image/*">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <input type="checkbox" formControlName="team_image_boolean"
+                                        (change)="IsTeamImage($event)">  {{ 'CreateSkin.skinTeamImage' | translate}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="alert-heading"> {{ 'CreateSkin.skinTeamImageAlign' | translate}}</label> <br>
+                                        <button class="mr-2 btn btn-outline-secondary" (click)="HeaderLeft()" type="button">
+                                            <i class="fa fa-align-left"></i>  {{ 'CreateSkin.skinTeamImageLeft' | translate}}
+                                        </button>
+                                        <button class="mr-2 btn btn-outline-secondary" (click)="HeaderCenter()" type="button">
+                                            <i class="fa fa-align-center"></i>  {{ 'CreateSkin.skinTeamImageCenter' | translate}}
+                                        </button>
+                                        <button class="btn btn-outline-secondary" (click)="HeaderRight()" type="button">
+                                            <i class="fa fa-align-right"></i>  {{ 'CreateSkin.skinTeamImageRight' | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div draggable="true" ngClass="{{dragAreaClass}}">
+                                            <div class="row">
+                                                <div class="col-md-8 text-center">
+                                                    {{ 'CreateSkin.dragFilesHere' | translate}}
+                                                    <a href="javascript:void(0)" (click)="file.click()">
+                                                        {{ 'CreateSkin.clickToOpen' | translate}}
+                                                    </a>
+                                                    <input type="file" #file [multiple]="false"
+                                                        (change)="onFileChange($event)"
+                                                            style="display:none" />
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="skin-text">
+                                            {{SelectedName}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <input type="checkbox" formControlName="show_alert_title">  {{ 'CreateSkin.skinAlertTitle' | translate}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-group">
+                                        <input type="checkbox" formControlName="show_alert_footer"> {{ 'CreateSkin.skinFooter' | translate}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <h6 class="alert-heading">{{ 'CreateSkin.skinTeamImageAlign' | translate}}</h6>
+                                        <button class="mr-2 btn btn-outline-secondary" (click)="FooterLeft()" type="button">
+                                            <i class="fa fa-align-left"></i> {{ 'CreateSkin.skinTeamImageLeft' | translate}}
+                                        </button>
+                                        <button class="mr-2 btn btn-outline-secondary" (click)="FooterCenter()" type="button">
+                                            <i class="fa fa-align-center"></i> {{ 'CreateSkin.skinTeamImageCenter' | translate}}
+                                        </button>
+                                        <button class="btn btn-outline-secondary" (click)="FooterRight()" type="button">
+                                            <i class="fa fa-align-right"></i> {{ 'CreateSkin.skinTeamImageRight' | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div [ngStyle]="{'background-color': AlertBgColor}">
+                                        <div class="alert-change" [ngStyle]="{'border': Think + 'px solid' + primary}">
+                                            <div class="row p-1 m-0" [ngStyle]="{'background-color': HeaderBgColor}">
+                                                <div class="col-md-6" [ngStyle]="{'color': footerColor}">
+                                                    <div [ngStyle]="{'font-size': HeaderFontSize + 'px'}" class="mt-2">
+                                                        {{HeaderTitle}}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div [ngStyle]="{'text-align': HeaderLogo}">
+                                                            <img *ngIf="SkinUrl" src="{{SkinUrl}}" alt="Wallpaper pic"
+                                                        style="width: 50px; height: 50px;" class="mr-2">
+                                                        <button type="button" class="close text-right mt-2" data-bs-dismiss="modal">&times;</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h6 class="skin_button" style="height: 160px;"> {{ 'CreateSkin.skinLoremIpsum' | translate}}
+                                                    </h6>
+                                                </div>
+                                            </div> 
+                                            <!-- <div class="btn-group">
+                                                <button type="button" class="btn btn-secondary dropdown-toggle"
+                                                    data-bs-toggle="dropdown">
+                                                    {{ 'CreateSkin.skinMinuteButton' | translate}}
+                                                    <span class="caret"></span>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary ml-1">{{ 'CreateSkin.skinPostponeButton' | translate}}</button>
+                                                <button type="button" class="btn btn-outline-secondary ml-1">{{ 'CreateSkin.skinOkButton' | translate}}</button>
+                                            </div> -->
+
+                                            <div class="row pt-1 pb-1 m-0" [ngStyle]="{'background-color': FooterBgColor}">
+                                                <div class="col-md-5">
+                                                    <div [ngStyle]="{'text-align': FooterLogo}">
+                                                            <img *ngIf="FooterImageUrl" src="{{FooterImageUrl}}" alt="Wallpaper pic"
+                                                        style="width: 180px; height: 50px;" class="mr-2">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-7" [ngStyle]="{'color': footerColor}">
+                                                    <div [ngStyle]="{'font-size': FooterFontSize + 'px'}" class="mt-2">
+                                                        {{FooterText}}
+                                                    </div>
+                                                </div>
+                                            </div>
+<!-- 
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div [ngStyle]="{'text-align': HeaderLogo}">
+                                                            <img *ngIf="FooterImageUrl" src="{{FooterImageUrl}}" alt="Skin pic"
+                                                        style="width: 50px; height: 50px;" class="mr-2">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6" [ngStyle]="{'text-align': FooterLogo}">
+                                                    <div class="p-3" [ngStyle]="{'background-color': FooterBgColor}" >
+                                                        <p [ngStyle]="{'color': footerColor}">
+                                                            <span [ngStyle]="{'font-size': FooterFontSize + 'px'}">
+                                                                {{FooterText}}
+                                                            </span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <h4>Footer</h4>
+                                        <label>{{ 'CreateSkin.skinFontSize' | translate}} </label>
+                                        <input type="number" class="form-control" (keyup)="IsFooterFont($event)"
+                                        formControlName="footer_font_size">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label> {{ 'CreateSkin.skinBackgroundColor' | translate}} </label>
+                                        <input type="color" class="form-control" (blur)="IsFooterBg($event)"
+                                        formControlName="footer_background_color">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label> {{ 'CreateSkin.skinFooter' | translate}}</label>
+                                        <input type="color" class="form-control" (blur)="IsFooterColor($event)"
+                                        formControlName="footer_text_color">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label> {{ 'CreateSkin.skinText' | translate}}</label>
+                                        <input type="text" class="form-control" (keyup)="IsFooterText($event)"
+                                        formControlName="footer_text">
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <label> {{ 'CreateSkin.skinfooterImage' | translate}}</label> <br>
+                                        <input type="file" (change)="onFileChangeFooterImg($event)" accept="image/*">
+                                    </div>
+                                </div>
+                            </div> 
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <h4 class="alert-heading skin_access">{{ 'CreateSkin.skinAccessSettings' | translate}}</h4>
+                                        <label for="exampleFormControlInput1">{{ 'CreateSkin.skinPolicies' | translate}}</label>
+                                        <select class="form-control skin_default_user">
+                                            <option value="">{{ 'CreateSkin.skinDefaultUser' | translate}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 mt-2">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success" *ngIf="!SkinId">{{ 'CreateSkin.saveButton' | translate}}</button>
+                                        <button type="submit" class="btn btn-success" *ngIf="SkinId">{{ 'CreateSkin.updateButton' | translate}}</button>
+                                        <img src="../../../../../assets/img/loader.gif" *ngIf="loading">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

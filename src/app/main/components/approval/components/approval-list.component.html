@@ -1,0 +1,443 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <label> {{ 'Approval.searchApproval' | translate}}</label>
+                <div class="row mb-3">
+                    <div class="col-md-8">
+                        <form [formGroup]="formApproval" (ngSubmit)="onSearchApproval(formApproval.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" formControlName="search" placeholder=" {{ 'Approval.searchButtonPlaceholder' | translate}}"
+                                        type="search" id="form" class="form-control"
+                                        style="padding: 17.7px; width: 210px;" />
+                                </div>
+                                <button type="submit" class="btn btn-success ml-3">
+                                    {{ 'Approval.searchButton' | translate}}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <table class="table table-hover ">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>
+                                            {{ 'Approval.approvalListType' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Approval.approvalListTitle' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Approval.approvalListSender' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Approval.approvalListCreatedDate' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Approval.approvalListActions' | translate}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let approval of ApprovalList  | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        <td>
+                                            <span *ngIf="approval.alert_type === 'PopupAlert'" title="Alert">
+                                                <img src="assets/img/sent-alert-action/alert.png" alt="">
+                                            </span>
+                                            <span *ngIf="approval.alert_type === 'TickerAlert'" title="Ticker">
+                                                <img src="assets/img/sent-alert-action/ticker.png" alt="">
+                                            </span>
+                                            <span *ngIf="approval.alert_type === 'RsvpAlert'" title="RSVP">
+                                                <img src="assets/img/sent-alert-action/rsvp.png" alt="">
+                                            </span>
+                                            <span *ngIf="approval.alert_type === 'SurveyAlert'"
+                                                title="Survey Alert">
+                                                <img src="assets/img/sent-alert-action/survey (1).png" alt="">
+                                            </span>
+                                            <span *ngIf="approval.alert_type === 'WallpaperAlert'"
+                                                title="Wallpaper Alert">
+                                                <img src="assets/img/sent-alert-action/wallpaper.png" alt="">
+                                            </span>
+                                            <span *ngIf="approval.alert_type === 'LockscreenAlert'"
+                                                title="Lockscreen Alert">
+                                                <img src="assets/img/sent-alert-action/fullscreen.png" alt="">
+                                            </span>
+                                            <span *ngIf="approval.alert_type === 'ScreensaverAlert'"
+                                                title="Screensaver Alert">
+                                                <img src="assets/img/sent-alert-action/fullscreen.png" alt="">
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{approval.name}}
+                                        </td>
+                                        <td>{{approval.sent_by}}</td>
+                                        <td>{{dateformat(approval.created_date)}}, {{Timeformat(approval.created_date)}}
+                                        <td class="marg">
+                                            <span class="mr-2 cursor" title="Approval"
+                                                (click)="IsApprovalAlert(approval.id, approval.alert_type)">
+                                                <img src="assets/img/sent-alert-action/approve.png" alt="">
+                                            </span>
+                                            <span class="mr-2 cursor" data-bs-toggle="modal" data-bs-target="#RejectedModal"
+                                                title="Rejected" 
+                                                (click)="IsRejectedAlert(approval.id, approval.alert_type)">
+                                                <img src="assets/img/sent-alert-action/reject.png" alt="">
+                                            </span>
+                                            <span class="mr-2 cursor" data-bs-toggle="modal" data-bs-target="#AlertDetailsModal" (click)="IsAlertDetails(approval.id)" 
+                                            *ngIf="approval.alert_type === 'PopupAlert' || approval.alert_type === 'TickerAlert' || approval.alert_type === 'RsvpAlert'">
+                                                <img src="assets/img/sent-alert-action/list.png" alt="">
+                                            </span>
+                                            <span class="mr-2 cursor" data-bs-toggle="modal" data-bs-target="#AlertRecipientsModal" 
+                                            (click)="IsAlertRecipient(approval)">
+                                                <img src="assets/img/sent-alert-action/recipients.png" alt="">
+                                            </span>
+                                            <span class="mr-2 cursor" *ngIf="RoleAssign[10].edit">
+                                                <span *ngIf="approval.alert_type === 'PopupAlert'" title="Alert"
+                                                    [routerLink]="['/create-alerts', approval.id, approval.alert_type, 'Alert', 'Edit']">
+                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt="">
+                                                </span>
+                                                <span *ngIf="approval.alert_type === 'TickerAlert'" title="Ticker"
+                                                    [routerLink]="['/create-alerts', approval.id, approval.alert_type, 'Alert', 'Edit']">
+                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt="">
+                                                </span>
+                                                <span *ngIf="approval.alert_type === 'RsvpAlert'" title="RSVP"
+                                                    [routerLink]="['/create-alerts', approval.id, approval.alert_type, 'Alert', 'Edit']">
+                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt="">
+                                                </span>
+                                                <span *ngIf="approval.alert_type === 'WallpaperAlert'"
+                                                    title="Wallpaper Alert">
+                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt=""
+                                                        [routerLink]="['/wallpaper', approval.id, 'WallpaperAlert', 'Alert', 'Edit']">
+                                                </span>
+                                                <span *ngIf="approval.alert_type === 'LockscreenAlert'"
+                                                    title="LockScreen Alert">
+                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt=""
+                                                        [routerLink]="['/lockscreen', approval.id, 'LockscreenAlert', 'Alert', 'Edit']">
+                                                </span>
+                                                <span *ngIf="approval.alert_type === 'ScreensaverAlert'"
+                                                    title="Screensaver Alert">
+                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt=""
+                                                        [routerLink]="['/screensaver', approval.id, approval.content_type, 'Alert', 'Edit']">
+                                                </span>
+                                                <span *ngIf="approval.alert_type === 'SurveyAlert'"
+                                                    title="Survey Alert">
+                                                    <img src="assets/img/sent-alert-action/duplicate.png" alt=""
+                                                    [routerLink]="['/create-survey', approval.id, 'SurveyAlert', 'Alert', 'Edit']">
+                                                </span>
+                                            </span>
+
+                                            <!-- <span class="mr-2 cursor"
+                                                title="Preview Alert" (click)="GetWallpaperListById(approval)"
+                                                data-bs-toggle="modal" data-bs-target="#PreviewWallpaperModal">
+                                                <img src="assets/img/sent-alert-action/preview.png" alt="">
+                                            </span> -->
+                                            <span class="text-danger cursor" (click)="delete(approval.id)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </span>
+                                        </td>
+
+                                    </tr>
+                                    <tr *ngIf="ApprovalList.length === 0">
+                                        {{ 'Approval.approvalListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChange($event, '1')"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="RejectedModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"> {{ 'Approval.approvalRejectedAlert' | translate}}</h4>
+                <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form [formGroup]="formRejected" (ngSubmit)="OnRejectSubmit()">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label> {{ 'Approval.reasonOfRejection' | translate}}  </label>
+                            <div class="form-group">
+                                <textarea class="form-control" name="" id="" rows="5" formControlName="message"
+                                [ngClass]="{'error': submitted && myRejectedForm.message.errors}"></textarea>
+                                <div class="invalid-feedback"
+                                    *ngIf="submitted && myRejectedForm.message.errors?.required">
+                                    <sup>*</sup> {{ 'Approval.rejectionReason' | translate}} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"> {{'Approval.cancelButton' | translate}} </button>
+                        <button type="submit" class="btn btn-success"> {{'Approval.rejectButton' | translate}} </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="AlertDetailsModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"> {{'Approval.alertDetails' | translate}} </h4>
+                <button type="button" class="close text-white" style="font-size: 30px;" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <table class="table table-hover ">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>
+                                {{'Approval.alertDetailsListProperty' | translate}} 
+                            </th>
+                            <th>
+                                {{'Approval.alertDetailsListValue' | translate}} 
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                {{'Approval.alertListHigh-priorityAlert' | translate}} 
+                            </td>
+                            <td>
+                                {{AlertDetails.high_priority}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{'Approval.alertListAcknowledgement' | translate}} 
+                            </td>
+                            <td>
+                                {{AlertDetails.acknowledgement_required}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{'Approval.alertListPrintButton' | translate}} 
+                            </td>
+                            <td>
+                                {{AlertDetails.add_print_button}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{'Approval.alertListAllowFeedback' | translate}} 
+                            </td>
+                            <td>
+                                {{AlertDetails.allow_feedback}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{'Approval.selfDestructingAlert' | translate}}
+                            </td>
+                            <td>
+                                {{AlertDetails.self_distructive}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{'Approval.autoClose' | translate}}
+                            </td>
+                            <td>
+                                {{AlertDetails.auto_close_time}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{'Approval.fullscreen' | translate}}
+                            </td>
+                            <td>
+                                {{AlertDetails.fullscreen}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{'Approval.resizable' | translate}}
+                            </td>
+                            <td>
+                                {{AlertDetails.resizable}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{'Approval.width' | translate}}
+                            </td>
+                            <td>
+                                {{AlertDetails.width}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{'Approval.height' | translate}}
+                            </td>
+                            <td>
+                                {{AlertDetails.height}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{'Approval.lifetime' | translate}}
+                            </td>
+                            <td>
+                                {{AlertDetails.lifetime}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{'Approval.lifetimeOption' | translate}}
+                            </td>
+                            <td>
+                                {{AlertDetails.lifetime_option}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {{'Approval.lifetimePosition' | translate}}
+                            </td>
+                            <td>
+                                {{AlertDetails.position}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="AlertRecipientsModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">{{'Approval.alertUserDetails' | translate}}</h4>
+                <button type="button" class="close text-white" style="font-size: 30px;" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <form [formGroup]="formDetail" (ngSubmit)="onSearch(formDetail.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" formControlName="search" placeholder="{{'Approval.searchButtonPlaceholder' | translate}}" type="search"
+                                        id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                </div>
+                                <button type="submit" class="btn btn-success ml-3">
+                                    {{'Approval.searchButton' | translate}}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div *ngIf="loading" class="dot-opacity-loader">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <table class="table table-hover">
+                            <thead class="thead-black">
+                                <tr>
+                                    <th>
+                                        {{'Approval.alertUserListName' | translate}}
+                                    </th>
+                                    <th>
+                                        {{'Approval.alertUserListType' | translate}}
+                                    </th>
+                                    <th>
+                                        {{'Approval.alertUserListDisplayName' | translate}}
+                                    </th>
+                                </tr>
+                            <tbody>
+                                <tr 
+                                    *ngFor="let alert of AlertRecipientDetails | paginate: { id:'second', itemsPerPage: 10, currentPage: currentPageUser, totalItems: totalItemsUser }; let i=index">
+                                    
+                                    <td>
+                                        {{alert.username}}
+                                    </td>
+                                    <td>{{alert.type}}</td>
+                                    <td>{{alert.display_name}}</td>
+                                </tr>
+                                <tr *ngIf="AlertRecipientDetails.length === 0">
+                                    {{'Approval.approvalListRecord' | translate}}
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <div class="row" style="width: 100%">
+                            <div class="col-md-10 text-right">
+                                <pagination-controls (pageChange)="onPageUserChange($event, '1')" id="second"></pagination-controls>
+                            </div>
+                            <div class="col-md-2">
+                                <select id="PerPage" class="form-control" (change)="onPageUserChange($event, '2')">
+                                    <option *ngFor="let item of PageTotalNumberUser" [value]="item">
+                                        {{ item }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="modal" id="PreviewWallpaperModal">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <div class="modal-dialog alert-static">
+        <div class="modal-content" [ngStyle]="{'border': Think + 'px solid' + HeaderBorder}">
+            <div class="">
+                <div class="col text-right">
+                    <button type="button" class="close" data-bs-dismiss="modal" style="background-color: transparent;
+                border: 0; font-size: 40px;">&times;</button>
+                </div>
+                <div class="row" style="display: flex; padding: 100px 100px;">
+                    <div class="col text-right" style="width: 100%">
+                        <div [ngStyle]="{'text-align': HeaderLogo}">
+                            <span>
+                                <img src="{{HeaderTextImg}}" alt="Logo" width="30" height="30">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

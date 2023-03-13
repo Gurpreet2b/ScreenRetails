@@ -1,0 +1,277 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="user">
+                <div class="white_box">
+                    <form [formGroup]="synchronizationForm" (ngSubmit)="OnSubmit()">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label> {{ 'CreateSynchronization.synchronizationName' | translate}}</label>
+                                <input type="text" placeholder="" class="form-control" formControlName="name"
+                                    [ngClass]="{'error': submitted && syncForm.name.errors}">
+                                <div class="invalid-feedback" *ngIf="submitted && syncForm.name.errors?.required">
+                                    <sup>*</sup>{{ 'CreateSynchronization.synchronizationEnterName' | translate}}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label> {{ 'CreateSynchronization.synchronizationType' | translate}}</label>
+                                    <select class="form-control" formControlName="type">
+                                        <option value="" selected> {{ 'CreateSynchronization.typeActiveDirectory' |
+                                            translate}}</option>
+                                        <!-- <option value="user"> {{ 'CreateSynchronization.typeDefaultUser' | translate}}</option> -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label> {{ 'CreateSynchronization.synchronizingProcess' | translate}} </label>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label> {{ 'CreateSynchronization.synchronizationDomain' | translate}}</label>
+                                    <input type="text" placeholder="" class="form-control" formControlName="domain"
+                                        
+                                        [ngClass]="{'error': submitted && syncForm.domain.errors}">
+                                        <label>e.g. "your.domain.net"</label> <br>
+                                    <div class="invalid-feedback" *ngIf="submitted && syncForm.domain.errors?.required">
+                                        <sup>*</sup> {{ 'CreateSynchronization.synchronizationEnterDomain' | translate}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label> {{ 'CreateSynchronization.synchronizationPort' | translate}}</label>
+                                    <input type="number" class="form-control" formControlName="port"
+                                        [ngClass]="{'error': submitted && syncForm.port.errors}">
+                                    <div class="invalid-feedback" *ngIf="submitted && syncForm.port.errors?.required">
+                                        <sup>*</sup> {{ 'CreateSynchronization.synchronizationEnterPort' | translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label> {{ 'CreateSynchronization.synchronizationLogin' | translate}}</label>
+                                    <input type="text" placeholder="" class="form-control" formControlName="username"
+                                        [ngClass]="{'error': submitted && syncForm.username.errors}">
+                                    <div class="invalid-feedback"
+                                        *ngIf="submitted && syncForm.username.errors?.required">
+                                        <sup>*</sup> {{ 'CreateSynchronization.synchronizationEnterLogin' | translate}}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-6">
+                                <div class="form-group">
+                                    <label> {{ 'CreateSynchronization.synchronizationPassword' | translate}}</label>
+                                    <input type="password" placeholder="" class="form-control"
+                                    formControlName="password" (blur)="onKeyForm($event, 'domain')"
+                                    [ngClass]="{'error': submitted && syncForm.password.errors}">
+                                    <div class="invalid-feedback" *ngIf="submitted && syncForm.password.errors?.required">
+                                        <sup>*</sup> {{ 'CreateSynchronization.synchronizationEnterPassword' | translate}}
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label> {{ 'CreateSynchronization.synchronizationPassword' | translate}}</label>
+                                    <input type="password" placeholder="" class="form-control"
+                                        formControlName="password" 
+                                        [ngClass]="{'error': submitted && syncForm.password.errors}">
+                                    <div class="invalid-feedback"
+                                        *ngIf="submitted && syncForm.password.errors?.required">
+                                        <sup>*</sup> {{ 'CreateSynchronization.synchronizationEnterPassword' |
+                                        translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="checkbox" formControlName="use_ssl"> {{ 'CreateSynchronization.synchronizationLDAPConnection' | translate}}
+                        <hr>
+                        <div class="form-group">
+                            <input type="radio" value="all" formControlName="sync_ou" checked
+                                (click)="IsOUList('Uncheck')"> {{ 'CreateSynchronization.synchronizationAllOrgUnits' |
+                            translate}} <br>
+                            <input type="radio" value="selected" formControlName="sync_ou" (click)="IsOUList('check')">
+                            {{ 'CreateSynchronization.synchronizationSelectedOrgUnits' | translate}} <br>
+                            <input type="radio" value="none" formControlName="sync_ou" (click)="IsOUList('Uncheck')"> {{
+                            'CreateSynchronization.notSynchronizeOrgUnits' | translate}} <br>
+                        </div>
+
+                        <div *ngIf="IsOUListShow">
+                            <div class="form-group">
+                                <ngx-treeview [config]="config" [items]="items"
+                                    (selectedChange)="onSelectedChange($event, items)">
+                                </ngx-treeview>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label> {{ 'CreateSynchronization.selectedAbove' | translate}} </label> <br>
+                            <input type="radio" value="all" formControlName="sync_group" (click)="IsGroupList('')"> {{
+                            'CreateSynchronization.synchronizeGroup' | translate}} <br>
+                            <input type="radio" value="selected" formControlName="sync_group"
+                                (click)="IsGroupList('check')"> {{
+                            'CreateSynchronization.synchronizeSelectedGroup_Users' | translate}} <br>
+                        </div>
+                        <hr>
+
+                        <div class="form-group" *ngIf="IsGroupListShow">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <input type="text"
+                                            placeholder="{{ 'CreateSynchronization.searchButtonPlaceholder' | translate}}"
+                                            class="form-control" name="" [(ngModel)]="SearchName"
+                                            [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-success" (click)="OnSearch()"> {{
+                                            'CreateSynchronization.searchButton' | translate}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive" style="max-height: 275px;">
+                                        <table class="table table-hover">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>
+                                                        #
+                                                    </th>
+                                                    <th>
+                                                        {{ 'CreateSynchronization.selectedGroupListName' | translate}}
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let group of GroupList; let i=index">
+                                                    <td>
+                                                        <input type="checkbox"
+                                                            (change)="IsSelectedGroup(group, $event, i)">
+                                                    </td>
+                                                    <td>
+                                                        {{group}}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" *ngIf="IsGroupListShow">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive" style="max-height: 275px;">
+                                        <table class="table table-hover">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>
+                                                        #
+                                                    </th>
+                                                    <th>
+                                                        {{ 'CreateSynchronization.selectedGroupListName' | translate}}
+                                                    </th>
+                                                    <th>
+                                                        {{ 'CreateSynchronization.selectedGroupListActions' |
+                                                        translate}}
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let selectGroup of IsSelectedGroupList; let i=index">
+                                                    <td>
+                                                        {{i+1}}
+                                                    </td>
+                                                    <td>
+                                                        {{selectGroup}}
+                                                    </td>
+                                                    <td (click)="DeleteSelectedGroup(i)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="checkbox" formControlName="add_new_items_only"> {{
+                            'CreateSynchronization.uncheckedItemsAdd' | translate}}<br>
+                            <input type="checkbox" formControlName="disabled_account_sync"> {{
+                            'CreateSynchronization.userImport' | translate}}<br>
+                            <input type="checkbox" formControlName="sync_computers"> {{
+                            'CreateSynchronization.computersImport' | translate}} <br>
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" formControlName="auto_sync" (change)="AutoSync($event)"> {{
+                            'CreateSynchronization.enableAutoSynchronization' | translate}} <br>
+                        </div>
+
+                        <div class="row" *ngIf="IsAutoSync">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <input type="number" class="form-control" [(ngModel)]="AutoSyncGapNumber"
+                                        [ngModelOptions]="{standalone: true}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <select class="form-control" [(ngModel)]="AutoSyncGapSec"
+                                        [ngModelOptions]="{standalone: true}">
+                                        <option value="seconds"> {{
+                                            'CreateSynchronization.enableAutoSynchronizationSeconds' | translate}}
+                                        </option>
+                                        <option value="minutes" selected> {{
+                                            'CreateSynchronization.enableAutoSynchronizationMinutes' | translate}}
+                                        </option>
+                                        <option value="hours"> {{ 'CreateSynchronization.enableAutoSynchronizationHours'
+                                            | translate}}</option>
+                                        <option value="days"> {{ 'CreateSynchronization.enableAutoSynchronizationDays' |
+                                            translate}}</option>
+                                        <option value="month"> {{ 'CreateSynchronization.enableAutoSynchronizationMonth'
+                                            | translate}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>
+                                    {{'CreateSynchronization.SynchronizationTakeTime' | translate}}
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-outline-secondary mr-1" data-bs-dismiss="modal">{{
+                                        'CreateSynchronization.cancelButton' | translate}}</button>
+                                    <button type="submit" class="btn btn-success" *ngIf="!synchronizationId">{{
+                                        'CreateSynchronization.saveButton' | translate}}</button>
+                                    <button type="submit" class="btn btn-success" *ngIf="synchronizationId">{{
+                                        'CreateSynchronization.updateButton' | translate}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,211 @@
+<!-- <div class="container-fluid plr_30 pt_30" style="margin-top: -60px;">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-center">2b Innovations</h3>
+        </div>
+    </div>
+    <hr>
+    <div *ngIf="loading" class="dot-opacity-loader">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div class="row m-0">
+        <div *ngFor="let digital of DigitalAlertList" style="margin: 0 10px;">
+            <div class="white_box p-2 mb_30" [ngStyle]="{'border': digital.skin?.border_thickness + 'px solid' + digital.skin?.border_color,
+            'background-color': digital.skin?.alert_background_color, 'height': digital.height + 'px', 'width': digital.width + 'px'}"
+            style="min-width: 500px; min-height: 400px; position: relative;">
+                <div *ngIf="digital.skin.show_alert_footer === true">
+                    <div class="row" style="display: flex; padding: 3px 1px; margin: 0;"
+                    [ngStyle]="{'background-color': digital.skin?.header_background_color}">
+                        <div class="col-md-6 mt-2">
+                            {{digital.skin?.header_custom_message}}
+                        </div>
+                        <div class="col-md-6" style="width: 50%">
+                            <div [ngStyle]="{'text-align': digital.skin?.team_image_align}">
+                                <span>
+                                    <img *ngIf="digital.skin?.team_image" src="{{digital.skin?.team_image}}" alt="Logo" height="35px">
+                                    <img *ngIf="!digital.skin?.team_image" src="{{HeaderTextImg}}" alt="Logo">
+                                </span>
+                                <button type="button" class="close text-right mb-2" data-bs-dismiss="modal" style="background-color: transparent;
+                                    border: 0; font-size: 40px; padding-left: 10px; margin-right: 1px;" (click)="onCloseAlert(digital)">&times;</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="row mb-1">
+                                    <div class="col-md-7">
+                                        <h3 class="text-white footer_body_text deviceTitle" style="height: 50px; overflow-x: auto;">
+                                            {{digital.name}}
+                                        </h3>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <h6 style="height: 150px; overflow-x: hidden;" id="body-text"
+                                        [ngStyle]="{'height': (digital.height - 250) + 'px'}">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h6 class="text-white footer_body_text"
+                                                    [innerHtml]="digital.body">
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="device_FooterText" style="position: absolute; bottom: 8px; left: 8px; right: 8px;">
+                        <div class="row" [ngStyle]="{'background-color': digital.skin?.footer_background_color}" style="margin: 0px;">
+                            <div class="col-md-4" style="padding-left: 0;">
+                                <div>
+                                    <img *ngIf="digital.skin?.footer_background_image" src="{{digital.skin?.footer_background_image}}"
+                                        alt="alert pic"
+                                        style="width: 180px; height: 50px;" class="mr-2">
+                                </div>
+                            </div>
+                            <div class="col-md-8" id="footer-align" [ngStyle]="{'text-align': digital.skin?.footer_align}">
+                                <div class="text-right" id="footer-BgColor"
+                                    style="padding: 10px; letter-spacing: 3px;">
+                                    <p id="footer-color" [ngStyle]="{'color': digital.skin?.footer_text_color}">
+                                        <span id="footer-fontSize" [ngStyle]="{'font-size': digital.skin?.footer_font_size + 'px'}">
+                                            {{digital.skin?.footer_text}}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="digital.skin.show_alert_footer === false">
+                    <div class="row" style="display: flex; padding: 3px 1px; margin: 0;"
+                    [ngStyle]="{'background-color': digital.skin?.header_background_color}">
+                        <div class="col-md-12 p-0">
+                            <div [ngStyle]="{'text-align': digital.skin?.team_image_align}">
+                                <span>
+                                    <img *ngIf="digital.skin?.team_image" src="{{digital.skin?.team_image}}" alt="Logo" height="auto" width="110">
+                                </span>
+                                <button type="button" class="close text-right mb-2" data-bs-dismiss="modal" style="background-color: transparent;
+                                    border: 0; font-size: 40px; padding-left: 10px; margin-right: 1px;" (click)="onCloseAlert(digital)">&times;</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"> 
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="row mb-1">
+                                    <div class="col-md-12">
+                                        <h3 class="text-white footer_body_text colorChange deviceTitle" style="height: 50px; overflow-x: auto;"
+                                         *ngIf="digital.skin.name === 'White'">
+                                            {{digital.name}}
+                                        </h3>
+                                        <h3 class="text-white footer_body_text deviceTitle" style="height: 50px; overflow-x: auto;"
+                                        *ngIf="digital.skin.name !== 'White'">
+                                            {{digital.name}}
+                                        </h3>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <h6 style="height: 140px; overflow-x: hidden;" id="body-text"
+                                        [ngStyle]="{'height': (digital.height - 330) + 'px'}">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h6 class="text-white footer_body_text colorChange" *ngIf="digital.skin.name === 'White'"
+                                                    [innerHtml]="digital.body">
+                                                    </h6>
+                                                    <h6 class="text-white footer_body_text" *ngIf="digital.skin.name !== 'White'"
+                                                    [innerHtml]="digital.body">
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="device_FooterText" style="position: absolute; bottom: 8px; left: 8px; right: 0px;">
+                        <div class="row" [ngStyle]="{'background-color': digital.skin?.footer_background_color}" style="margin: 0px;">
+                            <div class="col-md-12 text-right" style="padding: 0;">
+                                <div>
+                                    <img *ngIf="digital.skin?.footer_background_image" src="{{digital.skin?.footer_background_image}}"
+                                        alt="alert pic"
+                                        style="width: 75%; height: auto;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-12" *ngFor="let alertTicker of DigitalAlertTicker"  style="min-height: 90px; position: relative;">
+            <div class="" [ngStyle]="{'border': alertTicker.skin?.border_thickness + 'px solid' + alertTicker.skin?.border_color,
+            'background-color': alertTicker.skin?.alert_background_color}" style="border-radius: 8px;">
+                <div class="row" style="display: flex; padding: 0px 15px;">
+                    <div class="col-md-11" style="width: 100%">
+                        <div style="display: flex;">
+                            <span *ngIf="alertTicker.skin.show_alert_footer === true">
+                                <img src="{{alertTicker.skin?.team_image}}" alt="Logo" style="background-color: #fff; width: 200px;">
+                            </span>
+                            <span *ngIf="alertTicker.skin.show_alert_footer === false">
+                                <img src="{{alertTicker.skin?.team_image}}" alt="Logo" style="background-color: #fff; width: 45px;">
+                            </span>
+                            <marquee width="100%" style="margin-top: 14px;" class="text-white">
+                            {{alertTicker.name}} {{alertTicker.body_text}}
+                            </marquee>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="close text-white" data-bs-dismiss="modal" style="background-color: transparent;
+                        border: 0; font-size: 40px;" (click)="onCloseAlert(alertTicker)">&times;</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="container-fluid p-0" style="margin-top: -63px;">
+
+    <div id="myNav" class="overlay">
+        <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+        <div class="overlay-content">
+            <button type="button" class="btn btn-success reloadbtn m-2"
+            (click)="OnReloadAlert()">
+                Reload
+            </button> <br>
+            <button type="button" class="btn btn-success reloadbtn m-2">
+                Restart
+            </button> <br>
+            <button type="button" class="btn btn-success reloadbtn m-2">
+                Clear Cache
+            </button>
+        </div>
+    </div>
+
+    <div class="navbar" (click)="openNav()">&#9776;</div>
+
+    <div *ngIf="DigitalAlertList.length === 0" class="UUID">
+        <h1 class="text-center">
+            {{Uuid}}
+        </h1>
+    </div>
+    <div class="" *ngFor="let digital of DigitalAlertList; let i=index">
+        <div *ngIf="i === ShowSlideImage">
+            <img src="{{digital.media_file}}" class="FullScreenSet" alt="digital.name">
+        </div>
+    </div>
+</div>

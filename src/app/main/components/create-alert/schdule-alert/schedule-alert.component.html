@@ -1,0 +1,791 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+
+                                        <th>
+                                            {{'Sent.sentType' |translate}}
+                                        </th>
+                                        <th>
+                                            {{'Sent.sentTitle' |translate}}
+                                        </th>
+                                        <th>
+                                            {{'Sent.sentCreationDate' |translate}}
+                                        </th>
+                                        <th>
+                                            {{'Sent.sentStatus' |translate}}
+                                        </th>
+                                        <th>
+                                            {{'Sent.ApprovedStatus' |translate}}
+                                        </th>
+                                        <th>
+                                            Schedule Start
+                                        </th>
+                                        <th>
+                                            Schedule End
+                                        </th>
+                                        <th style="width: 80px;">
+                                            {{'Sent.sentSendBy' |translate}}
+                                        </th>
+                                        <th style="width: 100px;">
+                                            {{'Sent.sentLikesCount' |translate}}
+                                        </th>
+                                        <th style="width: 170px;">
+                                            {{'Sent.sentActions' |translate}}
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let sent of SentList | paginate: { id:'first', itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        <td>
+                                            <span *ngIf="sent.alert_type === 'PopupAlert'" title="Alert">
+                                                <img src="assets/img/sent-alert-action/alert.png" alt="">
+                                            </span>
+                                            <span *ngIf="sent.alert_type === 'TickerAlert'" title="Ticker">
+                                                <img src="assets/img/sent-alert-action/ticker.png" alt="">
+                                            </span>
+                                            <span *ngIf="sent.alert_type === 'RsvpAlert'" title="RSVP">
+                                                <img src="assets/img/sent-alert-action/rsvp.png" alt="">
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{sent.name}}
+                                        </td>
+                                        <td>{{dateformat(sent.created_date)}}, {{Timeformat(sent.created_date)}}</td>
+                                        <td>{{sent.status}}</td>
+                                        <td>{{sent.approved_status}}</td>
+                                        <td>{{dateformat(sent.schedule_start)}}, {{Timeformat(sent.schedule_start)}} </td>
+                                        <td>{{dateformat(sent.schedule_end)}}, {{Timeformat(sent.schedule_end)}}</td>
+                                        <td>{{sent.sent_by}}</td>
+                                        <td>{{sent.like_count}}</td>
+                                        <td class="marg">
+                                            <span *ngIf="RoleAssign[0].edit">
+                                                <span class="mr-2 cursor" *ngIf="sent.status === 'Stopped'"
+                                                    title="Start Alert" (click)="IsResumeAlert(sent.id)">
+                                                    <img src="assets/img/sent-alert-action/start.png" alt="">
+                                                </span>
+                                            </span>
+                                            <span *ngIf="RoleAssign[0].stop">
+                                                    <span class="mr-2 cursor" *ngIf="sent.status !== 'Stopped'"
+                                                    title="Stop Alert" (click)="IsStoppedAlert(sent.id)">
+                                                    <img src="assets/img/sent-alert-action/stop.png" alt="">
+                                                </span>
+                                            </span>
+                                            
+                                            <span *ngIf="sent.alert_type === 'PopupAlert'" class="mr-2 cursor" title="Popup Alert Details"
+                                            data-bs-toggle="modal" data-bs-target="#ColumnChartModal" (click)="GetGraphStats(sent, 'alert')">
+                                                <img src="assets/img/sent-alert-action/graph.png" alt="">
+                                            </span>
+                                            <span *ngIf="sent.alert_type === 'TickerAlert'" class="mr-2 cursor" title="Ticker Alert Details"
+                                            data-bs-toggle="modal" data-bs-target="#ColumnChartModal" (click)="GetGraphStats(sent, 'alert')">
+                                                <img src="assets/img/sent-alert-action/graph.png" alt="">
+                                            </span>
+                                            <span *ngIf="sent.alert_type === 'RsvpAlert'" class="mr-2 cursor" title="RSVP Alert Details"
+                                            data-bs-toggle="modal" data-bs-target="#RSVPPieChartModal" (click)="GetGraphStats(sent, 'RSVP')">
+                                                <img src="assets/img/sent-alert-action/graph.png" alt="">
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="SentList.length === 0">
+                                        {{'Sent.sentNoRecordFound' |translate}}
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChange($event, '1')" id="first"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="ColumnChartModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <div class="scroll p-3">
+                <div class="modal-header">
+                    <h4 class="modal-title mt-2"> {{'Sent.sentAlertDetailTHeaderName' |translate}} - {{AlertName}}</h4>
+                    <div class="col-md-2 right-side">
+                        <button type="button" class="close text-white" data-bs-dismiss="modal" style="background-color: transparent;
+                    border: 0; font-size: 40px;">&times;</button>
+                    </div>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" *ngIf="!IsChartAndList">
+                    <div class="row mb-2">
+                        <div class="col-md-12 text-right">
+                            <b>{{'Sent.sentAlertDetailsRecipient' |translate}} <u class="cursor" (click)="OnChangeChartAndList('list','total_recipients_list')">{{TotalRecipients}}</u></b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ngx-charts-bar-vertical 
+                            [results]="saleData"
+                            [view]="[700,400]"
+                            [showXAxisLabel]="true"
+                            [showYAxisLabel]="true"
+                            [legend]="false"
+                            [xAxis]="false"
+                            [yAxis]="true"></ngx-charts-bar-vertical>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 ml-4 mt-3">
+                            <div class="bg-color">
+                                <h3> {{'Sent.sentAlertDetailsAlert' |translate}}</h3>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">{{'Sent.sentAlertDetailsSent' |translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                    <label class="cursor" (click)="OnChangeChartAndList('list','sent_users_list')"><u>{{Sent}}</u></label>
+                                    </div>
+                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="cornblue-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Sent.sentAlertDetailsRecieved' |translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','recieved_users_list')"><u>{{Recieved}}</u></label>
+                                    </div>
+                                </div> -->
+
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="purple-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">  {{'Sent.sentAlertDetailsDisplayed' |translate}}  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','displayed_users_list')"><u>{{Displayed}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-5 uss">
+                                        <div class="light-maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Sent.sentAlertDetailsNotRecieved' |translate}}  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','not_recieved_users_list')"><u>{{NotRecieved}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5 ">
+                                        <div class="voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">  {{'Sent.sentAlertDetailsAcknowledged' |translate}}  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','acknowledged_users_list')"><u>{{Acknowledged}}</u></label>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="not-voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Sent.sentAlertDetailsLikedCount' |translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','liked_users_list')"><u>{{Liked}}</u></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5 ml-4 mt-3 text-right">
+                            <div class="cursor" (click)="ExportToExcel()">
+                                {{'Sent.sentAlertDetailsExcel' |translate}} 
+                            </div>
+                            <div class="cursor" (click)="downloadCSV()">
+                                {{'Sent.sentAlertDetailsCsv' |translate}} 
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-body" *ngIf="IsChartAndList">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <form [formGroup]="formRSVP" (ngSubmit)="onSearchRSVP(formRSVP.value)">
+                                <div class="input-group">
+                                    <div class="form-outline">
+                                        <input id="search-input" formControlName="search" placeholder="Search here" type="search"
+                                            id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                    </div>
+                                    <button type="submit" class="btn btn-success ml-3">
+                                        {{'Sent.sentAlertDetailsSearch' |translate}} 
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-5 text-right">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success" (click)="OnChangeChartAndList('chart', '')"> {{'Sent.sentAlertDetailsReturn' |translate}} </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{'Sent.sentAlertDetailsName' |translate}} 
+                                        </th>
+                                        <th *ngIf="VariableData !== 'total_recipients_list' && VariableData !== 'not_recieved_users_list'">
+                                            {{'Sent.sentAlertDetailsComputerName' |translate}} 
+                                        </th>
+                                        <th *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Sent.sentAlertDetailsType' |translate}} 
+                                        </th>
+                                        <th *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Sent.sentAlertDetailsDisplayName' |translate}} 
+                                        </th>
+                                        <th *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Sent.sentAlertDetailsDomains' |translate}} 
+                                        </th>
+                                        <th *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Sent.sentAlertDetailsOnline' |translate}} 
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr 
+                                        *ngFor="let alert of AlertDetailList | paginate: { id:'second', itemsPerPage: 10, currentPage: currentPageChart, totalItems: totalItemsChart }; let i=index">
+                                        
+                                        <td>
+                                            {{alert.username}}
+                                        </td>
+                                        <td *ngIf="VariableData !== 'total_recipients_list' && VariableData !== 'not_recieved_users_list'">
+                                            {{alert.computer_name}}
+                                        </td>
+                                        <td *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">{{alert.type}}</td>
+                                        <td *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">{{alert.display_name}}</td>
+                                        <td *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">{{alert.domain}}</td>
+                                        <td *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            <!-- {{alert.online}} -->
+                                            <img src="assets/img/animation_500_l7srpppy.gif" alt="" width="20"
+                                                height="20" *ngIf="alert.online">
+                                            <img src="assets/img/31120-live-icon.gif" alt="" width="20"
+                                                height="20" *ngIf="!alert.online">
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="AlertDetailList.length === 0">
+                                        {{'Sent.sentAlertDetailsNoRecord' |translate}} 
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChartChange($event, '1')" id="second"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChartChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumberChart" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="RSVPPieChartModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <div class="scroll p-3">
+                <div class="modal-header">
+                    <h4 class="modal-title"> {{'Sent.rsvpAlertDetail' |translate}} - {{AlertName}} </h4>
+                    <div class="col-md-2 right-side">
+                        <button type="button" class="close text-white" data-bs-dismiss="modal" style="background-color: transparent;
+                    border: 0; font-size: 40px;">&times;</button>
+                    </div>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" *ngIf="!IsChartAndList">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <b> {{'Sent.rsvpAlertDetailTotalRecipient' |translate}} <u class="cursor" (click)="OnChangeChartAndList('list', 'total_recipients_list')">{{TotalRecipients}}</u></b>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <b> {{'Sent.rsvpAlertDetailTotalQuestion' |translate}} {{TotalQuestion}} </b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 p-0">
+                            <ngx-charts-bar-vertical 
+                            [results]="RSVPChartData"
+                            [view]="[400,300]"
+                            [showXAxisLabel]="true"
+                            [showYAxisLabel]="true"
+                            [xAxis]="false"
+                            [yAxis]="true"></ngx-charts-bar-vertical>
+                        </div>
+                        <div class="col-md-6">
+                            <ngx-charts-pie-chart
+                            [results]="PieChartData"
+                            [view]="[400, 300]">
+                          </ngx-charts-pie-chart>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <div class="bg-color">
+                                <h4> {{'Sent.rsvpAlertDetailAlert' |translate}} </h4>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Sent.rsvpAlertDetailSent' |translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                    <label class="cursor" (click)="OnChangeChartAndList('list','sent_users_list')"><u>{{Sent}}</u></label>
+                                    </div>
+                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="cornblue-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">  {{'Sent.rsvpAlertDetailRecieved' |translate}}  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','recieved_users_list')"><u>{{Recieved}}</u></label>
+                                    </div>
+                                </div> -->
+    
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="purple-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">   {{'Sent.rsvpAlertDetailDisplayed' |translate}}   </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','displayed_users_list')"><u>{{Displayed}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-5 uss">
+                                        <div class="light-maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">    {{'Sent.rsvpAlertDetailNotRecieved' |translate}}  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','not_recieved_users_list')"><u>{{NotRecieved}}</u></label>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">     {{'Sent.rsvpAlertDetailVoted' |translate}}  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','voted_users_list')"><u>{{Voted}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-8 uss">
+                                        <div class="not-voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Sent.rsvpAlertDetailRecievedButNotVoted' |translate}}  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','not_voted_users_list')"><u>{{RecievedNotVoted}}</u></label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-12 ml-2 mt-3 text-right">
+                                <div class="cursor" (click)="ExportToExcel()">
+                                   <u> {{'Sent.sentAlertDetailsExcel' |translate}} </u>
+                                </div>
+                                <div class="cursor" (click)="downloadCSV()">
+                                   <u> {{'Sent.sentAlertDetailsCsv' |translate}} </u>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <div class="bg-color">
+                                <h4>{{QuestionText}}</h4>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{'Sent.rsvpAlertDetailQuesYes' |translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                    <label class="cursor" (click)="OnChangeChartAndList('list','rsvp_first_option_users_list')"><u>{{Option1Count}}</u></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="cornblue-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">  {{'Sent.rsvpAlertDetailQuesNo' |translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','rsvp_second_option_users_list')"><u>{{Option2Count}}</u></label>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            <div class="col-md-12 ml-2 mt-3 text-right">
+                                <div class="cursor" (click)="RSVPExportToExcel()">
+                                   <u> {{'Sent.sentAlertDetailsExcelToQues' | translate}} </u>
+                                </div>
+                                <div class="cursor" (click)="RSVPdownloadCSV()">
+                                   <u> {{'Sent.sentAlertDetailsCsvToQues' | translate}} </u>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-body" *ngIf="IsChartAndList">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <form [formGroup]="formRSVP" (ngSubmit)="onSearchRSVP(form.value)">
+                                <div class="input-group">
+                                    <div class="form-outline">
+                                        <input id="search-input" formControlName="search" placeholder="Search here" type="search"
+                                            id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                    </div>
+                                    <button type="submit" class="btn btn-success ml-3">
+                                        {{'Sent.rsvpAlertDetailSearch' |translate}}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" placeholder="Search.." class="form-control" name="" id="">
+                            </div>
+                        </div>
+    
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success">Search</button>
+                            </div>
+                        </div> -->
+                        <div class="col-md-5 text-right">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success" (click)="OnChangeChartAndList('chart', '')"> {{'Sent.rsvpAlertDetailReturn' |translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{'Sent.rsvpAlertDetailName' |translate}}
+                                        </th>
+                                        <!-- <th>
+                                            {{'Sent.rsvpAlertDetailComputerName' |translate}}
+                                        </th>
+                                        <th>
+                                            Answer
+                                        </th>
+                                        <th>
+                                            Reason
+                                        </th> -->
+                                        <th *ngIf="VariableData === 'voted_users_list' || VariableData === 'rsvp_second_option_users_list' || VariableData === 'rsvp_first_option_users_list' || VariableData === 'displayed_users_list' || VariableData === 'sent_users_list' || VariableData === 'not_voted_users_list'">
+                                            {{'Sent.rsvpAlertDetailComputerName' |translate}}
+                                        </th>
+                                        <th *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Sent.rsvpAlertDetailType' |translate}}
+                                        </th>
+                                        <th *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Sent.rsvpAlertDetailDisplayName' |translate}}
+                                        </th>
+                                        <th *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Sent.rsvpAlertDetailDomain' |translate}}
+                                        </th>
+                                        <th *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{'Sent.rsvpAlertDetailOnline' |translate}}
+                                        </th>
+                                        <th *ngIf="VariableData === 'voted_users_list' || VariableData === 'rsvp_second_option_users_list' || VariableData === 'rsvp_first_option_users_list'">
+                                            {{'Sent.rsvpAlertDetailFirstAns' |translate}}
+                                        </th>
+                                        <!-- <th *ngIf="VariableData === 'voted_users_list'">
+                                            {{'Sent.rsvpAlertDetailSecondAns' |translate}}
+                                        </th> -->
+                                        <th *ngIf="VariableData === 'voted_users_list' || VariableData === 'rsvp_second_option_users_list' || VariableData === 'rsvp_first_option_users_list'">
+                                            Reason
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr 
+                                        *ngFor="let alert of AlertDetailList | paginate: { id:'second', itemsPerPage: 10, currentPage: currentPageChart, totalItems: totalItemsChart }; let i=index">
+                                        <td *ngIf="alert.username">{{alert.username}}</td>
+                                        <td *ngIf="!alert.username">
+                                            {{alert.logon_name}}
+                                        </td>
+                                        
+                                        <td  *ngIf="VariableData === 'voted_users_list' || VariableData === 'rsvp_second_option_users_list' || VariableData === 'rsvp_first_option_users_list' || VariableData === 'displayed_users_list' || VariableData === 'sent_users_list' || VariableData === 'not_voted_users_list'">
+                                            {{alert.computer_name}}
+                                        </td>
+                                        
+                                        <td *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">{{alert.type}}</td>
+                                        <td *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">{{alert.display_name}}</td>
+                                        <td *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">{{alert.domain}}</td>
+                                        <td *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            <img src="assets/img/animation_500_l7srpppy.gif" alt="" width="20"
+                                                height="20" *ngIf="alert.online">
+                                            <img src="assets/img/31120-live-icon.gif" alt="" width="20"
+                                                height="20" *ngIf="!alert.online">
+                                        </td>
+                                        <td *ngIf="VariableData === 'voted_users_list' || VariableData === 'rsvp_second_option_users_list' || VariableData === 'rsvp_first_option_users_list'">
+                                            {{alert.answer}}</td>
+                                        <!-- <td *ngIf="VariableData === 'voted_users_list'">{{alert.second_answer}}</td> -->
+                                        <td *ngIf="VariableData === 'voted_users_list' || VariableData === 'rsvp_second_option_users_list' || VariableData === 'rsvp_first_option_users_list'">
+                                            {{alert.reason}}
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="AlertDetailList.length === 0">
+                                        {{'Sent.rsvpAlertDetailNoRecord' |translate}}
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChartChange($event, '1')" id="second"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChartChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumberChart" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="display: none;">
+    <div class="col-md-12">
+        <div class="card" #PopupAlertepltable>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div *ngIf="loading" class="dot-opacity-loader">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    {{'Sent.rsvpAlertTitle' | translate}}
+                                </th>
+                                <th>
+                                    {{'Sent.rsvpAlertCreationDate' | translate}}
+                                </th>
+                                <th *ngIf="ExportType !== 'RsvpAlert'">
+                                    {{'Sent.rsvpAlertUserName' | translate}}
+                                </th>
+                                <th *ngIf="ExportType !== 'RsvpAlert'">
+                                    {{'Sent.rsvpAlertStatus' |translate}}
+                                </th>
+                                <th *ngIf="ExportType === 'RsvpAlert'">
+                                    {{'Sent.rsvpAlertTotal' |translate}}
+                                </th>
+                                <th *ngIf="ExportType === 'RsvpAlert'">
+                                    {{'Sent.rsvpAlertRecieved' |translate}}
+                                </th>
+                                <th *ngIf="ExportType === 'RsvpAlert'">
+                                    {{'Sent.rsvpAlertNotRecieved' |translate}}
+                                </th>
+                                <th *ngIf="ExportType === 'RsvpAlert'">
+                                    {{'Sent.rsvpAlertVoted' |translate}}
+                                </th>
+                                <th *ngIf="ExportType === 'RsvpAlert'">
+                                    {{'Sent.rsvpAlertNotVoted' |translate}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let excel of ExportExcelAndCsvList">
+                                <td *ngIf="ExportType !== 'RsvpAlert'">
+                                    {{excel.name}}
+                                </td>
+                                <td *ngIf="ExportType === 'RsvpAlert'">
+                                    {{excel.alert_title}}
+                                </td>
+                                <td>
+                                    {{dateformat(excel.sent_date)}}, {{Timeformat(excel.sent_date)}}
+                                </td>
+                                <td *ngIf="ExportType !== 'RsvpAlert'">
+                                    {{excel.username}}
+                                </td>
+                                <td *ngIf="ExportType !== 'RsvpAlert'">
+                                    {{excel.status}}
+                                </td>
+                                <td *ngIf="ExportType === 'RsvpAlert'">
+                                    {{excel.total_recipients}}
+                                </td>
+                                <td *ngIf="ExportType === 'RsvpAlert'">
+                                    {{excel.recieved}}
+                                </td>
+                                <td *ngIf="ExportType === 'RsvpAlert'">
+                                    {{excel.not_recieved}}
+                                </td>
+                                <td *ngIf="ExportType === 'RsvpAlert'">
+                                    {{excel.voted}}
+                                </td>
+                                <td *ngIf="ExportType === 'RsvpAlert'">
+                                    {{excel.displayed_but_not_voted}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="display: none;">
+    <div class="col-md-12">
+        <div class="card" #RSVPAlertepltable>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div *ngIf="loading" class="dot-opacity-loader">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    Logon Name
+                                </th>
+                                <th>
+                                    Machine Name
+                                </th>
+                                <th>
+                                    Question 1
+                                </th>
+                                <th>
+                                    Answer
+                                </th>
+                                <th>
+                                    Question 2
+                                </th>
+                                <th>
+                                    Reason
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let rsvpExcel of RSVPQuesExportExcelAndCsvList">
+                                <td>
+                                    {{rsvpExcel.logon_name}}
+                                </td>
+                                <td>
+                                    {{rsvpExcel.machine_name}}
+                                </td>
+                                <td>
+                                    {{rsvpExcel.question_1}}
+                                </td>
+                                <td>
+                                    {{rsvpExcel.answer}}
+                                </td>
+                                <td>
+                                    {{rsvpExcel.question_2}}
+                                </td>
+                                <td>
+                                    {{rsvpExcel.reason}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

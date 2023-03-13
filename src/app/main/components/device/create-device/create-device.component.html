@@ -1,0 +1,62 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box">
+                <form [formGroup]="deviceForm" (ngSubmit)="OnSubmit()">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1"> {{ 'CreateDevice.deviceName' | translate}}</label>
+                                <input type="text" placeholder="{{ 'CreateDevice.devicePlacehoderName' | translate}}" class="form-control"
+                                formControlName="name" [ngClass]="{'error': submitted && myDeviceForm.name.errors}">
+                                <div class="invalid-feedback" *ngIf="submitted && myDeviceForm.name.errors?.required">
+                                    <sup>*</sup>{{ 'CreateDevice.nameOfDevice' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Screen Uid</label>
+                                <input type="text" placeholder="Please Enter Screen Uid" class="form-control"
+                                formControlName="unique_code">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>{{ 'CreateDevice.deviceSequenceRefreshRate' | translate}} </label>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <input type="number" class="form-control" id="exampleFormControlInput1"
+                                 formControlName="refresh_time">
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="form-group">
+                                <select class="form-control" formControlName="refresh_time_choice">
+                                    <option [value]="null" selected>{{ 'CreateDevice.deviceSequenceTime' | translate}} </option>
+                                    <option value="seconds"> {{ 'CreateDevice.deviceSequenceTimeOptSec' | translate}}</option>
+                                    <option value="minutes"> {{ 'CreateDevice.deviceSequenceTimeOptMin' | translate}}</option>
+                                    <option value="hours"> {{ 'CreateDevice.deviceSequenceTimeOptHr' | translate}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-outline-secondary mr-1"
+                                data-bs-dismiss="modal">{{ 'CreateDevice.deviceCancelButton' | translate}}</button>
+                                <button type="submit" class="btn btn-success" *ngIf="!deviceId">{{ 'CreateDevice.deviceSaveButton' | translate}}</button>
+                                <button type="submit" class="btn btn-success" *ngIf="deviceId">{{ 'CreateDevice.deviceUpdateButton' | translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

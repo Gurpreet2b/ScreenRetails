@@ -1,0 +1,145 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <div class="row">
+                    <div class="col-md-9">
+                        <form [formGroup]="formScreenSaver" (ngSubmit)="onSearchScreenSaver(formScreenSaver.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" formControlName="search" placeholder="{{'DraftScreensaver.searchButtonPlaceholder' | translate}}" type="search"
+                                        id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                </div>
+                                <button type="submit" class="btn btn-success ml-3">
+                                    {{'DraftScreensaver.searchButton' | translate}}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3 text-right" *ngIf="RoleAssign[9].create">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success"  routerLink="/screensaver/add" > {{'DraftScreensaver.addScreensaver' | translate}} </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                            <table class="table table-hover ">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>
+                                            {{'DraftScreensaver.draftTitle' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'DraftScreensaver.draftCreatedDate' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'DraftScreensaver.draftSchedule' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'DraftScreensaver.draftSender' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'DraftScreensaver.draftActions' | translate}}
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr
+                                        *ngFor="let screensaver of ScreenSaverList  | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        <td>{{screensaver.name}}
+                                            <span *ngIf="screensaver.alert_type === 'PopupAlert'" title="Alert">
+                                                <img src="assets/img/screensaver-alert-action/alert.png" alt="">
+                                            </span>
+                                            <span *ngIf="screensaver.alert_type === 'TickerAlert'" title="Ticker">
+                                                <img src="assets/img/screensaver-alert-action/ticker.png" alt="">
+                                            </span>
+                                            <span *ngIf="screensaver.alert_type === 'RsvpAlert'" title="RSVP">
+                                                <img src="assets/img/screensaver-alert-action/rsvp.png" alt="">
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{dateformat(screensaver.created_date)}}, {{Timeformat(screensaver.created_date)}}
+                                        </td>
+                                        <td>
+                                            {{screensaver.scheduled}}
+                                        </td>
+                                        <td>
+                                            {{screensaver.sender}}
+                                        </td>
+
+                                        <td class="marg">
+                                           <span class="mr-2 cursor" class="mr-2 cursor"
+                                                title="Duplicate Alert" *ngIf="RoleAssign[9].edit"
+                                                [routerLink]="['/screensaver', screensaver.id, screensaver.content_type]">
+                                                <img src="assets/img/sent-alert-action/duplicate.png" alt="">
+                                            </span> 
+                                            <span class="mr-2 cursor" *ngIf="screensaver.status === 'Stopped'"
+                                                title="Start Alert" (click)="IsResumeAlert(screensaver.id)">
+                                                <img src="assets/img/sent-alert-action/start.png" alt="">
+                                            </span>
+                                            <span class="mr-2 cursor" *ngIf="screensaver.status !== 'Stopped'"
+                                                title="Stop Alert" (click)="IsStoppedAlert(screensaver.id)">
+                                                <img src="assets/img/sent-alert-action/stop.png" alt="">
+                                            </span>
+                                            <span *ngIf="screensaver.alert_type === 'PopupAlert'" class="mr-2 cursor"
+                                                title="Preview Alert" (click)="GetScreensaverListById(screensaver)"
+                                                data-bs-toggle="modal" data-bs-target="#PreviewAlertModal">
+                                                <img src="assets/img/sent-alert-action/preview.png" alt="">
+                                            </span>
+                                            <span *ngIf="screensaver.alert_type === 'TickerAlert'" class="mr-2 cursor"
+                                                title="Preview Alert" (click)="GetScreensaverListById(screensaver)"
+                                                data-bs-toggle="modal" data-bs-target="#PreviewScrollingModal">
+                                                <img src="assets/img/sent-alert-action/preview.png" alt="">
+                                            </span>
+                                            <span class="text-danger cursor" (click)="delete(screensaver.id)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </span>
+                                        </td>
+                                      
+                                    </tr>
+                                    <tr *ngIf="ScreenSaverList.length === 0">
+                                        {{'DraftScreensaver.draftListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChange($event, '1')"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="modal fade bd-example-modal-lg" id="CreateScreensaverModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">{{ScreensaverTitle}} Screensaver</h4>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <app-create-screensaver></app-create-screensaver>
+            </div>
+        </div>
+    </div>
+</div> -->

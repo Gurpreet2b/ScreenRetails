@@ -1,0 +1,104 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <label> {{ 'Domains.searchDomain' | translate}}</label>
+
+                <div class="row">
+                    <div class="col-md-9">
+                        <form [formGroup]="formDomain" (ngSubmit)="onSearchDomain(formDomain.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" formControlName="search" placeholder=" {{ 'Domains.searchDomainPlaceholder' | translate}}"
+                                        type="search" id="form" class="form-control"
+                                        style="padding: 17.7px; width: 210px;" />
+                                </div>
+                                <button type="submit" class="btn btn-success ml-3">
+                                    {{ 'Domains.domainsSearchButton' | translate}}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success" routerLink="/synchronizations">{{
+                                'Domains.synchronizations' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <form [formGroup]="formDomain" (ngSubmit)="onSearchDomain(formDomain.value)">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <input type="text" placeholder="{{ 'Domains.searchDomainPlaceholder' | translate}}"
+                                    class="form-control" name="" id="">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success">{{ 'Domains.domainsSearchButton' |
+                                    translate}}</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-md-8 text-right">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success" routerLink="/synchronizations">{{
+                                'Domains.synchronizations' | translate}}</button>
+                        </div>
+                    </div>
+                </div> -->
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <table class="table table-hover ">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>
+                                            {{ 'Domains.domainlistDomain' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Domains.domainlistUsers' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Domains.domainlistGroups' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Domains.domainlistComputers' | translate}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let domain of DomainList; let i=index">
+                                        <td>
+                                            {{domain.domain}}
+                                        </td>
+                                        <td>
+                                            {{domain.user_count}}
+                                        </td>
+                                        <td>
+                                            {{domain.group_count}}
+                                        </td>
+                                        <td>
+                                            {{domain.computer_count}}
+                                        </td>
+
+                                    </tr>
+                                    <tr *ngIf="DomainList.length === 0">
+                                        {{ 'Domains.domainlistRecord' | translate}}
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

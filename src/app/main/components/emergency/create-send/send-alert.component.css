@@ -1,0 +1,29 @@
+.footer-emergency {
+    background: #f0f2f5;
+    width: 220px;
+    padding: 8px;
+}
+
+.header-emergency {
+    background: gray;
+    width: 220px;
+    padding: 5px;
+    text-align: center;
+    color: #fff;
+}
+
+.img-emergency {
+    background: gray;
+    padding: 5px 40px;
+    width: 220px;
+}
+
+.marg-right {
+    margin-right: 77px;
+}
+
+
+
+.emergency-scroll::-webkit-scrollbar {
+    display: none;
+}

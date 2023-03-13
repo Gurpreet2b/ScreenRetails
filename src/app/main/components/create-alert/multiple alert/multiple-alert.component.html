@@ -1,0 +1,382 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <form [formGroup]="multipleAlertForm" (ngSubmit)="OnSubmit()">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1"> {{ 'MultipleAlert.compaign' |translate}} </label>
+                                <angular-editor [config]="config" formControlName="compaign"
+                                    [ngClass]="{'error': submitted && MultiAlertForm.compaign.errors}"></angular-editor>
+                                <div class="invalid-feedback"
+                                    *ngIf="submitted && MultiAlertForm.compaign.errors?.required">
+                                    <sup>*</sup> {{ 'MultipleAlert.enterMultipleAlertText' |translate}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5">
+                            <div class="form-group pt-3">
+                                <label for="exampleFormControlSelect1">{{ 'MultipleAlert.skinChange' |translate}}
+                                </label>
+                                <select class="form-control" (click)="IsColorChange($event)">
+                                    <option *ngFor="let skin of SkinList" [value]="skin.id">
+                                        {{skin.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert-change" [ngStyle]="{'border': Think + 'px solid' + HeaderBorder}">
+                                        <div class="row mt-3 mb-4">
+                                            <div class="col-md-10">
+                                                <div [ngStyle]="{'text-align': HeaderLogo}">
+                                                    <span class="p-3 bg-success text-white">
+                                                        D
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button type="button" class="close"
+                                                    data-bs-dismiss="modal">&times;</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h6>
+                                                    {{ 'MultipleAlert.multipleAlertLoremIpsum' |translate}}
+                                                </h6>
+                                            </div>
+                                        </div>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-secondary dropdown-toggle mr-1"
+                                                data-bs-toggle="dropdown">
+                                                {{ 'MultipleAlert.multipleAlertMinuteButton' |translate}}
+                                                <span class="caret"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary mr-1">{{
+                                                'MultipleAlert.multipleAlertPostponeButton' |translate}}</button>
+                                            <button type="button" class="btn btn-outline-secondary ml-1">{{
+                                                'MultipleAlert.multipleAlertOkButton' |translate}}</button>
+                                        </div>
+
+                                        <div class="row mt-3 mb-4">
+                                            <div class="col-md-12" [ngStyle]="{'text-align': FooterLogo}">
+                                                <div class="p-3" [ngStyle]="{'background-color': FooterBgColor}">
+                                                    <p [ngStyle]="{'color': footerColor}">
+                                                        <span [ngStyle]="{'font-size': FooterFontSize + 'px'}">
+                                                            {{FooterText}}
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h3>{{ 'MultipleAlert.uploadYourCsvFile' |translate}} </h3>
+                            <div class="well text-danger">
+                                <div>
+                                    {{ 'MultipleAlert.messageTextDanger' |translate}}
+                                    <!-- Please do not use files with names more than 50 characters. <br>
+                                    Please do not use the following characters in the names of the files you uploas.
+                                    "!",
+                                    "@","#",
+                                    "$", "%", "&", "*", "<", ">" , "|"  -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7 mt-2">
+                            <div class="form-group">
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#FileUploadMultiImageModal"
+                                    (click)="OnFileImageModel()">
+                                    Choose Image File
+                                </button>
+                                <!-- <input type="file" id="picture" accept=".csv" (change)="onSelectFile($event)"> -->
+                            </div>
+                            <span *ngIf="SelectedName">{{SelectedName}}</span>
+                        </div>
+                        <div class="col-md-7 mt-4">
+                            <h3>{{ 'MultipleAlert.selectSendingTypeOfMultipleAlert' |translate}} </h3>
+                            <input type="radio" value="simple" formControlName="simple_sending">{{
+                            'MultipleAlert.simpleSending' |translate}} <br>
+                            <input type="radio" value="group" formControlName="group_sending" checked>
+                            {{'MultipleAlert.groupSending' |translate}} <br>
+                        </div>
+                    </div>
+                    <div class="well text-danger mt-4">
+                        <div>{{'MultipleAlert.previewFeature' |translate}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 mt-4">
+                            <div id="main">
+                                <div class="accordion" id="faq">
+                                    <div class="card">
+                                        <div class="card-header" id="headingOne">
+                                            <a href="#" class="btn btn-header-link" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseOne" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                                {{'MultipleAlert.alertSettings' |translate}}
+                                            </a>
+                                        </div>
+                                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                                            data-parent="#faq">
+                                            <div class="card-body line-space">
+                                                <input type="checkbox" formControlName="high_priority">
+                                                {{'MultipleAlert.alertSettingsHigh-priority' |translate}} <br>
+                                                <input type="checkbox" formControlName="acknowledgement_required">
+                                                {{'MultipleAlert.alertSettingsAcknowledgement' |translate}} <br>
+                                                <input type="checkbox" formControlName="self_distructive">
+                                                {{'MultipleAlert.alertSettingsSelf-destructing' |translate}} <br>
+                                                <input type="checkbox" formControlName="auto_close">
+                                                {{'MultipleAlert.alertSettingsAuto-close' |translate}}
+                                                <input type="text" class="input-collape"
+                                                    formControlName="auto_close_time" />
+                                                {{'MultipleAlert.alertSettingsMinuteOption' |translate}}
+                                                <input type="checkbox" formControlName="allow_manual_close">
+                                                {{'MultipleAlert.alertSettingsAllowManual' |translate}} <br>
+                                                <input type="checkbox" formControlName="lifetime">
+                                                {{'MultipleAlert.alertSettingsLifetime' |translate}}
+                                                <input type="text" class="input-collape mr-1" />
+                                                <select class="input-collape" formControlName="lifetime_option">
+                                                    <option value="minute(s)">
+                                                        {{'MultipleAlert.alertSettingsLifetimeOptionMinute' |translate}}
+                                                    </option>
+                                                    <option value="hours(s)">
+                                                        {{'MultipleAlert.alertSettingsLifetimeOptionHour' |translate}}
+                                                    </option>
+                                                    <option value="day">{{'MultipleAlert.alertSettingsLifetimeOptionDay'
+                                                        |translate}} </option>
+                                                </select>{{'MultipleAlert.alertWillExpire' |translate}} <br>
+                                                <input type="checkbox"
+                                                    formControlName="add_print_button">{{'MultipleAlert.addPrintButton'
+                                                |translate}}<br>
+                                                <input type="checkbox" formControlName="allow_feedback">
+                                                {{'MultipleAlert.userFeedback' |translate}}<br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" id="headingThree">
+                                            <a href="#" class="btn btn-header-link" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseThree" aria-expanded="true"
+                                            aria-controls="collapseThree">
+                                            {{'MultipleAlert.alertAppearance' |translate}}
+                                        </a>
+                                        </div>
+                                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                            data-parent="#faq">
+                                            <div class="card-body line-space">
+                                                <div class="row">
+                                                    <div class="col-md-4 size">
+                                                        <input type="radio"> {{'MultipleAlert.alertAppearanceWidth'
+                                                        |translate}} &nbsp;
+                                                        <input type="text" class="input-collape"
+                                                            formControlName="width" />
+                                                        {{'MultipleAlert.alertAppearanceWidthPx' |translate}} <br>
+                                                        <div class="ml-3">
+                                                            {{'MultipleAlert.alertAppearanceHeight' |translate}} <input
+                                                                type="text" class="input-collape"
+                                                                formControlName="height" />
+                                                            {{'MultipleAlert.alertAppearanceHeightPx' |translate}} <br>
+                                                            <input type="checkbox" formControlName="resizable">
+                                                            {{'MultipleAlert.alertAppearanceResizable' |translate}} <br>
+                                                        </div>
+                                                        <input type="radio" value="fullscreen"
+                                                            formControlName="fullscreen">
+                                                        {{'MultipleAlert.alertAppearanceFullscreen' |translate}}
+                                                    </div>
+                                                    <div class="col-md-4 size">
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-10">
+                                                                <input type="radio" value="pl"
+                                                                    formControlName="position">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <input type="radio" value="pr"
+                                                                    formControlName="position">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-5">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <input type="radio" value="pc"
+                                                                    formControlName="position">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-10">
+                                                                <input type="radio" value="plb"
+                                                                    formControlName="position">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <input type="radio" value="prb"
+                                                                    formControlName="position">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" id="headingFive">
+                                            <a href="#" class="btn btn-header-link" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseFive" aria-expanded="true"
+                                            aria-controls="collapseFive">
+                                            {{'MultipleAlert.DeviceType' |translate}}
+                                        </a>
+                                        </div>
+                                        <div id="collapseFive" class="collapse" aria-labelledby="headingFive"
+                                            data-parent="#faq">
+                                            <div class="card-body line-space">
+                                                <input type="radio" checked value="All devices"
+                                                    formControlName="device_type"> {{'MultipleAlert.allDevice'
+                                                |translate}}
+                                                <input type="radio" value="Desktop" formControlName="device_type">
+                                                {{'MultipleAlert.deviceDesktop' |translate}}
+                                                <input type="radio" value="Mobile" formControlName="device_type">
+                                                {{'MultipleAlert.deviceMobile' |translate}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bbpt-4 text-right">
+                                <button type="submit" class="btn btn-success">{{'MultipleAlert.sendMultiple'
+                                    |translate}} </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="FileUploadMultiImageModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <div class="modal-header">
+                <h4 class="modal-title">File Upload</h4>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid plr_30  pt_30">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label> <b>Upload Image File</b> </label>
+                                <input type="file" id="picture" accept=".csv" (change)="onSelectFile($event)">
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label class="mb-5"></label>
+                                <button type="submit" class="btn btn-success" 
+                                (click)="UploadImageDatebase()">
+                                    Upload    
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="">
+                                <div class="row mb-3">
+                                    <div class="col-md-9">
+                                        <form [formGroup]="formImageMultiAlert" (ngSubmit)="onSearchImageMultiAlert(formImageMultiAlert.value)">
+                                            <div class="input-group">
+                                                <div class="form-outline">
+                                                    <input id="search-input" formControlName="search" placeholder="{{'DraftScreensaver.searchButtonPlaceholder' | translate}}" type="search"
+                                                        id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                                </div>
+                                                <button type="submit" class="btn btn-success ml-3">
+                                                    {{'DraftScreensaver.searchButton' | translate}}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                                            <table class="table table-hover ">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th class="text-left">
+                                                            Image
+                                                        </th>
+                                                        <th>
+                                                            File Name
+                                                        </th>
+                                                        <th>
+                                                            {{'DraftScreensaver.draftActions' | translate}}
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                
+                                                <tbody>
+                                                    <tr *ngFor="let image of MultiAlertImageList  | paginate: { itemsPerPage: 10, currentPage: currentPageImage, totalItems: totalItemsImage }; let i=index">
+                                                        
+                                                        <td class="text-left">
+                                                            <img src="{{image.image.thumbnail}}" alt="{{image.name}}" width="30" height="30">
+                                                        </td>
+                                                        <td>
+                                                            <span class="cursor" (click)="IsImageUrlSelected(image)"><u>{{image.name}}</u></span> 
+                                                        </td>
+                                                        <td class="marg">
+                                                            <span class="text-danger cursor" (click)="deleteImage(image.id)">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </span>
+                                                        </td>
+                                                      
+                                                    </tr>
+                                                    <tr *ngIf="MultiAlertImageList.length === 0">
+                                                        {{'DraftScreensaver.draftListRecord' | translate}}
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="row" style="width: 100%">
+                                                <div class="col-md-10 text-right">
+                                                    <pagination-controls (pageChange)="onPageImageChange($event, '1')"></pagination-controls>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <select id="PerPage" class="form-control" (change)="onPageImageChange($event, '2')">
+                                                        <option *ngFor="let item of PageTotalNumberImage" [value]="item">
+                                                            {{ item }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

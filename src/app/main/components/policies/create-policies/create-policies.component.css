@@ -1,0 +1,54 @@
+.scroll {
+    display: block;
+    overflow: auto;
+    max-height: 500px;
+    width: 100%;
+
+}
+
+.scroll thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+.scroll::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+
+.scroll::-webkit-scrollbar-thumb {
+    background-color: silver;
+    outline: 1px solid #eee;
+}
+
+
+.recipt {
+    margin-top: 45px;
+}
+
+.recipts {
+    margin-top: 15%;
+}
+
+.recipient {
+    margin-top: 13%;
+}
+
+.recipt-opt {
+    margin-top: -30px;
+}
+
+.right-scroll {
+    max-height: 185px;
+    overflow: auto;
+}
+
+.alert-change {
+    border: 10px solid #00838f;
+    padding: 5px;
+    height: 310px;
+}

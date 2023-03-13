@@ -1,0 +1,65 @@
+<div class="container-fluid header_iner">
+    <div class="row" style="margin-top: 5px;">
+        <div class="col-md-7 pr-0" style="display: inline-flex;">
+            <a href="dashboard">
+                <h6 class="header-title-logo" style="width: 260px; margin-bottom: 3px;">
+                    <img src="/assets/img/2b.png" alt="logo" class="mr-3 ml-3" 
+                    width="35">2b Innovations
+                </h6>
+            </a>
+            <button type="button" id="sidebarCollapse" class="btn btn-light toggle_btn mr-3">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </button>
+            <h3 class="header-title fontSize_title">{{authService.TitleName}}</h3>
+        </div>
+        <!-- <div class="col-md-1" style="margin-left: -70px;">
+            
+        </div> -->
+        <div class="col-md-3 text-right">
+            <div *ngIf="authService.getShowInfo() === 'true'">
+                <span *ngIf="LicenseUsed">Licenses Used: {{LicenseUsed}}</span><br>
+                <span style="color: red;" *ngIf="LicenseDays">{{LicenseDays}}</span>
+            </div>
+        </div>
+        <div class="col-md-2 text-center dashboard_headerTitle">
+            <li>
+                <button type="button" class="btn btn-light mr-2" routerLink="/settings">
+                    <a> <i class="fa fa-cog text-center icon_setting"></i> </a>
+                </button>
+                <button *ngIf="CommonSettingList.get_help" type="button" 
+                class="btn btn-light help_button mr-2" data-bs-toggle="modal" data-bs-target="#HelpModal">
+                    {{'Header.helpButton' | translate}}
+                </button>
+
+                <a href="#" data-bs-toggle="dropdown" id="profileDropdown">
+                    <span style="color: #676b84;">
+                        {{name}} <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    </span>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown mt-3" aria-labelledby="profileDropdown">
+                    <a class="dropdown-item cursor" (click)="onLogout()">
+                        <i class="mdi mdi-logout text-secondary"></i>
+                        {{'Header.logout' | translate}}
+                    </a>
+                </div>
+            </li>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="HelpModal">
+    <div class="modal-dialog modal-lg" style="margin-left: 26rem;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title p-2 bg-white">{{authService.TitleName}}</h3>
+                <button type="button" class="close_button" data-bs-dismiss="modal" style="background-color: transparent;
+                border: 0; font-size: 40px;">&times;</button>
+            </div>
+            <div class="modal-body">
+                <app-help></app-help>
+            </div>
+        </div>
+    </div>
+</div>

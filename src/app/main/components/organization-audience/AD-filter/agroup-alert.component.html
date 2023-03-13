@@ -1,0 +1,157 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <label>{{'OrganizationAdFilter.searchGroup' | translate}}</label>
+                <div class="row">
+                    <div class="col-md-9">
+                        <form [formGroup]="formAlertGroup" (ngSubmit)="onSearchGroup(formAlertGroup.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input type="text"
+                                        placeholder=" {{'OrganizationAdFilter.searchButtonPlaceholder' | translate}}"
+                                        type="search" id="form" class="form-control"
+                                        style="padding: 17.7px; width: 210px;">
+                                </div>
+                                <button type="button" class="btn btn-success ml-3">
+                                    {{'OrganizationAdFilter.searchButton' |
+                                    translate}}</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- <div class="col-md-2">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success"> {{'OrganizationAdFilter.searchButton' | translate}}</button>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="card mt-2">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{'OrganizationAdFilter.adFilterListUsername' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'OrganizationAdFilter.adFilterListDomain' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'OrganizationAdFilter.adFilterListMobile' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'OrganizationAdFilter.adFilterListEmail' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'OrganizationAdFilter.adFilterListOnline' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'OrganizationAdFilter.adFilterListClientVersion' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'OrganizationAdFilter.adFilterListActions' | translate}}
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            Administrator
+                                        </td>
+                                        <td>
+                                            DeskAlert.local
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <i class='fab fa-centercode'></i>
+                                        </td>
+                                        <td>
+                                            9.16.7.1
+                                        </td>
+                                        <td class="margin">
+                                            <i class='fas fa-edit'></i>
+                                            <i class='fas fa-search'></i>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Client
+                                        </td>
+
+                                        <td>
+                                            DeskAlert.local
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <i class='fab fa-centercode'></i>
+                                        </td>
+
+                                        <td>
+                                            9.16.7.1
+                                        </td>
+                                        <td class="margin">
+                                            <i class='fas fa-edit'></i>
+                                            <i class='fas fa-search'></i>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            django 1
+                                        </td>
+
+                                        <td> DeskAlert.local </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <i class='fab fa-centercode'></i>
+                                        </td>
+
+                                        <td>
+                                            9.16.7.1
+                                        </td>
+                                        <td class="margin">
+                                            <i class='fas fa-edit'></i>
+                                            <i class='fas fa-search'></i>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            user
+                                        </td>
+
+                                        <td>
+                                            DeskAlert.local
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <i class='fab fa-centercode'></i>
+                                        </td>
+                                        <td>
+                                            9.18.7.1
+                                        </td>
+                                        <td class="margin">
+                                            <i class='fas fa-edit'></i>
+                                            <i class='fas fa-search'></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <!-- <tr *ngIf="cuisines.length === 0">
+                                        No Record Found!
+                                    </tr> -->
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

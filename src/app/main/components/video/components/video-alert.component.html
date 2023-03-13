@@ -1,0 +1,598 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <!-- <div class="row">
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs dash-tabs" role="tablist">
+                            <li class="nav-item active">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#record" role="tab">Select or record
+                                    a video file
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#video" role="tab">Embed a video
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div> -->
+
+                <div *ngIf="loading" class="dot-opacity-loader">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <!-- <div class="tab-content" style="width: 100%;">
+                    <div class="tab-pane active" id="record" role="tabpanel"> -->
+                <form [formGroup]="videoForm" (ngSubmit)="OnSubmit()">
+                    <div class="row">
+                        <div class="col-md-12 my-2 text-danger">
+                            <div> {{ 'VideoAlert.provideTitle&VideoFile' | translate}}</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="form-group">
+                                <h6> {{ 'VideoAlert.videoSupportDesktop' | translate}}</h6>
+                                <label for="exampleFormControlInput1"> {{ 'VideoAlert.videoTitle' | translate}}</label>
+                                <angular-editor [(ngModel)]="htmlContent" [config]="config" formControlName="title"
+                                    (keyup)="IsEditorTitle($event)"
+                                    [ngClass]="{'error': submitted && myAlertForm.title.errors}">
+                                </angular-editor>
+                                <div class="invalid-feedback" *ngIf="submitted && myAlertForm.title.errors?.required">
+                                    <sup>*</sup> {{ 'VideoAlert.videoEnterTitle' | translate}}
+                                </div>
+                            </div>
+                            <div class="well text-danger">
+                                <div> {{ 'VideoAlert.videoCharacterLimitation' | translate}} <br>
+                                    {{ 'VideoAlert.videoExceptingCharacterLimitation' | translate}}
+                                </div>
+                                <div *ngIf="loadingVideo" class="dot-opacity-loader">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="checkbox" (click)="IsVideoAndUrl($event)"> <span
+                                            style="color: #676b84;"> {{ 'VideoAlert.videoUsingIFrame' | translate}}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row" *ngIf="IsVideoAndIframe">
+                                    <div class="col-md-12">
+                                        <input type="text" placeholder="Enter Video Url" class="form-control"
+                                            [(ngModel)]="IframeUrl" [ngModelOptions]="{standalone: true}">
+                                    </div>
+                                </div>
+                                <div *ngIf="!IsVideoAndIframe">
+                                    <div draggable="true" ngClass="{{dragAreaClass}}">
+                                        <div class="row">
+                                            <div class="col-md-12 text-center mt-3">
+                                                {{ 'VideoAlert.dragFileHere' | translate}}
+                                                <a href="javascript:void(0)" (click)="file.click()">
+                                                    {{ 'VideoAlert.clickToOpen' | translate}}
+                                                </a>
+                                                <input type="file" #file [multiple]="false" accept="video/*"
+                                                    (change)="onFileChange($event)" style="display:none" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="error" *ngIf="error">
+                                        {{ 'VideoAlert.OnlyOneFile' | translate}}
+
+                                    </div>
+                                    <div class="success" *ngIf="SelectedName">
+                                        {{SelectedName}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="bbpt-4 video_alert_button">
+                                <button type="button" class="btn btn-outline-secondary mr-1" data-bs-toggle="modal"
+                                    data-bs-target="#videoAlertHtmlModal">{{ 'VideoAlert.videoPreviewButton' |
+                                    translate}}</button>
+                                <button type="submit" class="btn btn-outline-secondary mr-1">{{
+                                    'VideoAlert.videoSaveButton' | translate}}</button>
+                                <button type="submit" class="btn btn-success"> {{ 'VideoAlert.videoSave&NextButton' |
+                                    translate}}</button>
+                            </div>
+                            <div class="form-group video_alert_button" *ngIf="!IsVideoAndIframe">
+                                <div>{{ 'VideoAlert.selectFileFromServer' | translate}}</div>
+                                <div class="box p-2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <form [formGroup]="form" (ngSubmit)="onSearch(form.value)">
+                                                <div class="input-group">
+                                                    <div class="form-outline">
+                                                        <input id="search-input" formControlName="search"
+                                                            placeholder="Search here" type="search" id="form"
+                                                            class="form-control"
+                                                            style="padding: 17.7px; width: 210px;" />
+                                                    </div>
+                                                    <button type="submit" class="btn btn-success ml-3">
+                                                        {{ 'VideoAlert.searchButton' | translate}}
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="loadingVideoTable" class="dot-opacity-loader">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+
+
+                                    <table class="table table-hover">
+                                        <thead class="thead-black">
+                                            <tr>
+                                                <th class=" table_class">
+                                                    {{ 'VideoAlert.videoListTitle' | translate}}
+                                                </th>
+                                                <th>
+                                                    {{ 'VideoAlert.videoListActions' | translate}}
+                                                </th>
+                                            </tr>
+                                        <tbody>
+                                            <tr
+                                                *ngFor="let video of VideoList | paginate: { id:'first', itemsPerPage: 5, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                                <td>
+                                                    <span (click)="IsVideoSelected(video)" class="cursor">
+                                                        <u>
+                                                            {{video.name}}
+                                                        </u>
+                                                    </span>
+                                                </td>
+                                                <td class="marg">
+                                                    <span class="text-danger cursor" (click)="delete(video.id)">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr *ngIf="VideoList?.length === 0">
+                                                {{ 'VideoAlert.videoListRecord' | translate}}
+                                            </tr>
+                                        </tbody>
+
+                                    </table>
+                                    <div class="row" style="width: 100%">
+                                        <div class="col-md-9 text-right">
+                                            <pagination-controls (pageChange)="onPageChange($event, '1')" id="first">
+                                            </pagination-controls>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select id="PerPage" class="form-control"
+                                                (change)="onPageChange($event, '2')">
+                                                <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                                    {{ item }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="row my-4">
+                                </div> -->
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="">
+                                <label for="exampleFormControlInput1"> {{ 'VideoAlert.videoTitle' | translate}}</label>
+                                <angular-editor [(ngModel)]="VideohtmlContent" [config]="Vconfig" formControlName="body"
+                                    (keyup)="IsEditorBody($event)"
+                                    [ngClass]="{'error': submitted && myAlertForm.body.errors}">
+                                </angular-editor>
+                                <div class="invalid-feedback" *ngIf="submitted && myAlertForm.body.errors?.required">
+                                    <sup>*</sup> {{ 'VideoAlert.videoEnterTitle' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 right-side mt-4">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group pt-3">
+                                        <label for="exampleFormControlSelect1"> {{ 'VideoAlert.videoChangeSkin' |
+                                            translate}}</label>
+                                        <select class="form-control" (change)="IsColorChange($event)">
+                                            <option *ngFor="let skin of SkinList" [value]="skin.id">
+                                                {{skin.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="alert-change"
+                                                [ngStyle]="{'border': Think + 'px solid' + HeaderBorder}">
+                                                <div class="row mt-3 mb-4">
+                                                    <div class="col-md-10">
+                                                        <div [ngStyle]="{'text-align': HeaderLogo}">
+                                                            <img src="{{HeaderTextImg}}" alt="Logo" width="30"
+                                                                height="30">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <button type="button" class="close"
+                                                            data-bs-dismiss="modal">&times;</button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h6>
+                                                            {{ 'VideoAlert.videoLoremIpsum' | translate}}
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-secondary dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                        {{ 'VideoAlert.videoMinuteButton' | translate}}
+                                                        <span class="caret"></span>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-secondary mr-1"> {{
+                                                        'VideoAlert.videoPostponeButton' | translate}}</button>
+                                                    <button type="button" class="btn btn-outline-secondary mr-1"> {{
+                                                        'VideoAlert.videoOkButton' | translate}}</button>
+                                                </div>
+
+                                                <div class="row mt-3 mb-2">
+                                                    <div class="col-md-12" [ngStyle]="{'text-align': FooterLogo}">
+                                                        <div class="p-3"
+                                                            [ngStyle]="{'background-color': FooterBgColor}">
+                                                            <p [ngStyle]="{'color': footerColor}">
+                                                                <span [ngStyle]="{'font-size': FooterFontSize + 'px'}">
+                                                                    {{FooterText}}
+                                                                </span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="main">
+                                <div class="accordion" id="faq">
+                                    <div class="card">
+                                        <div class="card-header" id="headingOne">
+                                            <a href="#" class="btn btn-header-link" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseOne" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                                {{ 'VideoAlert.alertSettings' | translate}}
+                                            </a>
+                                        </div>
+
+                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                            data-parent="#faq">
+                                            <div class="card-body line-space">
+                                                <input type="checkbox" formControlName="mute"> {{
+                                                'VideoAlert.alertSettingsMute' | translate}}
+                                                <br>
+                                                <input type="checkbox" formControlName="controls"> {{
+                                                'VideoAlert.alertSettingsControl' | translate}}
+                                                <br>
+                                                <input type="checkbox" formControlName="loop"> {{
+                                                'VideoAlert.alertSettingsLoop' | translate}}
+                                                <br>
+                                                <input type="checkbox" formControlName="autoplay"> {{
+                                                'VideoAlert.alertSettingsAutoplay' | translate}}
+                                                <br>
+                                                <input type="checkbox" formControlName="high_priority">
+                                                {{ 'VideoAlert.alertSettingsHighPriority' | translate}} <br>
+                                                <input type="checkbox" formControlName="acknowledgement_required"> {{
+                                                'VideoAlert.alertSettingsAcknowledgement' | translate}}
+                                                <br>
+                                                <input type="checkbox" formControlName="self_distructive">
+                                                {{ 'VideoAlert.alertSettingsSelfDestructing' | translate}} <br>
+                                                <input type="checkbox" formControlName="auto_close"> {{
+                                                'VideoAlert.alertSettingsAutoClose' | translate}}
+                                                <input type="number" class="input-collape ml-1" style="width: 50px;"
+                                                    formControlName="auto_close_time" /> {{
+                                                'VideoAlert.alertSettingsMinute' | translate}}
+                                                <input type="checkbox" formControlName="allow_manual_close">
+                                                {{ 'VideoAlert.alertSettingsAllowManual' | translate}}<br>
+                                                <input type="checkbox" formControlName="lifetime_given">
+                                                {{ 'VideoAlert.alertSettingsLifetime' | translate}}
+                                                <input type="number" class="input-collape mr-1 ml-3 mt-1" style="width: 50px;"
+                                                    formControlName="lifetime" />
+                                                <select class="input-collape" formControlName="lifetime_option" style="width: 85px; height: 30px;">
+                                                    <option value="minute(s)"> {{
+                                                        'VideoAlert.alertSettingsLifetimeMinuteOptn' | translate}}
+                                                    </option>
+                                                    <option value="hours(s)"> {{
+                                                        'VideoAlert.alertSettingsLifetimeHourOptn' | translate}}
+                                                    </option>
+                                                    <option value="day"> {{ 'VideoAlert.alertSettingsLifetimeDayOptn' |
+                                                        translate}}</option>
+                                                </select> {{ 'VideoAlert.alertWillExpire' | translate}} <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" id="headingTwo">
+                                            <a href="#" class="btn btn-header-link collapsed" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseTwo" aria-expanded="false"
+                                                aria-controls="collapseTwo">
+                                                {{ 'VideoAlert.scheduleAlert' | translate}}
+                                            </a>
+                                        </div>
+                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                            data-parent="#faq">
+                                            <div class="card-body line-space">
+                                                <div class="row">
+                                                    <div class="col-lg-3">
+                                                        <div class="form-group">
+                                                            <input type="checkbox" formControlName="schedule_alert">
+                                                            {{ 'VideoAlert.scheduleAlert' | translate}} <br>
+                                                            <input type="radio" value="Once"
+                                                                formControlName="schedule_option"> {{
+                                                            'VideoAlert.scheduleAlertOnce' | translate}} <br>
+                                                            <input type="radio" value="Daily"
+                                                                formControlName="schedule_option"> {{
+                                                            'VideoAlert.scheduleAlertDaily' | translate}} <br>
+                                                            <input type="radio" value="Weekly"
+                                                                formControlName="schedule_option"> {{
+                                                            'VideoAlert.scheduleAlertWeekly' | translate}} <br>
+                                                            <input type="radio" value="Monthly"
+                                                                formControlName="schedule_option"> {{
+                                                            'VideoAlert.scheduleAlertMonthly' | translate}} <br>
+                                                            <input type="radio" value="yearly"
+                                                                formControlName="schedule_option"> {{
+                                                            'VideoAlert.scheduleAlertYearly' | translate}} <br>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-9">
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    {{ 'VideoAlert.startDate' | translate}} <input
+                                                                        type="datetime-local" name=""
+                                                                        class="form-control"
+                                                                        formControlName="schedule_time_start">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    {{ 'VideoAlert.endDate' | translate}} <input
+                                                                        type="datetime-local" name=""
+                                                                        class="form-control"
+                                                                        formControlName="schedule_time_end">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <input type="checkbox" name="reminder"
+                                                                        formControlName="reminder"> {{
+                                                                    'VideoAlert.addReminder' | translate}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label>
+                                                                    {{ 'VideoAlert.minuteBeforeStartDate/Time' |
+                                                                    translate}}
+                                                                </label>
+                                                                <select class="form-control"
+                                                                    formControlName="reminder_time_list">
+                                                                    <option value="5">5</option>
+                                                                    <option value="10">10</option>
+                                                                    <option value="15">15</option>
+                                                                    <option value="20">20</option>
+                                                                    <option value="25">25</option>
+                                                                    <option value="30">30</option>
+                                                                    <option value="35">35</option>
+                                                                    <option value="40">40</option>
+                                                                    <option value="45">45</option>
+                                                                    <option value="50">50</option>
+                                                                    <option value="55">55</option>
+                                                                    <option value="60">60</option>
+                                                                    <option value="65">65</option>
+                                                                    <option value="70">70</option>
+                                                                    <option value="80">80</option>
+                                                                    <option value="85">85</option>
+                                                                    <option value="90">90</option>
+                                                                    <option value="95">95</option>
+                                                                    <option value="100">100</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" id="headingThree">
+                                            <a href="#" class="btn btn-header-link collapsed"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                            aria-expanded="false" aria-controls="collapseThree">
+                                            {{ 'VideoAlert.alertAppearance' | translate}}
+                                        </a>
+                                        </div>
+                                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                            data-parent="#faq">
+                                            <div class="card-body line-space">
+                                                <div class="row ml-1">
+                                                    <div class="col-md-3 mr-2 size">
+                                                        <strong>{{'CreateAlert.rsvpAlertAppearanceSize' |
+                                                            translate}} </strong> <br>
+                                                        <input type="radio" formControlName="fullscreen_windowed"
+                                                            value="window"> {{ 'VideoAlert.alertAppearanceWidth' |
+                                                        translate}} &nbsp;
+                                                        <input type="text" class="input-collape"
+                                                            formControlName="width" style="width: 50px;" /> {{
+                                                        'VideoAlert.alertAppearanceWidthPx' | translate}} <br>
+                                                        <div>
+                                                            {{ 'VideoAlert.alertAppearanceHeight' | translate}} <input
+                                                                type="text" class="input-collape ml-3 mt-1"
+                                                                formControlName="height" style="width: 50px;"  /> {{
+                                                            'VideoAlert.alertAppearanceHeightPx' | translate}} <br>
+                                                        </div>
+                                                        <input type="checkbox" formControlName="resizable">
+                                                        {{ 'VideoAlert.alertAppearanceResizable' | translate}} <br>
+                                                        <input type="radio" value="fullscreen"
+                                                            formControlName="fullscreen_windowed"> {{
+                                                        'VideoAlert.alertAppearanceFullscreen' | translate}}
+                                                    </div>
+                                                    <div class="col-md-3 size">
+                                                        <div class="row">
+                                                             <strong>{{'CreateAlert.rsvpAlertAppearancePosition' |
+                                                                    translate}} </strong>
+                                                            <div class="col-md-10">
+                                                                <input type="radio" value="top-left"
+                                                                    formControlName="position">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <input type="radio" value="top-right"
+                                                                    formControlName="position">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-5">
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <input type="radio" value="center"
+                                                                    formControlName="position">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-10">
+                                                                <input type="radio" value="bottom-left"
+                                                                    formControlName="position">
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <input type="radio" value="bottom-right"
+                                                                    formControlName="position">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bbpt-4 text-right">
+                                <button type="button" class="btn btn-outline-secondary mr-1" data-bs-toggle="modal"
+                                    data-bs-target="#videoAlertHtmlModal"> {{ 'VideoAlert.videoPreviewButton' | translate}}
+                                </button>
+                                <button type="submit" class="btn btn-outline-secondary mr-1"> {{
+                                    'VideoAlert.videoSaveButton' | translate}} </button>
+                                <button type="submit" class="btn btn-success"> {{ 'VideoAlert.videoSave&NextButton' |
+                                    translate}} </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- </div> -->
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="videoAlertHtmlModal">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <div class="modal-dialog alert-static">
+        <div class="modal-content" id="alert-border">
+            <!-- Modal Header -->
+            <div class="">
+                <div class="row" style="display: flex; padding: 10px 15px;">
+                    <div class="col-md-10" style="width: 100%">
+                        <div id="Header-img">
+                            <span id="header-text-img">
+
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="close" data-bs-dismiss="modal" onclick="close_alert()"
+                            style="background-color: transparent; border: 0; font-size: 40px; cursor: pointer;">&times;</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" style="padding: 10px; margin: 0;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row" style="display: flex;">
+                            <div class="col-md-7" style="width: 80%;">
+                                <h3 id="header-text">
+                                </h3>
+                            </div>
+                            <div class="col-md-5 text-right">
+                                {{ 'VideoAlert.videoAlertCreated' | translate}}
+                                <div>{{DateTimePopup | date}}, {{DateTimePopup | date:'shortTime'}}</div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div style="height: 150px; overflow: auto;">
+                                    <h6 id="body-text">
+                                    </h6>
+                                    <div id="body-video"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <div>
+                                    <select style="border: 1px solid #e1dcdc; background: #efefef; margin-right: 5px;"
+                                        id="time">
+                                        <option value="60">1 Minute</option>
+                                        <option value="120">2 Minute</option>
+                                        <option value="300">5 Minute</option>
+                                        <option value="600">10 Minute</option>
+                                        <option value="900">15 Minute</option>
+                                        <option value="1800">30 Minute</option>
+                                        <option value="2700">45 Minute</option>
+                                        <option value="3600">1 Hours</option>
+                                        <option value="7200">2 Hours</option>
+                                    </select>
+
+                                    <button _type="button" onclick="IsPostPone()"
+                                        style="border: 1px solid #e1dcdc; margin-right: 5px;"> {{
+                                        'VideoAlert.videoPostponeButton' | translate}}</button>
+                                    <button type="button" onclick="IsPopupAlertOK()"
+                                        style="width: 70px; border: 1px solid #e1dcdc; margin-right: 5px;">{{
+                                        'VideoAlert.videoOkButton' | translate}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="row">
+                    <div class="col-md-12" id="footer-align" [ngStyle]="{'text-align': FooterLogo}">
+                        <div class="p-3" id="footer-BgColor" [ngStyle]="{'background-color': FooterBgColor}"
+                            style="padding: 10px;">
+                            <p id="footer-color" [ngStyle]="{'color': footerColor}">
+                                <span id="footer-fontSize" [ngStyle]="{'font-size': FooterFontSize + 'px'}">
+                                    {{FooterText}}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

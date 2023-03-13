@@ -1,0 +1,39 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <div *ngIf="loading" class="dot-opacity-loader">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                    <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                                    <table class="table table-hover ">
+                                        <thead class="thead-black">
+                                            <h2>{{'SystemHealthSettings.clientAppRequestTracing' | translate}}</h2>
+                                            <label> {{'SystemHealthSettings.requestTracing' | translate}}
+                                            </label> <br>
+                                            <button type="button" class="btn btn-outline-secondary mr-2"> {{'SystemHealthSettings.startButton' | translate}}</button>
+                                            <button type="button" class="btn btn-outline-secondary mr-1"> {{'SystemHealthSettings.downloadReportButton' | translate}}</button>
+                                            <button type="button" class="btn btn-outline-secondary mr-1"> {{'SystemHealthSettings.downloadUserReportButton' | translate}} </button>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h5> {{'SystemHealthSettings.clientClashDumps' | translate}}<br>
+                            </h5>
+                            <button type="button" class="btn btn-outline-secondary">  {{'SystemHealthSettings.sendingAlertButton' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

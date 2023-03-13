@@ -1,0 +1,164 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label> {{'ProfileSettings.profileName' | translate}}</label>
+                            <input type="text" placeholder="{{'ProfileSettings.profileAdmin' | translate}}" class="form-control"
+                            [(ngModel)]="ProfileDetails.username" disabled>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-outline-secondary mr-1"
+                data-bs-toggle="modal" data-bs-target="#ChangePasswordModal" >{{'ProfileSettings.changePasswordButton' | translate}}</button>
+                <div class="row">
+                    <div class="col-md-4 mt-2">
+                        <div class="form-group">
+                            <label>{{'ProfileSettings.interfaceLanguage' | translate}}</label>
+                            <select class="form-control" [(ngModel)]="ProfileDetails.interface_language">
+                                <option value="en">English</option>
+                                <option value="ar">{{'ProfileSettings.arabicLanguage' | translate}} </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mt-2">
+                        <div class="form-group">
+                            <label>{{'ProfileSettings.startPage' | translate}}  </label>
+                            <select class="form-control"  [(ngModel)]="ProfileDetails.start_page" *ngIf="RoleName === 'administrator'">
+                                <option value="" selected>{{'ProfileSettings.chooseStartPage' | translate}}  </option>
+                                <option value="dashboard">{{'ProfileSettings.dashboardPage' | translate}}</option>
+                                <option value="create-alerts">{{'ProfileSettings.createAlertPage' | translate}}</option>
+                                <!-- <option value="create-alerts/multiple">{{'ProfileSettings.multipleAlertPage' | translate}}</option> -->
+                                <option value="create-alerts/sent">{{'ProfileSettings.sentAlertPage' | translate}}</option>
+                                <!-- <option value="draft">Alert.Draft</option> -->
+                                <option value="message">{{'ProfileSettings.messageTemplatePage' | translate}}</option>
+                                <option value="device">{{'ProfileSettings.DevicePage' | translate}}</option>
+                                <option value="create-survey"> {{'ProfileSettings.createSurveyPage' | translate}}</option>
+                                <option value="create-survey/active"> {{'ProfileSettings.ActiveSurveyPage' | translate}} </option>
+                                <option value="create-survey/survey-template"> {{'ProfileSettings.surveyTemplatesPage' | translate}}  </option>
+                                <!-- <option value="screensaver/add"> {{'ProfileSettings.createScreensaverPage' | translate}} </option>
+                                <option value="screensaver"> {{'ProfileSettings.screensaverListPage' | translate}} </option> -->
+                                <!-- <option value="video-alerts"> {{'ProfileSettings.videoAlertPage' | translate}}  </option>
+                                <option value="video-alerts/list"> {{'ProfileSettings.videoListPage' | translate}} </option> -->
+                                <!-- <option value="wallpaper/add"> {{'ProfileSettings.createWallpaperPage' | translate}} </option>
+                                <option value="wallpaper">{{'ProfileSettings.wallpaperListPage' | translate}}  </option>
+                                <option value="lockscreen/add"> {{'ProfileSettings.createLockscreenPage' | translate}} </option>
+                                <option value="lockscreen">{{'ProfileSettings.lockscreenListPage' | translate}} </option> -->
+                                <!-- <option value="skin-list/add">{{'ProfileSettings.createSkinPage' | translate}}</option>
+                                <option value="skin-list"> {{'ProfileSettings.skinListPage' | translate}} </option> --> -->
+                                <option value="domains"> {{'ProfileSettings.domainsPage' | translate}} </option>
+                                <option value="synchronizations">{{'ProfileSettings.synchronizationPage' | translate}} </option>
+                                <option value="organization"> {{'ProfileSettings.organization/AudiencePage' | translate}} </option>
+                                <option value="emergency"> {{'ProfileSettings.colorCodeListPage' | translate}} </option>
+                                <option value="emergency/emergency">  {{'ProfileSettings.emergencyAlertPage' | translate}} </option>
+                                <option value="publisher-list"> {{'ProfileSettings.PublishersPage' | translate}} </option>
+                                <option value="policies">{{'ProfileSettings.PoliciesPage' | translate}} </option>
+                                <!-- <option value="ipgroup"> {{'ProfileSettings.ipGroupPage' | translate}}</option> -->
+                                <option value="reports"> {{'ProfileSettings.ReportsPage' | translate}} </option>
+                                <!-- <option value="approval"> {{'ProfileSettings.ApprovalPage' | translate}} </option> -->
+                            </select>
+                            
+                            <select class="form-control"  [(ngModel)]="ProfileDetails.start_page" *ngIf="RoleName === 'publisher'">
+                                <option value="" selected>{{'ProfileSettings.chooseStartPage' | translate}}  </option>
+                                <option value="dashboard">{{'ProfileSettings.dashboardPage' | translate}}</option>
+                                <option value="create-alerts" *ngIf="RoleAssign[0].view || RoleAssign[0].create">{{'ProfileSettings.createAlertPage' | translate}}</option>
+                                <option value="create-alerts/sent" *ngIf="RoleAssign[0].create">{{'ProfileSettings.sentAlertPage' | translate}}</option>
+                                <option value="message" *ngIf="RoleAssign[7].view">{{'ProfileSettings.messageTemplatePage' | translate}}</option>
+                                <option value="create-survey" *ngIf="RoleAssign[4].create"> {{'ProfileSettings.createSurveyPage' | translate}}</option>
+                                <option value="create-survey/active" *ngIf="RoleAssign[4].view"> {{'ProfileSettings.ActiveSurveyPage' | translate}} </option>
+                                <option value="create-survey/survey-template" *ngIf="RoleAssign[11].view"> {{'ProfileSettings.surveyTemplatesPage' | translate}}  </option>
+                                <option value="emergency" *ngIf="RoleAssign[9].view"> {{'ProfileSettings.colorCodeListPage' | translate}} </option>
+                                <option value="emergency/emergency" *ngIf="RoleAssign[9].view">  {{'ProfileSettings.emergencyAlertPage' | translate}} </option>
+                                <option value="reports"  *ngIf="RoleAssign[8].view"> {{'ProfileSettings.ReportsPage' | translate}} </option>
+                            </select>
+
+                            <br>
+                            <button type="button" class="btn btn-success"
+                            (click)="UpdateProfileDetails()"> {{'ProfileSettings.saveButton' | translate}} </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ChangePasswordModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+          <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"> {{'ProfileSettings.changePasswordButton' | translate}}</h4>
+        <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="white_box">
+                        <form [formGroup]="form" (ngSubmit)="OnSubmit()">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1"> {{'ProfileSettings.oldPassword' | translate}}</label>
+                                        <input type="password" formControlName="old_password" class="form-control" placeholder=" {{'ProfileSettings.enterPassword' | translate}}"
+                                            ngbAutofocus>
+                                        <div *ngIf="form.controls['old_password'].invalid && (form.controls['old_password'].dirty || form.controls['old_password'].touched)"
+                                            class="invalid-feedback">
+                                            <div *ngIf="form.controls['old_password'].errors.required">
+                                                {{'ProfileSettings.oldPasswordEnter' | translate}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1"> {{'ProfileSettings.newPassword' | translate}}</label>
+                                        <input type="password" formControlName="new_password" class="form-control" placeholder=" {{'ProfileSettings.enterPassword' | translate}}"
+                                            ngbAutofocus>
+                                        <div *ngIf="form.controls['new_password'].invalid && (form.controls['new_password'].dirty || form.controls['new_password'].touched)"
+                                            class="invalid-feedback">
+                                            <div *ngIf="form.controls['new_password'].errors.required">
+                                                {{'ProfileSettings.newPasswordEnter' | translate}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1"> {{'ProfileSettings.confirmNewPassword' | translate}}</label>
+                                        <input type="password" formControlName="confirm_password" class="form-control" placeholder="{{'ProfileSettings.confirmPasswordEnter' | translate}}"
+                                            ngbAutofocus>
+                                        <div *ngIf="form.controls['confirm_password'].invalid && (form.controls['confirm_password'].dirty || form.controls['confirm_password'].touched)"
+                                            class="invalid-feedback">
+                                            <div *ngIf="form.controls['confirm_password'].errors.required">
+                                                {{'ProfileSettings.confirm_passwordMatch' | translate}}
+                                            </div>
+                                            <div *ngIf="form.controls['confirm_password'].errors.confirmedValidator">  {{'ProfileSettings.passwordsMatch' | translate}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-outline-secondary mr-1"
+                                            data-bs-dismiss="modal"> {{'ProfileSettings.cancelButton' | translate}}</button>
+                                        <button type="submit" class="btn btn-success"> {{'ProfileSettings.saveButton' | translate}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      </div>
+    </div>
+</div>

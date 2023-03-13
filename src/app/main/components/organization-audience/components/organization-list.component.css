@@ -1,0 +1,52 @@
+.org_icon{
+    letter-spacing: 5px;
+    cursor: pointer;
+}
+.org_scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+.org_scroll::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+
+.org_scroll::-webkit-scrollbar-thumb {
+    background-color: silver;
+    outline: 1px solid #eee;
+}
+
+
+.org_scroll {
+    /* display: block; */
+    overflow-x: hidden;
+    max-height: 500px;
+    /* height: 530px; */
+    width: 100%;
+    position: sticky;
+}
+
+.org_scroll thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.org_html_class{
+    flex: 0 0 75%;
+    max-width: 75%;
+    padding: 1px;
+}
+
+/* .table td, .table th {
+    padding: 0.2rem;
+    vertical-align: top;
+    border-top: 0 !important;
+    height: 40px;
+} */
+
+/* .table td,
+.table th {
+    padding: .2rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6
+} */

@@ -1,0 +1,99 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <div class="row">
+                    <div class="col-md-10">
+                        <form [formGroup]="formSkin" (ngSubmit)="onSearchSkin(formSkin.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" formControlName="search" placeholder="{{ 'Skin.searchButtonPlaceholder' | translate}}" type="search"
+                                        id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                </div>
+                                <button type="submit" class="btn btn-success ml-3">
+                                    {{ 'Skin.skinSearchButton' | translate}}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success" routerLink="/skin-list/add">  {{ 'Skin.addSkinButton' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{ 'Skin.skinListTitle' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Skin.skinListCreationDate' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Skin.skinListCreatedBy' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Skin.skinListLastModifiedDate' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Skin.skinListActions' | translate}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let skin of SkinList | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        <td>
+                                            {{skin.name}}
+                                        </td>
+                                        <td>
+                                            {{dateformat(skin.created_at)}}, {{Timeformat(skin.created_at)}}
+                                        </td>
+                                        <td>
+                                            {{skin.created_by?.username}}
+                                        </td>
+                                        <td>
+                                            {{dateformat(skin.updated_at)}}, {{Timeformat(skin.updated_at)}}
+                                        </td>
+                                        <td>
+                                            <span class="mr-2" [routerLink]="['/skin-list', skin.id]">
+                                                <i class='fas fa-edit cursor'></i>
+                                            </span>
+                                            <span class="text-danger cursor" (click)="delete(skin.id)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="SkinList.length === 0">
+                                        {{ 'Skin.skinListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChange($event, '1')"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

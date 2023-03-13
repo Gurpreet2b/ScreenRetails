@@ -1,0 +1,32 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box">
+                <form [formGroup]="optForm" (ngSubmit)="OnSubmit()">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">  {{ 'CreateSubscription.subscriptionName' | translate}} </label>
+                                <input type="text" placeholder="{{ 'CreateSubscription.subscriptionNamePlaceholder' | translate}} " class="form-control"
+                                    formControlName="name" [ngClass]="{'error': submitted && myOptForm.name.errors}">
+                                <div class="invalid-feedback" *ngIf="submitted && myOptForm.name.errors?.required">
+                                    <sup>*</sup>{{ 'CreateSubscription.subscriptionNamePlaceholder' | translate}} 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-outline-secondary mr-1"
+                                    data-bs-dismiss="modal">{{ 'CreateSubscription.cancelButton' | translate}} </button>
+                                <button type="submit" class="btn btn-success" *ngIf="!optId">{{ 'CreateSubscription.saveButton' | translate}} </button>
+                                <button type="submit" class="btn btn-success" *ngIf="optId">{{ 'CreateSubscription.updateButton' | translate}} </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,112 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <label> {{ 'Lockscreen.searchLockscreenTitle' | translate}} </label>
+                <div class="row">
+                    <div class="col-md-8">
+                        <form [formGroup]="formLockScreen" (ngSubmit)="onSearchLockScreen(formLockScreen.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" formControlName="search" placeholder=" {{ 'Lockscreen.lockscreenSearchButtonPlaceholder' | translate}} " type="search"
+                                        id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                </div>
+                                <button type="submit" class="btn btn-success ml-3">
+                                    {{ 'Lockscreen.lockscreenSearchButton' | translate}} 
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-4 text-right" *ngIf="RoleAssign[11].create">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success" routerLink="/lockscreen/add"> {{ 'Lockscreen.addLockscreenButton' | translate}} </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                            <table class="table table-hover ">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>
+                                            {{ 'Lockscreen.lockscreenListTitle' | translate}} 
+                                        </th>
+                                        <th>
+                                            {{ 'Lockscreen.lockscreenListCreatedDate' | translate}} 
+                                        </th>
+                                        <th>
+                                            {{ 'Lockscreen.lockscreenListSchedule' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Lockscreen.lockscreenListSender' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'Lockscreen.lockscreenListActions' | translate}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let lockScreen of LockScreenList  | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        <td>
+                                            {{lockScreen.name}}
+                                        </td>
+                                        <td>{{dateformat(lockScreen.created_date)}}, {{Timeformat(lockScreen.created_date)}}
+                                        <td>{{lockScreen.scheduled}}</td>
+                                        <td>{{lockScreen.sender}}</td>
+                                        <td class="marg">
+                                            <span class="mr-2 cursor" class="mr-2 cursor"
+                                                title="Duplicate Alert" *ngIf="RoleAssign[11].edit"
+                                                [routerLink]="['/lockscreen', lockScreen.id, 'LockScreenAlert']">
+                                                <img src="assets/img/sent-alert-action/duplicate.png" alt="">
+                                            </span>
+                                            <span class="mr-2 cursor" *ngIf="lockScreen.status !== 'Active'"
+                                                title="Start Alert" (click)="IsResumeAlert(lockScreen.id)">
+                                                <img src="assets/img/sent-alert-action/start.png" alt="">
+                                            </span>
+                                            <span class="mr-2 cursor" *ngIf="lockScreen.status === 'Active'"
+                                                title="Stop Alert" (click)="IsStoppedAlert(lockScreen.id)">
+                                                <img src="assets/img/sent-alert-action/stop.png" alt="">
+                                            </span>
+                                            <!-- <span class="mr-2 cursor"
+                                                title="Preview Alert" (click)="GetlockScreenListById(lockScreen)"
+                                                data-bs-toggle="modal" data-bs-target="#PreviewlockScreenModal">
+                                                <img src="assets/img/sent-alert-action/preview.png" alt="">
+                                            </span> -->
+                                            <span class="text-danger cursor" (click)="delete(lockScreen.id)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </span>
+                                        </td>
+                                      
+                                    </tr>
+                                    <tr *ngIf="LockScreenList.length === 0">
+                                        {{ 'Lockscreen.lockscreenListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChange($event, '1')"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

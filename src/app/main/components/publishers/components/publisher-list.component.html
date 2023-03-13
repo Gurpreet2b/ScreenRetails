@@ -1,0 +1,149 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <div class="row">
+                    <div class="col-md-9">
+                        <form [formGroup]="formPublisher" (ngSubmit)="onSearchPublisher(formPublisher.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" formControlName="search" placeholder=" {{ 'Publisher.searchButtonPlaceholder' | translate}}"
+                                        type="search" id="form" class="form-control"
+                                        style="padding: 17.7px; width: 210px;" />
+                                </div>
+                                <button type="submit" class="btn btn-success ml-3">
+                                    {{ 'Publisher.searchButton' | translate}}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#CreatePublisherModal" (click)="onAddPublishers()"> {{'Publisher.addPublisherButton' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                            <table class="table table-hover ">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>
+                                            {{'Publisher.publisherListName' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'Publisher.publisherListPolicyName' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'Publisher.publisherListCreationDate' | translate}}
+                                        </th>
+                                        <th>
+                                            Last Login Time
+                                        </th>
+                                        <th>
+                                            Last Password Change
+                                        </th>
+                                        <th>
+                                            No. of Successful Logins
+                                        </th>
+                                        <th>
+                                            {{'Publisher.publisherListFailedLogin' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'Publisher.publisherListActions' | translate}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let publishers of PublishersList | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        <td>
+                                            {{publishers.name}}
+                                        </td>
+                                        <td>
+                                            {{publishers.policy_name}}
+                                        </td>
+                                        <td>
+                                            {{dateformat(publishers.created_date)}}<span *ngIf="publishers.created_date">, </span> {{Timeformat(publishers.created_date)}}
+                                        </td>
+                                        <td>
+                                            {{dateformat(publishers.last_login_time)}}<span *ngIf="publishers.last_login_time">, </span> {{Timeformat(publishers.last_login_time)}}
+                                        </td>
+                                        <td>
+                                            {{dateformat(publishers.last_password_change_time)}}
+                                        </td>
+                                        <td>
+                                            {{publishers.number_of_logins}}
+                                        </td>
+                                        <td>
+                                            {{publishers.number_of_failed_logins}}
+                                        </td>
+                                        <td>
+                                            <span class="mr-2 cursor" title="Edit Publisher" data-bs-toggle="modal"
+                                                data-bs-target="#CreatePublisherModal"
+                                                (click)="onEditPublishers(publishers.id)">
+                                                <i class='far fa-edit'> </i>
+                                            </span>
+                                            <span class="mr-2 cursor" *ngIf="!publishers.enabled" title="Enabled Alert"
+                                                (click)="GetPublisherEnable(publishers.id, 'Enabled')">
+                                                <img src="assets/img/sent-alert-action/start.png" alt="">
+                                            </span>
+                                            <span class="mr-2 cursor" *ngIf="publishers.enabled" title="Disabled Alert"
+                                                (click)="GetPublisherEnable(publishers.id, 'Disabled')">
+                                                <img src="assets/img/sent-alert-action/stop.png" alt="">
+                                            </span>
+                                            <!-- <span class="text-danger cursor" (click)="delete(publishers.id)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </span> -->
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="PublishersList?.length === 0">
+                                        {{'Publisher.publisherListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChange($event, '1')"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="CreatePublisherModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"> {{PublishersTitle}} Publisher</h4>
+                <button type="button" style="font-size: 30px;" class="close text-white" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <app-create-publishers [publishersId]="publishersId" (valueChange)='ValueChanged($event)'>
+                </app-create-publishers>
+            </div>
+
+        </div>
+    </div>
+</div>

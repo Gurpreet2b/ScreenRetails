@@ -1,0 +1,42 @@
+.alert-change {
+  border: 6px solid #00838f;
+  padding: 10px;
+  height: 320px;
+}
+
+.dragarea {
+  font-size: 1.2rem;
+  border: 2px solid #bbb;
+  padding: 1rem;
+  background-color: #fff;
+  color: #bbb;
+
+}
+
+.droparea {
+  font-size: 1.2rem;
+  border: 3px dashed #bbb;
+  padding: 3rem;
+  background-color: #eff;
+  color: #aaa;
+}
+
+.skin-text {
+  color: #05909d;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.skin_button{
+  margin-top: .025em;
+}
+
+.skin_access{
+  margin-top: 1em;
+  /* margin-left: 0.75em; */
+}
+
+.skin_default_user{
+  margin-top: 0.25em;
+}
+

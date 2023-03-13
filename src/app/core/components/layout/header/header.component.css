@@ -1,0 +1,77 @@
+/* .dropdown .dropdown-menu .dropdown-item {
+    font-size: 17px;
+    font-weight: 300;
+    color: #7f7778;
+    cursor: pointer;
+} */
+
+.fontSize_header {
+    font-size: 26px;
+}
+
+.desk_notify{
+    margin-left: 4em;
+    margin-right:4em;
+}
+
+.toggle_btn {
+    font-size: 18px;
+    cursor: pointer;
+    height: 40px;
+    margin-left: 15px;
+}
+
+.dashboard_headerTitle {
+    margin-top: 4px;
+    margin-left: -10px;
+    /* margin-left: 2em; */
+}
+
+/* .help_button{
+    margin-left: 0.5em
+} */
+
+.right_header_dashboard{
+    margin-left: 5em;
+}
+
+.icon_setting{
+    color: black;
+}
+
+.close_button {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5
+}
+
+.close_button:hover {
+    color: #fff;
+    text-decoration: none
+}
+
+/* .header_iner_dashboard{
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    z-index: 99;
+    padding: 10px 500px;
+    -webkit-box-shadow: 0 1px 2px rgb(56 65 74 / 15%);
+    box-shadow: 0 1px 2px rgb(56 65 74 / 15%);
+    margin: 0px;
+} */
+
+.header-title-logo {
+    color: #676b84;
+    font-size: 20px;
+    width: 100%;
+    border: 0;
+}
+
+.header_iner {
+    padding: 4px 0px;
+}

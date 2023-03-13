@@ -1,0 +1,21 @@
+/* .main_content{
+    display: none;
+} */
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    /* background-color: #fff; */
+    color: white;
+    text-align: center;
+    padding: 10px;
+    padding-left: 270px;
+    transition: .5s;
+    background: #00000013;
+ }
+
+ #footer.active {
+    padding-left: 0px;
+ }

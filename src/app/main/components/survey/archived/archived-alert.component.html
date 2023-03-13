@@ -1,0 +1,785 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <!-- <label>{{ 'ArchivedSurvey.searchSurvey' | translate}}</label> -->
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <select class="form-control" (change)="IsArchivedSurveyFilter($event)">
+                                <option selected value="all" hidden> {{'ActiveSurvey.filterSurveyAlertStatus' |translate}} </option>
+                                <option value="all"> {{'ActiveSurvey.filterAlertStatusAll' |translate}}</option>
+                                <option value="classic_survey"> {{'ActiveSurvey.filterAlertStatusSurvey' |translate}}</option>
+                                <option value="poll"> {{'ActiveSurvey.filterAlertStatusPoll' |translate}}</option>
+                                <option value="quiz"> {{'ActiveSurvey.filterAlertStatusQuiz' |translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <form [formGroup]="formSurvey" (ngSubmit)="onSearchSurvey(formSurvey.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" formControlName="search" placeholder="{{ 'ArchivedSurvey.archivedSearchplaceholder' | translate}}" type="search"
+                                        id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                </div>
+                                <button type="submit" class="btn btn-success ml-3">
+                                    {{ 'ArchivedSurvey.archivedSearchButton' | translate}}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-2 text-right" *ngIf="RoleAssign[4].create">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success" routerLink="/create-survey"> {{ 'ArchivedSurvey.archivedAddButton' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{ 'ArchivedSurvey.archivedListType' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'ArchivedSurvey.archivedListTitle' | translate}}
+                                        </th>
+                                        <th style="width: 185px;">
+                                            {{ 'ArchivedSurvey.archivedListCreationDate' | translate}}
+                                        </th>
+                                        <th style="width: 140px;">
+                                            {{ 'ArchivedSurvey.archivedListPeopleAns' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'ArchivedSurvey.archivedListScheduled' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'ArchivedSurvey.archivedListSender' | translate}}
+                                        </th>
+                                        <th style="width: 100px;">
+                                            {{ 'ArchivedSurvey.archivedListAnonymousSurvey' | translate}}
+                                        </th>
+                                        <th style="width: 145px;">
+                                            {{ 'ArchivedSurvey.archivedListActions' | translate}}
+                                        </th>
+                                    </tr>
+
+                                <tbody>
+                                    <tr
+                                        *ngFor="let active of ActiveList  | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        <td>
+                                            <span *ngIf="active.type === 'classic_survey'" title="Survey">
+                                                <img src="assets/img/sent-alert-action/survey.png" alt="">
+                                            </span>
+                                            <span *ngIf="active.type === 'quiz'" title="Quiz">
+                                                <img src="assets/img/sent-alert-action/quiz.png" alt="">
+                                            </span>
+                                            <span *ngIf="active.type === 'poll'" title="Poll">
+                                                <img src="assets/img/sent-alert-action/poll.png" alt="">
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{active.name}}
+                                        </td>
+                                        <td>{{dateformat(active.created_date)}}, {{Timeformat(active.created_date)}}
+                                        </td>
+                                        <td>{{active.people_answered}}</td>
+                                        <td>{{active.scheduled}}</td>
+                                        <td>{{active.sent_by}}</td>
+                                        <td>{{active.anonymous_survey}}</td>
+
+                                        <td class="marg">
+                                            <!-- <span class="mr-2 cursor" title="Preview Alert"
+                                                (click)="GetSkinListById(active)" data-bs-toggle="modal"
+                                                data-bs-target="#PreviewArchivedAlertModal">
+                                                <img src="assets/img/sent-alert-action/preview.png" alt="">
+                                            </span> -->
+                                            <span class="mr-2 cursor" title="Duplicate Alert" *ngIf="RoleAssign[4].create"
+                                                [routerLink]="['/create-survey', active.id, active.type]">
+                                                <img src="assets/img/sent-alert-action/duplicate.png" alt="">
+                                            </span>
+                                            <span class="mr-2 cursor" title="Alert Details" data-bs-toggle="modal"
+                                                data-bs-target="#SurveyChartModal"
+                                                (click)="GetGraphStats(active, active)">
+                                                <img src="assets/img/sent-alert-action/graph.png" alt="">
+                                            </span>
+                                            <span class="text-danger cursor" (click)="delete(active.id)"
+                                            *ngIf="RoleAssign[4].delete">
+                                                <i class="far fa-trash-alt"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="ActiveList.length === 0">
+                                        {{ 'ArchivedSurvey.archivedListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChange($event, '1')"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="PreviewArchivedAlertModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <div class="modal-dialog alert-static">
+        <div class="modal-content" [ngStyle]="{'border': Think + 'px solid' + HeaderBorder}">
+            <!-- Modal Header -->
+            <div class="">
+                <div class="row" style="display: flex; padding: 10px 15px;">
+                    <div class="col-md-10" style="width: 100%">
+                        <div [ngStyle]="{'text-align': HeaderLogo}">
+                            <span>
+                                <img src="{{HeaderTextImg}}" alt="Logo" width="30" height="30">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="close_button" data-bs-dismiss="modal" style="background-color: transparent;
+                        border: 0; font-size: 40px;">&times;</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" style="padding: 10px;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <h4>
+                                        {{TextTitle}}
+                                    </h4>
+                                </div>
+                                <div class="col-md-5 text-right">
+                                    {{ 'ArchivedSurvey.archivedPreviewCreated' | translate}}
+                                    <div>{{DateTimePopup | date}}, {{DateTimePopup | date:'shortTime'}}</div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div style="height: 180px; overflow: auto; border: 1px solid; padding: 5px;">
+
+                                        <div
+                                            *ngFor="let preview of AddNewRow; let i=index; let first = first; let last = last;">
+                                            <div *ngIf="i === show">
+                                                <b>{{preview.question}}</b>
+                                                <img *ngIf="preview.UrlQuestion" src="{{preview.UrlQuestion}}" alt=""
+                                                    style="width: 60px; height: 60px;">
+                                                <hr *ngIf="preview.choice !== 'Submitted'">
+                                                <div *ngFor="let ans of preview.rowAns; let ansIndex=index">
+                                                    <span *ngIf="preview.choice === 'single-choice'">
+                                                        <input type="radio" />
+                                                        <span> {{ans.answer1}} </span>
+                                                        <img *ngIf="ans.Url" src="{{ans.Url}}" alt=""
+                                                            style="width: 60px; height: 60px;">
+                                                    </span>
+
+                                                    <span *ngIf="preview.choice === 'multiple-choice'">
+                                                        <input type="checkbox" />
+                                                        {{ans.answer1}}
+                                                        <img *ngIf="ans.Url" src="{{ans.Url}}" alt=""
+                                                            style="width: 60px; height: 60px;">
+                                                    </span>
+                                                    <span *ngIf="preview.choice === 'intermediary-step'">
+                                                        {{preview.intermAnswer}}
+                                                        <img *ngIf="preview.intermUrl" src="{{preview.intermUrl}}"
+                                                            alt="" style="width: 60px; height: 60px;">
+                                                    </span>
+                                                    <span *ngIf="preview.choice === 'free-answer'">
+                                                    </span>
+                                                    <span *ngIf="preview.choice === 'early-survey-finish'">
+                                                        <input type="radio" />
+                                                        {{ans.answer1}}
+                                                        <img *ngIf="ans.Url" src="{{ans.Url}}" alt=""
+                                                            style="width: 60px; height: 60px;">
+                                                    </span>
+                                                    <span *ngIf="preview.choice === 'linear-scale'">
+                                                        {{preview.minLabel}} <input type="range" id="vol" name="vol"
+                                                            min="0" max="50" /> {{preview.maxLabel}}
+                                                    </span>
+
+                                                    <div *ngIf="preview.choice === 'Submitted'">
+                                                        <div style="text-align: center;">  
+                                                            {{ 'ArchivedSurvey.archivedPreviewSubmitSurvey' | translate}}
+                                                            
+                                                        </div>
+                                                        <div style="text-align: center; margin-top: 20px;">
+                                                            <button
+                                                                style="border: 1px solid #e1dcdc; margin-right: 5px;"
+                                                                data-bs-dismiss="modal">
+                                                                {{ 'ArchivedSurvey.archivedPreviewCloseButton' | translate}}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button style="border: 1px solid #e1dcdc; margin-right: 5px;"
+                                                    (click)="OnNextSubmit(i, last)"
+                                                    *ngIf="preview.choice !== 'Submitted'">
+                                                    {{ 'ArchivedSurvey.archivedPreviewSubmitButton' | translate}}
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="row">
+                    <div class="col-md-12" id="footer-Survey-align" [ngStyle]="{'text-align': FooterLogo}">
+                        <div class="p-3" id="footer-Survey-BgColor" [ngStyle]="{'background-color': FooterBgColor}"
+                            style="padding: 10px;">
+                            <p id="footer-Survey-color" [ngStyle]="{'color': footerColor}">
+                                <span id="footer-Survey-fontSize" [ngStyle]="{'font-size': FooterFontSize + 'px'}">
+                                    {{FooterText}}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg" id="SurveyChartModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 3rem; width: 990px;">
+            <div class="scroll p-3">
+                <div class="modal-header">
+                    <h4 class="modal-title">   {{ 'ActiveSurvey.activeSurveyAlertDetails' | translate}} - {{SurveyAlertName}}
+                        </h4>
+                    <div class="col-md-2 right-side">
+                        <button type="button" class="close text-white" data-bs-dismiss="modal" style="background-color: transparent;
+                    border: 0; font-size: 40px;">&times;</button>
+                    </div>
+                </div>
+                <div *ngIf="loading" class="dot-opacity-loader">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" *ngIf="!IsChartAndList">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <b>{{ 'ActiveSurvey.activeSurveyRecipients' | translate}}<u class="cursor"
+                                    (click)="OnChangeChartAndList('list', 'total_recipients_list')">{{TotalRecipients}}</u></b>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <b>{{ 'ActiveSurvey.activeSurveyQues' | translate}}{{TotalQuestion}} </b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-7 p-0">
+                            <ngx-charts-bar-vertical [results]="RSVPChartData" [view]="[500,300]"
+                                [showXAxisLabel]="true" [showYAxisLabel]="true" [xAxis]="false" [yAxis]="true">
+                            </ngx-charts-bar-vertical>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="bg-color">
+                                <h4>Alerts</h4>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">{{ 'ActiveSurvey.activeSurveySent' | translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','sent_users_list')"><u>{{Sent}}</u></label>
+                                    </div>
+                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="cornblue-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{ 'ActiveSurvey.activeSurveyRecieved' | translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','recieved_users_list')"><u>{{Recieved}}</u></label>
+                                    </div>
+                                </div> -->
+
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="purple-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">  {{ 'ActiveSurvey.activeSurveyDisplayed' | translate}}  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','displayed_users_list')"><u>{{Displayed}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-5 uss">
+                                        <div class="light-maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{ 'ActiveSurvey.activeSurveyNotRecieved' | translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','not_recieved_users_list')"><u>{{NotRecieved}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{ 'ActiveSurvey.activeSurveyVoted' | translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','survey_voted_users_list')"><u>{{Voted}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-8 uss">
+                                        <div class="not-voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">  {{ 'ActiveSurvey.activeSurveyNotVoted' | translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <label class="cursor"
+                                            (click)="OnChangeChartAndList('list','survey_not_voted_users_list')"><u>{{RecievedNotVoted}}</u>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 ml-2 mt-3 text-right">
+                                <div class="cursor" (click)="ExportToExcel()">
+                                   <u> {{'Sent.sentAlertDetailsExcel' |translate}} </u>
+                                </div>
+                                <div class="cursor" (click)="downloadCSV()">
+                                   <u> {{'Sent.sentAlertDetailsCsv' |translate}} </u>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3" *ngFor="let ques of TotalQuestionList; let i=index; let first = first; let last = last;">
+                        <div *ngIf="i === showChart">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <b>{{ 'ActiveSurvey.activeSurveyResult' | translate}}{{TotalQuestion}}</b>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <b> {{ 'ActiveSurvey.activeSurveyQuestionText' | translate}}{{TotalQuestion}}
+                                        {{ques.question_text}} </b>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <b> {{ 'ActiveSurvey.activeSurveyTotalQues' | translate}} {{TotalQuestion}}: {{TotalQuestion}} </b>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-3">
+                                <div class="col-md-7">
+                                    <ngx-charts-pie-chart [results]="PieChartData" [view]="[500, 300]">
+                                    </ngx-charts-pie-chart>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="bg-color">
+                                        <h4>Question: <img *ngIf="ques.image" src="{{ques.image}}" alt="Logo" width="25" height="25"> {{ques.question_text}}</h4>
+                                        <div class="ques-sroll">
+                                            <div class="row" *ngFor="let ans of PieChartData; let ansIndex=index">
+                                                <div class="col-md-9">
+                                                    <div class="dflex">
+                                                        <div class="maroon-box{{ansIndex}} mr-2"></div>
+                                                        <img *ngIf="ans.option_image" src="{{ans.option_image}}" alt="Logo" width="25" height="25" >
+                                                        <span>{{ans.name}}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 text-right">
+                                                    <label class="cursor" (click)="SurveyPieChartAns(ques.question_text, ans, 'survey_selected_option_user_list')"><u>{{ans.value}}</u></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 ml-2 mt-3 text-right">
+                                        <div class="cursor" (click)="SurveyExportToExcel()">
+                                           <u> {{'Sent.sentAlertDetailsExcelToQues' | translate}} </u>
+                                        </div>
+                                        <div class="cursor" (click)="SurveydownloadCSV()">
+                                           <u> {{'Sent.sentAlertDetailsCsvToQues' | translate}} </u>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button class="btn btn-success" (click)="OnNextChartSubmit(i, 'Previous', first)">
+                                        {{ 'ActiveSurvey.activeSurveyPreviousQues' | translate}}
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-success" (click)="OnNextChartSubmit(i, 'Next', first)">
+                                        {{ 'ActiveSurvey.activeSurveyNextQues' | translate}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-body" *ngIf="IsChartAndList">
+                    <div class="row">
+                        <!-- <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" placeholder="Search.." class="form-control" name="" id="">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success">Search</button>
+                            </div>
+                        </div> -->
+                        <div class="col-md-7">
+                            <form [formGroup]="formSurveyChart" (ngSubmit)="onSearchSurveyChart(formSurveyChart.value)">
+                                <div class="input-group">
+                                    <div class="form-outline">
+                                        <input id="search-input" formControlName="search" placeholder="Search here" type="search"
+                                            id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                    </div>
+                                    <button type="submit" class="btn btn-success ml-3">
+                                        {{ 'ActiveSurvey.activeSearchButton' | translate}}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-5 text-right">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success"
+                                    (click)="OnChangeChartAndList('chart', '')">{{ 'ActiveSurvey.activeReturnButton' | translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{ 'ActiveSurvey.activeListName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData !== 'total_recipients_list' && VariableData !== 'not_recieved_users_list'">
+                                            {{ 'ActiveSurvey.activeListComputerName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{ 'ActiveSurvey.activeListType' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{ 'ActiveSurvey.activeListDisplayName' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{ 'ActiveSurvey.activeListDomain' | translate}}
+                                        </th>
+                                        <th
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{ 'ActiveSurvey.activeListOnline' | translate}}
+                                        </th>
+                                        <th *ngIf="VariableData === 'survey_voted_users_list' && IsQuiz === 'quiz'">
+                                            {{ 'ActiveSurvey.activeListCorrectAns' | translate}}
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let alert of AlertDetailList | paginate: { id:'second', itemsPerPage: 10, currentPage: currentPageChart, totalItems: totalItemsChart }; let i=index">
+
+                                        <td *ngIf="VariableData !== 'survey_voted_users_list' && VariableData !== 'survey_selected_option_user_list'">
+                                            {{alert.username}}
+                                        </td>
+                                        <td *ngIf="VariableData === 'survey_voted_users_list'">{{alert.logon_name}}</td>
+                                        <td *ngIf="VariableData === 'survey_selected_option_user_list'">{{alert.logon_name}}</td>
+                                        <td
+                                            *ngIf="VariableData !== 'total_recipients_list' && VariableData !== 'not_recieved_users_list'">
+                                            {{alert.computer_name}}
+                                        </td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{alert.type}}</td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{alert.display_name}}</td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{alert.domain}}</td>
+                                        <td
+                                            *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            <img src="assets/img/animation_500_l7srpppy.gif" alt="" width="20"
+                                                height="20" *ngIf="alert.online">
+                                            <img src="assets/img/31120-live-icon.gif" alt="" width="20" height="20"
+                                                *ngIf="!alert.online">
+                                            <!-- {{alert.online}} -->
+                                        </td>
+                                        <td *ngIf="VariableData === 'survey_voted_users_list' && IsQuiz === 'quiz'"
+                                            data-bs-toggle="modal" data-bs-target="#SurveyQuizModal"
+                                            (click)="IsQuizList(alert)" class="cursor"><u>{{alert.correct_answers}}</u></td>
+                                    </tr>
+                                    <tr *ngIf="AlertDetailList.length === 0">
+                                        {{ 'ActiveSurvey.activeListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChartChange($event, '1')" id="second">
+                                    </pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChartChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumberChart" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="SurveyQuizModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> {{ 'ActiveSurvey.activeSurveyQuiz' | translate}}</h4>
+                <div class="col-md-2 right-side">
+                    <button type="button" class="close text-white" data-bs-dismiss="modal" style="background-color: transparent;
+                    border: 0; font-size: 40px;">&times;</button>
+                </div>
+            </div>
+            <div *ngIf="loading" class="dot-opacity-loader">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <!-- Modal body -->
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover">
+                            <thead class="thead-black">
+                                <tr>
+                                    <th>
+                                        {{ 'ActiveSurvey.activeSurveyQuestion' | translate}}
+                                    </th>
+                                    <th> 
+                                         {{ 'ActiveSurvey.activeSurveyUserAns' | translate}}
+                                    </th>
+                                    <th>
+                                        {{ 'ActiveSurvey.activeListCorrectAns' | translate}}
+                                    </th>
+                                </tr>
+                            <tbody>
+                                <tr *ngFor="let quiz of QuizList; let i=index">
+
+                                    <td>
+                                        {{quiz.question_text}}
+                                    </td>
+                                    <td>{{quiz.user_answer}}</td>
+                                    <td>{{quiz.correct_answer}}</td>
+                                </tr>
+                                <tr *ngIf="QuizList.length === 0">
+                                    {{ 'ActiveSurvey.activeListRecord' | translate}}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="display: none;">
+    <div class="col-md-12">
+        <div class="card" #Surveyepltable>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    Alert Title
+                                </th>
+                                <th>
+                                    Sent Date
+                                </th>
+                                <th>
+                                    Total Recipients
+                                </th>
+                                <th>
+                                    Sent
+                                </th>
+                                <th>
+                                    Recieved
+                                </th>
+                                <th>
+                                    Displayed
+                                </th>
+                                <th>
+                                    Not Recieved
+                                </th>
+                                <th>
+                                    Voted
+                                </th>
+                                <th>
+                                    Not Voted
+                                </th>
+                                <th>
+                                    Total Question
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let Excel of ExportExcelAndCsvSurveyList">
+                                <td>
+                                    {{Excel.alert_title}}
+                                </td>
+                                <td>
+                                    {{Excel.sent_date}}
+                                </td>
+                                <td>
+                                    {{Excel.total_recipients}}
+                                </td>
+                                <td>
+                                    {{Excel.sent}}
+                                </td>
+                                <td>
+                                    {{Excel.recieved}}
+                                </td>
+                                <td>
+                                    {{Excel.displayed}}
+                                </td>
+                                <td>
+                                    {{Excel.not_recieved}}
+                                </td>
+                                <td>
+                                    {{Excel.voted}}
+                                </td>
+                                <td>
+                                    {{Excel.displayed_but_not_voted}}
+                                </td>
+                                <td>
+                                    {{Excel.total_question}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="display: none;">
+    <div class="col-md-12">
+        <div class="card" #SurveyQuestionepltable>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    Question Type
+                                </th>
+                                <th>
+                                    Question Text
+                                </th>
+                                <th>
+                                    Answer
+                                </th>
+                                <th>
+                                    Count
+                                </th>
+                                <th>
+                                    Users
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let surveyExcel of SurveyQuesExportExcelAndCsvList">
+                                <td>
+                                    {{surveyExcel.question_type}}
+                                </td>
+                                <td>
+                                    {{surveyExcel.question_text}}
+                                </td>
+                                <td>
+                                    {{surveyExcel.text}}
+                                </td>
+                                <td>
+                                    {{surveyExcel.count}}
+                                </td>
+                                <td>
+                                    {{surveyExcel.users}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

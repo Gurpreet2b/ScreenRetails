@@ -1,0 +1,255 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <form [formGroup]="messageForm" (ngSubmit)="OnSubmit()">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <h6>{{ 'MessageTemplate.createMessageName' | translate}}</h6>
+                                <input type="text" class="form-control" placeholder="{{ 'MessageTemplate.createMessagePlaceholderEnterName' | translate}}"  class="form-control"
+                                formControlName="name" [ngClass]="{'error': submitted && myMessageForm.name.errors}">
+                                <div class="invalid-feedback" *ngIf="submitted && myMessageForm.name.errors?.required">
+                                    <sup>*</sup>{{ 'MessageTemplate.createMessageEnterName' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">{{ 'MessageTemplate.createMessageAlertText' | translate}}</label>
+
+                                <editor [init]="configTiny.init" apiKey="test" formControlName="body" 
+                                (onDrop)="OnDropImage($event)" class="tiny-opacity"
+                                    [ngClass]="{'error': submitted && myMessageForm.body.errors}">
+                                </editor>
+                                <div class="invalid-feedback" *ngIf="submitted && myMessageForm.body.errors?.required">
+                                    <sup>*</sup> {{ 'MessageTemplate.createMessageBodyName' | translate}}
+                                </div>
+                                
+                                <!-- <angular-editor [config]="config"
+                                formControlName="body" [ngClass]="{'error': submitted && myMessageForm.body.errors}"></angular-editor>
+                                <div class="invalid-feedback" *ngIf="submitted && myMessageForm.body.errors?.required">
+                                    <sup>*</sup> {{ 'MessageTemplate.createMessageBodyName' | translate}}
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
+                   <div class="row">
+                        <div class="col-md-12">
+                            <div class="bbpt-4 text-right">
+                                <button type="button" class="btn btn-outline-secondary mr-1"
+                                    routerLink="/message"> {{ 'MessageTemplate.createMessageCancelButton' | translate}}</button>
+                                <button type="submit" class="btn btn-success" *ngIf="!messageId"> {{ 'MessageTemplate.createMessageSaveButton' | translate}}</button>
+                                <button type="submit" class="btn btn-success ml-1" *ngIf="messageId"> {{ 'MessageTemplate.createMessageUpdateButton' | translate}}</button>
+                            </div>
+                        </div>
+                    </div> 
+                  
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="SurveyHtmlModal">
+    <div class="modal-dialog" style="max-width: 500px; margin: 1.75rem auto;">
+        <div class="modal-content" id="alert-Survey-border">
+            <!-- Modal Header -->
+            <div class="">
+                <div class="row" style="display: flex; padding: 10px 15px;">
+                    <div class="col-md-10" style="width: 100%">
+                        <div id="Header-Survey-img">
+                            <span id="header-Survey-img">
+
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="close" data-bs-dismiss="modal" onclick="close()"
+                            style="background-color: transparent; border: 0; font-size: 40px;">&times;</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" style="padding: 10px;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <h4 id="header-Survey-text">
+
+                                    </h4>
+                                </div>
+                                <div class="col-md-5 text-right">
+                                    {{ 'Survey.surveyHtmlCreated' | translate}} 
+                                    <div>{{DateTimePopup | date}}, {{DateTimePopup | date:'shortTime'}}</div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div style="height: 180px; overflow: auto; border: 1px solid; padding: 5px;">
+
+                                        <div *ngFor="let preview of AddNewRow; let i=index; let first = first; let last = last;">
+                                            <div *ngIf="i === show">
+                                                <b>{{preview.question}}</b>
+                                                <img *ngIf="preview.UrlQuestion" src="{{preview.UrlQuestion}}" alt="" style="width: 60px; height: 60px;">
+                                                <hr *ngIf="preview.choice !== 'Submitted'">
+                                                <div *ngFor="let ans of preview.rowAns; let ansIndex=index">
+                                                    <span *ngIf="preview.choice === 'single-choice'">
+                                                        <input type="radio" />
+                                                        <span> {{ans.answer1}} </span>
+                                                        <img *ngIf="ans.Url" src="{{ans.Url}}" alt="" style="width: 60px; height: 60px;">
+                                                    </span>
+                                                    
+                                                    <span *ngIf="preview.choice === 'multiple-choice'">
+                                                        <input type="checkbox" />
+                                                        {{ans.answer1}}
+                                                        <img *ngIf="ans.Url" src="{{ans.Url}}" alt="" style="width: 60px; height: 60px;">
+                                                    </span>
+                                                    <span *ngIf="preview.choice === 'intermediary-step'">
+                                                        {{preview.intermAnswer}}
+                                                    <img *ngIf="preview.intermUrl" src="{{preview.intermUrl}}" alt="" style="width: 60px; height: 60px;">
+                                                    </span>
+                                                    <span *ngIf="preview.choice === 'free-answer'">
+                                                    </span>
+                                                    <span *ngIf="preview.choice === 'early-survey-finish'">
+                                                        <input type="radio" />
+                                                        {{ans.answer1}}
+                                                        <img *ngIf="ans.Url" src="{{ans.Url}}" alt="" style="width: 60px; height: 60px;">
+                                                    </span>
+                                                    <span *ngIf="preview.choice === 'linear-scale'">
+                                                        {{preview.minLabel}} <input type="range" id="vol" name="vol"
+                                                            min="0" max="50" /> {{preview.maxLabel}}
+                                                    </span>
+
+                                                    <div *ngIf="preview.choice === 'Submitted'">
+                                                        <div style="text-align: center;">  {{ 'Survey.surveyHtmlSubmit' | translate}} 
+                                                            <!-- Your survey was submitted -->
+                                                        </div>
+                                                        <div style="text-align: center; margin-top: 20px;">
+                                                            <button style="border: 1px solid #e1dcdc; margin-right: 5px;"
+                                                                data-bs-dismiss="modal" (click)="ClosePreview()">
+                                                                {{ 'Survey.surveyHtmlClose' | translate}} 
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <button style="border: 1px solid #e1dcdc; margin-right: 5px;"
+                                                  >
+                                                    {{ 'Survey.surveyHtmlSubmitButton' | translate}} 
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="row">
+                    <div class="col-md-12" id="footer-Survey-align" [ngStyle]="{'text-align': FooterLogo}">
+                        <div class="p-3" id="footer-Survey-BgColor" [ngStyle]="{'background-color': FooterBgColor}"
+                            style="padding: 10px;">
+                            <p id="footer-Survey-color" [ngStyle]="{'color': footerColor}">
+                                <span id="footer-Survey-fontSize" [ngStyle]="{'font-size': FooterFontSize + 'px'}">
+                                    {{FooterText}}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- <div class="modal" id="RSVPHtmlModal">
+    <div class="modal-dialog" style="max-width: 500px; margin: 1.75rem auto;">
+        <div class="modal-content" id="alert-RSVP-border">
+            <div class="">
+                <div class="row" style="display: flex; padding: 10px 15px;">
+                    <div class="col-md-10" style="width: 100%">
+                        <div id="Header-RSVP-img">
+                            <span id="header-RSVP-img">
+
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="close" data-bs-dismiss="modal" onclick="close_alert()"
+                            style="background-color: transparent; border: 0; font-size: 40px; cursor: pointer;">&times;</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" style="padding: 10px;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h3 id="header-RSVP-text">
+
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div style="height: 110px; overflow: auto;">
+                                        <h6 id="body-RSVP-text">
+                                        </h6>
+                                        <hr>
+                                        <div id="ques1-RSVP"></div>
+                                        <fieldset id="group1">
+                                            <input type="radio" value="value1" name="group1" checked>&nbsp; <span
+                                                id="quesOption1-RSVP"></span><br>
+                                            <input type="radio" value="value2" name="group1">&nbsp; <span
+                                                id="quesOption2-RSVP"></span>
+                                        </fieldset>
+
+                                        <div id="ques2-RSVP"></div>
+                                        <div *ngIf="questionSelected2RSVP">
+                                            <textarea name="" id="" cols="30" rows="5" id="question2Ans"></textarea>
+                                        </div>
+                                        <br>
+                                        <button type="button" style="border: 1px solid #e1dcdc; margin-right: 5px;"
+                                            onclick="rsvpSubmit()">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="row">
+                    <div class="col-md-12" id="footer-RSVP-align" [ngStyle]="{'text-align': FooterLogo}">
+                        <div class="p-3" id="footer-RSVP-BgColor" [ngStyle]="{'background-color': FooterBgColor}"
+                            style="padding: 10px;">
+                            <p id="footer-RSVP-color" [ngStyle]="{'color': footerColor}">
+                                <span id="footer-RSVP-fontSize" [ngStyle]="{'font-size': FooterFontSize + 'px'}">
+                                    {{FooterText}}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div> -->

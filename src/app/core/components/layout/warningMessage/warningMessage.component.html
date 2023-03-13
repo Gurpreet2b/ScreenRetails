@@ -1,0 +1,28 @@
+<div class="modal-header">
+	<h4 class="modal-title">License Expiration Warning</h4>
+	<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"
+    style="color: #fff; font-size: 30px;" (click)="IsChangeWarning()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+	<div class="card lesson-border">
+		<div class="card-body" *ngIf="IsWarning">
+            <h4>Your 2b Innovations's license is about to expire on <span class="red">({{IsExpiryDate}})</span>.</h4>
+            <h5>To prolong your 2b Innovations's License Please contact 2b Innovations and get a renewal.</h5>
+            <h5>Email: <a style="color: blue;" href="mailto: dildeeps@2binnovations.com">dildeeps@2binnovations.com</a></h5>
+		</div>
+        <div class="card-body" *ngIf="!IsWarning">
+            <!-- <h4>Your 2b Innovations's license user limit has been crossed.</h4> -->
+            <h4>You have Exceeded the Allowed User Limit Permitted under your License.</h4>
+            <h5>Newer Users will not receive Alerts.</h5>
+            <!-- <h5>To increase your 2b Innovations's license user count Please contact 2b Innovations and get a renewal.</h5> -->
+            <h5>Please contact 2b Innovations to increase the user limit for your 2b Innovations License.</h5>
+            <h5>Email: <a style="color: blue;" href="mailto: dildeeps@2binnovations.com">dildeeps@2binnovations.com</a></h5>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Cross click')"
+    (click)="IsChangeWarning()">Close</button>
+</div>

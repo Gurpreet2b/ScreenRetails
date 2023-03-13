@@ -1,0 +1,149 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <h6 class="ml-2"> {{'WallpaperSendUser.chooseRecipient&Send' | translate}}</h6>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <select class="form-control" (change)="onSelectedUserType($event)">
+                                <option value="" selected>{{'WallpaperSendUser.selectAlertType' | translate}}</option>
+                                <option value="broadcast" *ngIf="RecipientListChoice === 'all'"> {{'WallpaperSendUser.broadcastAlertType' | translate}}</option>
+                                <option value="select-recipients"> {{'WallpaperSendUser.recipientAlertType' | translate}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="UserType === 'broadcast'">
+                    <p> 
+                        {{'WallpaperSendUser.sendContentViaBroadcast' | translate}}
+                    </p>
+                    <p>   
+                        {{'WallpaperSendUser.alertRecievedByComputer' | translate}}
+                    </p>
+                    <p>
+                        {{'WallpaperSendUser.emailDeliverByEmailAddress' | translate}}
+                    </p>
+                </div>
+
+                <div class="row" *ngIf="UserType === 'select-recipients'">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <ngx-treeview [config]="config" [items]="items" (selectedChange)="onSelectedChange($event)">
+                            </ngx-treeview>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="row mb-3">
+                            <div class="col-md-5">
+                                <form [formGroup]="formSendUser" (ngSubmit)="onSearchSendUser(formSendUser.value)">
+                                    <div class="input-group">
+                                        <div class="form-outline">
+                                            <input id="search-input" formControlName="search" placeholder="{{'WallpaperSendUser.searchButtonPlaceholder' | translate}}" type="search"
+                                                id="form" class="form-control" style="padding: 17.7px; width: 190px;" />
+                                        </div>
+                                        <button type="submit" class="btn btn-success ml-2">
+                                            {{'WallpaperSendUser.searchButton' | translate}}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-md-7">
+                                {{'WallpaperSendUser.showButton' | translate}} 
+                                <input type="checkbox" [(ngModel)]="Users" [ngModelOptions]="{standalone: true}" (change)="IsSelectedUsers()" />  {{'WallpaperSendUser.showUsers' | translate}} 
+                                <input type="checkbox" [(ngModel)]="Groups" [ngModelOptions]="{standalone: true}" (change)="IsSelectedUsers()" /> {{'WallpaperSendUser.showGroups' | translate}} 
+                                <input type="checkbox" [(ngModel)]="Computers" [ngModelOptions]="{standalone: true}" (change)="IsSelectedUsers()" /> {{'WallpaperSendUser.showComputers' | translate}} 
+                                <input type="checkbox" [(ngModel)]="Subscription" [ngModelOptions]="{standalone: true}" (change)="IsSelectedUsers()" /> {{'WallpaperSendUser.showSubscription' | translate}} 
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <div *ngIf="loading" class="dot-opacity-loader">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                    <table class="table table-hover ">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>
+                                                    #
+                                                </th>
+                                                <th>
+                                                    {{'WallpaperSendUser.userListName' | translate}} 
+                                                </th>
+                                                <th>
+                                                    {{'WallpaperSendUser.userListType' | translate}} 
+                                                </th>
+                                                <th>
+                                                    {{'WallpaperSendUser.userListDisplayName' | translate}} 
+                                                </th>
+                                                <th>
+                                                    {{'WallpaperSendUser.userListDomain' | translate}} 
+                                                </th>
+                                                <th>
+                                                    {{'WallpaperSendUser.userListOnline' | translate}} 
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let org of OrganizationList | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                                <td>
+                                                    <input type="checkbox" (change)="IsSelectedOrgList($event, org)" />
+                                                </td>
+                                                <td>
+                                                    {{org.name}}
+                                                </td>
+                                                <td>
+                                                    {{org.type}}
+                                                </td>
+                                                <td>
+                                                    {{org.display_name}}
+                                                </td>
+                                                <td>
+                                                    {{org.domain}}
+                                                </td>
+                                                <td>
+                                                    {{org.online}}
+                                                    <!-- <i class='fab fa-centercode'></i> -->
+                                                </td>
+                                            </tr>
+
+                                            <tr *ngIf="OrganizationList.length === 0">
+                                                {{'WallpaperSendUser.userListRecord' | translate}} 
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row" style="width: 100%">
+                                        <div class="col-md-10 text-right">
+                                            <pagination-controls (pageChange)="onPageChange($event, '1')"></pagination-controls>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                                <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                                    {{ item }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <div class="bbpt-4 text-right">
+                            <button type="submit" class="btn btn-success"
+                            (click)="SendAlert()"> {{'WallpaperSendUser.sendButton' | translate}} </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

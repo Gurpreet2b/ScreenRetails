@@ -1,0 +1,539 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <div class="row">
+                    <div class="col-md-10">
+                        <form [formGroup]="form" (ngSubmit)="onSearch(form.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" formControlName="search" placeholder=" {{ 'VideoAlertList.searchButtonPlaceholder' | translate}}" type="search"
+                                        id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                </div>
+                                <button type="submit" class="btn btn-success ml-3">
+                                    {{ 'VideoAlertList.searchButton' | translate}}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-md-2 text-right">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success" routerLink="/video-alerts"> {{ 'VideoAlertList.addVideoButton' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{ 'VideoAlertList.videoListTitle' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'VideoAlertList.videoListCreationDate' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'VideoAlertList.videoListStatus' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'VideoAlertList.videoListAlertStatus' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'VideoAlertList.videoListSchedule' | translate}}
+                                        </th>
+                                        <th style="width: 80px;">
+                                            {{ 'VideoAlertList.videoListSendBy' | translate}}
+                                        </th>
+                                        <th>
+                                            {{ 'VideoAlertList.videoListActions' | translate}}
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let video of VideoList | paginate: { id:'first', itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        <td>
+                                            {{video.name}}
+                                        </td>
+                                        <td>{{dateformat(video.created_date)}}, {{Timeformat(video.created_date)}}</td>
+                                        <td>{{video.approved_status}}</td>
+                                        <td>{{video.status}}</td>
+                                        <td>{{video.scheduled}}</td>
+                                        <td>{{video.sent_by}}</td>
+                                        <td class="marg">
+                                            <!-- <span class="mr-2 cursor" title="Resend Alert" data-bs-toggle="modal"
+                                                data-bs-target="#ResndAlertModal">
+                                                <img src="assets/img/sent-alert-action/resend.png" alt="">
+                                            </span> -->
+
+                                            <span class="mr-2 cursor" title="Duplicate Alert" 
+                                            [routerLink]="['/video-alerts', video.id, video.alert_type]">
+                                                <img src="assets/img/sent-alert-action/duplicate.png" alt="">
+                                            </span>
+
+                                            <span class="mr-2 cursor" *ngIf="video.status === 'Stopped'"
+                                                title="Start Alert" (click)="IsResumeAlert(video.id)">
+                                                <img src="assets/img/sent-alert-action/start.png" alt="">
+                                            </span>
+                                            <span class="mr-2 cursor" *ngIf="video.status !== 'Stopped'"
+                                                title="Stop Alert" (click)="IsStoppedAlert(video.id)">
+                                                <img src="assets/img/sent-alert-action/stop.png" alt="">
+                                            </span>
+
+                                            <span *ngIf="video.alert_type === 'VideoAlert'" class="mr-2 cursor" title="Video Alert Details"
+                                            data-bs-toggle="modal" data-bs-target="#ColumnChartModal" (click)="GetGraphStats(video.id, 'alert')">
+                                                <img src="assets/img/sent-alert-action/graph.png" alt="">
+                                            </span>
+                                            
+                                            <span *ngIf="video.alert_type === 'VideoAlert'" class="mr-2 cursor" title="Preview Alert" (click)="GetSkinListById(video)"
+                                            data-bs-toggle="modal" data-bs-target="#PreviewAlertModal">
+                                                <img src="assets/img/sent-alert-action/preview.png" alt="">
+                                            </span>
+                                            
+                                            <span class="text-danger cursor" (click)="delete(video.id)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="VideoList?.length === 0">
+                                        {{ 'VideoAlertList.videoListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChange($event, '1')" id="first"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ResndAlertModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"> {{ 'VideoAlertList.videoResendAlert' | translate}}</h4>
+                <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="radio">  {{ 'VideoAlertList.resendToAll' | translate}}
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="radio"> {{ 'VideoAlertList.resendToEveryone' | translate}}
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <input type="radio">  {{ 'VideoAlertList.resendToEveryoneAcknowledged' | translate}}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal"> {{ 'VideoAlertList.resendAlertCancelButton' | translate}}</button>
+                <button type="submit" class="btn btn-success"> {{ 'VideoAlertList.resendAlertResendButton' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="PreviewAlertModal">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <div class="modal-dialog alert-static">
+        <div class="modal-content" [ngStyle]="{'border': Think + 'px solid' + HeaderBorder}">
+            <!-- Modal Header -->
+            <div class="">
+                <div class="row" style="display: flex; padding: 10px 15px;">
+                    <div class="col-md-10" style="width: 100%">
+                        <div [ngStyle]="{'text-align': HeaderLogo}">
+                            <span>
+                                <img src="{{HeaderTextImg}}" alt="Logo" width="30" height="30">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" class="close_button" data-bs-dismiss="modal" style="background-color: transparent;
+                        border: 0; font-size: 40px;">&times;</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" style="padding: 10px; margin: 0;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <h3>
+                                        {{TextTitle}}
+                                    </h3>
+                                </div>
+                                <div class="col-md-5 text-right">
+                                    {{ 'VideoAlertList.previewAlertCreated' | translate}}
+                                    <div>{{DateTimePopup | date}}, {{DateTimePopup | date:'shortTime'}}</div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h6 style="height: 150px; overflow-x: hidden;" id="body-text">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h6>{{TextBody}}</h6>
+                                                <div id="body-video"></div>
+                                            </div>
+                                        </div>
+                                    </h6>
+                                </div>
+                            </div>
+                            <div style="display: flex;">
+                                <div *ngIf="acknowledgementRequired" style="margin-left: 110px;">
+                                    <select style="border: 1px solid #e1dcdc; background: #efefef; margin-right: 5px;">
+                                        <option value="1 Minute">1 Minute</option>
+                                        <option value="2 Minute">2 Minute</option>
+                                        <option value="5 Minute">5 Minute</option>
+                                        <option value="10 Minute">10 Minute</option>
+                                        <option value="15 Minute">15 Minute</option>
+                                        <option value="30 Minute">30 Minute</option>
+                                        <option value="45 Minute">45 Minute</option>
+                                        <option value="1 Hours">1 Hours</option>
+                                        <option value="2 Hours">2 Hours</option>
+                                    </select>
+
+                                    <button _type="button"
+                                        style="border: 1px solid #e1dcdc; margin-right: 5px;">{{ 'VideoAlertList.previewAlertPostponeButton' | translate}}</button>
+                                    <button type="button"
+                                        style="width: 70px; border: 1px solid #e1dcdc; margin-right: 5px;"> {{ 'VideoAlertList.previewAlertOkButton' | translate}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="row">
+                    <div class="col-md-12" id="footer-align" [ngStyle]="{'text-align': FooterLogo}">
+                        <div class="p-3" id="footer-BgColor" [ngStyle]="{'background-color': FooterBgColor}"
+                            style="padding: 10px;">
+                            <p id="footer-color" [ngStyle]="{'color': footerColor}">
+                                <span id="footer-fontSize" [ngStyle]="{'font-size': FooterFontSize + 'px'}">
+                                    {{FooterText}}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="ColumnChartModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <div class="scroll p-3">
+                <div class="modal-header">
+                    <h4 class="modal-title"> {{ 'VideoAlertList.videoAlertDetails' | translate}}</h4>
+                    <div class="col-md-2">
+                        <button type="button" class="close text-white" data-bs-dismiss="modal" style="background-color: transparent;
+                    border: 0; font-size: 40px;">&times;</button>
+                    </div>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body" *ngIf="!IsChartAndList">
+                    <div class="row mb-2">
+                        <div class="col-md-12 text-right">
+                            <b> {{ 'VideoAlertList.videoAlertTotalRecipients' | translate}} <u class="cursor" (click)="OnChangeChartAndList('list','total_recipients_list')">{{TotalRecipients}}</u></b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ngx-charts-bar-vertical 
+                            [results]="saleData"
+                            [view]="[700,400]"
+                            [showXAxisLabel]="true"
+                            [showYAxisLabel]="true"
+                            [legend]="false"
+                            [xAxis]="false"
+                            [yAxis]="true"></ngx-charts-bar-vertical>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 ml-4 mt-3">
+                            <div class="bg-color">
+                                <h3> {{ 'VideoAlertList.videoAlertDetailsAlert' | translate}}</h3>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text"> {{ 'VideoAlertList.columnChartSent' | translate}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                    <label class="cursor" (click)="OnChangeChartAndList('list','sent_users_list')"><u>{{Sent}}</u></label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="cornblue-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">  {{ 'VideoAlertList.columnChartRecieved' | translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','recieved_users_list')"><u>{{Recieved}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="purple-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">   {{ 'VideoAlertList.columnChartDisplayed' | translate}}   </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','displayed_users_list')"><u>{{Displayed}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-5 uss">
+                                        <div class="light-maroon-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">   {{ 'VideoAlertList.columnChartNotRecieved' | translate}}  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','not_recieved_users_list')"><u>{{NotRecieved}}</u></label>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-5 ">
+                                        <div class="voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">   {{ 'VideoAlertList.columnChartAcknowledged' | translate}}  </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','acknowledged_users_list')"><u>{{Acknowledged}}</u></label>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-5 uss">
+                                        <div class="not-voted-box square">
+                                            <div class="col-auto ml-3">
+                                                <span id="textExample2" class="form-text">  {{ 'VideoAlertList.columnChartLikeCount' | translate}} </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 text-right">
+                                        <label class="cursor" (click)="OnChangeChartAndList('list','liked_users_list')"><u>{{Liked}}</u></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5 ml-4 mt-3 text-right">
+                            <div class="cursor" (click)="ExportToExcel()">
+                                {{ 'VideoAlertList.columnChartExportToExcel' | translate}} 
+                            </div>
+                            <div class="cursor" (click)="downloadCSV()">
+                                {{ 'VideoAlertList.columnChartExportToCsv' | translate}} 
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-body" *ngIf="IsChartAndList">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <form [formGroup]="formRSVP" (ngSubmit)="onSearchRSVP(formRSVP.value)">
+                                <div class="input-group">
+                                    <div class="form-outline">
+                                        <input id="search-input" formControlName="search" placeholder="Search here" type="search"
+                                            id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                    </div>
+                                    <button type="submit" class="btn btn-success ml-3">
+                                        {{ 'VideoAlertList.searchButton' | translate}} 
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-5 text-right">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success" (click)="OnChangeChartAndList('chart', '')"> {{ 'VideoAlertList.returnButton' | translate}} </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <table class="table table-hover">
+                                <thead class="thead-black">
+                                    <tr>
+                                        <th>
+                                            {{ 'VideoAlertList.listName' | translate}}
+                                        </th>
+                                        <th *ngIf="VariableData !== 'total_recipients_list' && VariableData !== 'not_recieved_users_list'">
+                                            {{ 'VideoAlertList.listComputerName' | translate}}
+                                        </th>
+                                        <th *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{ 'VideoAlertList.listType' | translate}}
+                                        </th>
+                                        <th *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{ 'VideoAlertList.listDisplayName' | translate}}
+                                        </th>
+                                        <th *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{ 'VideoAlertList.listDomain' | translate}}
+                                        </th>
+                                        <th *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">
+                                            {{ 'VideoAlertList.listOnline' | translate}}
+                                        </th>
+                                    </tr>
+                                <tbody>
+                                    <tr 
+                                        *ngFor="let alert of AlertDetailList | paginate: { id:'second', itemsPerPage: 10, currentPage: currentPageChart, totalItems: totalItemsChart }; let i=index">
+                                        
+                                        <td>
+                                            {{alert.username}}
+                                        </td>
+                                        <td *ngIf="VariableData !== 'total_recipients_list' && VariableData !== 'not_recieved_users_list'">
+                                            {{alert.computer_name}}
+                                        </td>
+                                        <td *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">{{alert.type}}</td>
+                                        <td *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">{{alert.display_name}}</td>
+                                        <td *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">{{alert.domain}}</td>
+                                        <td *ngIf="VariableData === 'total_recipients_list' || VariableData === 'not_recieved_users_list'">{{alert.online}}</td>
+                                    </tr>
+                                    <tr *ngIf="AlertDetailList.length === 0">
+                                        {{ 'VideoAlertList.videoListRecord' | translate}}
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChartChange($event, '1')" id="second"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChartChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumberChart" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="display: none;">
+    <div class="col-md-12">
+        <div class="card" #PopupAlertepltable>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <div *ngIf="loading" class="dot-opacity-loader">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    {{ 'VideoAlertList.listType' | translate}}
+                                </th>
+                                <th>
+                                    {{ 'VideoAlertList.videoListTitle' | translate}}
+                                </th>
+                                <th>
+                                    {{ 'VideoAlertList.videoListCreationDate' | translate}}
+                                </th>
+                                <th>
+                                    {{ 'VideoAlertList.videoListStatus' | translate}}
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    test
+                                </td>
+                                <td>
+                                    Heading
+                                </td>
+                                <td>
+                                    23/12/2000
+                                </td>
+                                <td>
+                                    Start
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

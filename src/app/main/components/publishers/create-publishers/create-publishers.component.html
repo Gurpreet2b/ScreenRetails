@@ -1,0 +1,67 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box">
+                <form [formGroup]="publishersForm" (ngSubmit)="OnSubmit()">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label> {{'CreatePublisher.publisherName' | translate}}</label>
+                                <input type="text" placeholder=" {{'CreatePublisher.publisherEnterName' | translate}}" class="form-control"
+                                    formControlName="name"
+                                    [ngClass]="{'error': submitted && myPublishersForm.name.errors}">
+                                <div class="invalid-feedback"
+                                    *ngIf="submitted && myPublishersForm.name.errors?.required">
+                                    <sup>*</sup> {{'CreatePublisher.publisherEnterName' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>{{'CreatePublisher.publisherPassword' | translate}}</label>
+                                <input type="password" placeholder="{{'CreatePublisher.publisherEnterPassword' | translate}}" class="form-control"
+                                    formControlName="password"
+                                    [ngClass]="{'error': submitted && myPublishersForm.password.errors}">
+                                <div class="invalid-feedback"
+                                    *ngIf="submitted && myPublishersForm.password.errors?.required">
+                                    <sup>*</sup> {{'CreatePublisher.publisherEnterPassword' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>{{'CreatePublisher.publisherPolicy' | translate}} </label>
+                                <select class="form-control" [ngClass]="{'error': submitted && myPublishersForm.policy_id.errors}"
+                                formControlName="policy_id">
+                                    <option [value]="null" selected> {{'CreatePublisher.selectUser' | translate}}</option>
+                                    <option *ngFor="let policy of PolicyList" [value]="policy.id">
+                                        {{policy.name}}
+                                    </option>
+                                </select>
+                                <div class="invalid-feedback"
+                                    *ngIf="submitted && myPublishersForm.policy_id.errors?.required">
+                                    <sup>*</sup> {{'CreatePublisher.selectPolicyName' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-outline-secondary mr-1"
+                                    data-bs-dismiss="modal"> {{'CreatePublisher.cancelButton' | translate}}</button>
+                                <button type="submit" class="btn btn-success mr-1" *ngIf="!publishersId"> {{'CreatePublisher.saveButton' | translate}}</button>
+                                <button type="submit" class="btn btn-success" *ngIf="publishersId"> {{'CreatePublisher.updateButton' | translate}}</button>
+                                <img src="../../../../../assets/img/loader.gif" *ngIf="loading">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

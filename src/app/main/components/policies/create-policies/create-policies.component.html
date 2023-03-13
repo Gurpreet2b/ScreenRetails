@@ -1,0 +1,1292 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box">
+                <div *ngIf="loadingPolicy" class="dot-opacity-loader">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <form [formGroup]="policiesForm" (ngSubmit)="OnSubmit()">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="tab-content" style="width: 100%;">
+                                <div class="tab-pane active" id="pawerPoint" role="tabpanel">
+                                    <div class="use">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlInput1"> {{'CreatePolicies.policyName'
+                                                        | translate}}</label>
+                                                    <input type="text"
+                                                        placeholder="{{'CreatePolicies.enterPolicyNamePlaceholder' | translate}}"
+                                                        class="form-control" formControlName="name"
+                                                        [ngClass]="{'error': submitted && myPoliciesForm.name.errors}">
+                                                    <div class="invalid-feedback"
+                                                        *ngIf="submitted && myPoliciesForm.name.errors?.required">
+                                                        <sup>*</sup> {{'CreatePolicies.enterPolicyName' | translate}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <h4> {{'CreatePolicies.policyRole' | translate}}</h4>
+                                                    <input type="radio" formControlName="role" value="administrator"
+                                                        (click)="onRoleSelected('administrator')">
+                                                    {{'CreatePolicies.policySystemAdministrator' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio" formControlName="role" value="publisher"
+                                                        (click)="onRoleSelected('publisher')">
+                                                    {{'CreatePolicies.policyPublisher' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="IsRoleSelected">
+                        <div class="card">
+                            <div class="card-body">
+                                <ul class="nav nav-tabs dash-tabs" role="tablist">
+                                    <li class="nav-item active">
+                                        <a class="nav-link active accord" data-bs-toggle="tab" href="#access"
+                                            role="tab"> {{'CreatePolicies.accessControlListTab' | translate}}
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link accord" data-bs-toggle="tab" href="#list" role="tab">
+                                            {{'CreatePolicies.listOfRecipientTab' | translate}}
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link accord" data-bs-toggle="tab" href="#publisher" role="tab">
+                                            {{'CreatePolicies.publisherViewRightsTab' | translate}}
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link accord" data-bs-toggle="tab" href="#AlertTemplate"
+                                            role="tab"> {{ 'CreatePolicies.TemplateViewRightsTab' | translate }}
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link accord" data-bs-toggle="tab" href="#alert" role="tab">
+                                            {{'CreatePolicies.alertSkinAccessTab' | translate}}
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link accord" data-bs-toggle="tab" href="#settings" role="tab">
+                                            {{'CreatePolicies.alertSettingsTab' | translate}}
+                                        </a>
+                                    </li>
+                                    <!-- <li class="nav-item">
+                                        <a class="nav-link accord" data-bs-toggle="tab" href="#opt" role="tab">Opt-in lists
+                                            settings
+                                        </a>
+                                    </li> -->
+                                </ul>
+                                <div class="tab-content" style="width: 100%;">
+                                    <div class="tab-pane active" id="access" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-lg-12 mt-2 ">
+                                                <div *ngIf="loadingPolicy" class="dot-opacity-loader">
+                                                    <span></span>
+                                                    <span></span>
+                                                    <span></span>
+                                                </div>
+                                                <!-- <input type="checkbox" (change)="OnGrantFullControl($event)"
+                                                    formControlName="access_control_grant_full_access_boolean"> {{'CreatePolicies.grantFullControl' | translate}} -->
+                                                <table class="table table-hover">
+                                                    <thead class="thead-dark">
+                                                        <tr>
+                                                            <th>
+                                                                {{'CreatePolicies.accessControlListName' | translate}}
+                                                            </th>
+                                                            <th>
+                                                                {{'CreatePolicies.accessControlListCreate' | translate}}
+                                                            </th>
+                                                            <th>
+                                                                {{'CreatePolicies.accessControlListEdit' | translate}}
+                                                            </th>
+                                                            <th>
+                                                                {{'CreatePolicies.accessControlListDelete' | translate}}
+                                                            </th>
+                                                            <th>
+                                                                {{'CreatePolicies.accessControlListSend' | translate}}
+                                                            </th>
+                                                            <th>
+                                                                {{'CreatePolicies.accessControlListView' | translate}}
+                                                            </th>
+                                                            <th>
+                                                                {{'CreatePolicies.accessControlListStop' | translate}}
+                                                            </th>
+                                                            <th>
+                                                                {{'CreatePolicies.accessControlListApproval' |
+                                                                translate}}
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let control of ControlEmptyList; let i=index">
+                                                            <td>{{control.name}}</td>
+                                                            <td>
+                                                                <input type="checkbox" [(ngModel)]="control.create"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    *ngIf="control.create !== null">
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" [(ngModel)]="control.edit"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    *ngIf="control.edit !== null">
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" [(ngModel)]="control.delete"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    *ngIf="control.delete !== null">
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" [(ngModel)]="control.send"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    *ngIf="control.send !== null">
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" [(ngModel)]="control.view"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    *ngIf="control.view !== null">
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" [(ngModel)]="control.stop"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    *ngIf="control.stop !== null">
+                                                            </td>
+                                                            <td>
+                                                                <input type="checkbox" [(ngModel)]="control.approve"
+                                                                    [ngModelOptions]="{standalone: true}"
+                                                                    *ngIf="control.approve !== null">
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="list" role="tabpanel">
+                                        <div class="row mt-3">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio" formControlName="recipients_list_choice"
+                                                        value="all" (click)="onLastSelected('recipient')"
+                                                        data-bs-toggle="modal" data-bs-target="#WarningPolicyModal">  {{'CreatePolicies.listSendNotifications' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio" formControlName="recipients_list_choice"
+                                                        value="selected" (click)="onLastSelected('organization')">
+                                                    {{'CreatePolicies.listSendNotificationsRecipient' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="IsLastSelected">
+                                            <ul class="nav nav-tabs dash-tabs" role="tablist">
+                                                <li class="nav-item active">
+                                                    <a class="nav-link active accord" data-bs-toggle="tab" href="#user"
+                                                        role="tab" (click)="onUserOrg('users')">
+                                                        {{'CreatePolicies.listUsersTab' | translate}}
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link accord" data-bs-toggle="tab" href="#user"
+                                                        role="tab" (click)="onUserOrg('groups')">
+                                                        {{'CreatePolicies.listGroupsTab' | translate}}
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link accord" data-bs-toggle="tab" href="#ous"
+                                                        role="tab"> {{'CreatePolicies.listOusTab' | translate}}
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="nav-link accord" data-bs-toggle="tab" href="#user"
+                                                        role="tab" (click)="onUserOrg('computers')">
+                                                        {{'CreatePolicies.listComputerTab' | translate}}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content" style="width: 100%;">
+                                                <div class="tab-pane active" id="user" role="tabpanel">
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-7">
+                                                            <label> {{'CreatePolicies.searchUsers' | translate}}</label>
+                                                            <div class="row mb-2">
+                                                                <div class="col-md-8">
+                                                                    <form [formGroup]="formUserPolicy"
+                                                                        (ngSubmit)="onSearchUserPolicy(formUserPolicy.value)">
+                                                                        <div class="input-group">
+                                                                            <div class="form-outline">
+                                                                                <input id="search-input"
+                                                                                    formControlName="search"
+                                                                                    placeholder="{{'CreatePolicies.searchButtonPlaceholder' | translate}}"
+                                                                                    type="search" id="form"
+                                                                                    class="form-control"
+                                                                                    style="padding: 17.7px; width: 210px;" />
+                                                                            </div>
+                                                                            <button type="submit"
+                                                                                class="btn btn-success ml-3">
+                                                                                {{'CreatePolicies.searchButton' |
+                                                                                translate}}
+                                                                            </button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                                <span></span>
+                                                                <span></span>
+                                                                <span></span>
+                                                            </div>
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="scroll">
+                                                                        <table class="table table-hover ">
+                                                                            <thead class="thead-dark">
+                                                                                <tr>
+                                                                                    <th>#</th>
+                                                                                    <th *ngIf="UserType === 'users'">
+                                                                                        {{'CreatePolicies.usersListUsername'
+                                                                                        | translate}}
+                                                                                    </th>
+                                                                                    <th *ngIf="UserType === 'users'">
+                                                                                        {{'CreatePolicies.usersListDisplayname'
+                                                                                        | translate}}
+                                                                                    </th>
+                                                                                    <th *ngIf="UserType === 'groups'">
+                                                                                        {{'CreatePolicies.usersListGroupsname'
+                                                                                        | translate}}
+                                                                                    </th>
+                                                                                    <th
+                                                                                        *ngIf="UserType === 'computers'">
+                                                                                        {{'CreatePolicies.usersListComputername'
+                                                                                        | translate}}
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        {{'CreatePolicies.usersListDomains'
+                                                                                        | translate}}
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr
+                                                                                    *ngFor="let org of OrganizationList | paginate: { id:'first', itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                                                                    <td>
+                                                                                        <input type="checkbox"
+                                                                                            [(ngModel)]="org.selected"
+                                                                                            [ngModelOptions]="{standalone: true}"
+                                                                                            (click)="IsPolicyUser($event, org, i)">
+                                                                                    </td>
+                                                                                    <td *ngIf="UserType === 'users'">
+                                                                                        {{org.username}}
+                                                                                    </td>
+                                                                                    <td *ngIf="UserType === 'users'">
+                                                                                        {{org.display_name}}
+                                                                                    </td>
+                                                                                    <td *ngIf="UserType === 'groups'">
+                                                                                        {{org.group_name}}
+                                                                                    </td>
+                                                                                    <td
+                                                                                        *ngIf="UserType === 'computers'">
+                                                                                        {{org.username}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        {{org.domain}}
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr
+                                                                                    *ngIf="OrganizationList.length === 0">
+                                                                                    {{'CreatePolicies.usersListRecord' |
+                                                                                    translate}}
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" style="width: 100%">
+                                                                    <div class="col-md-10 text-right">
+                                                                        <pagination-controls
+                                                                            (pageChange)="onPageChange($event, '1')"
+                                                                            id="first">
+                                                                        </pagination-controls>
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <select id="PerPage" class="form-control"
+                                                                            (change)="onPageChange($event, '2')">
+                                                                            <option *ngFor="let item of PageTotalNumber"
+                                                                                [value]="item">
+                                                                                {{ item }}
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div class="col-md-1 recipts">
+                                                            <label>Add</label> <br>
+                                                            <img src="../../../../../assets/img/sent-alert-action/list_add.png"
+                                                                class="float-start" alt="mail" width="27" height="27">
+                                                            <br>
+                                                            <img src="../../../../../assets/img/sent-alert-action/list_remove.png"
+                                                                class="float-start" alt="mail" width="27" height="27">
+                                                            <br>
+                                                            <label>Remove</label>
+                                                        </div> -->
+                                                        <div class="col-md-5">
+                                                            <div class="recipt">
+                                                                <label> {{'CreatePolicies.usersRecipient' |
+                                                                    translate}}</label>
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div class="table">
+                                                                            <label><b> {{'CreatePolicies.selectedUsers'
+                                                                                    | translate}}
+                                                                                </b></label>
+                                                                            <div class="right-scroll">
+                                                                                <table class="table table-hover ">
+                                                                                    <thead class="thead-dark">
+                                                                                        <tr>
+                                                                                            <th>
+                                                                                                {{'CreatePolicies.usersListUsername'
+                                                                                                | translate}}
+                                                                                            </th>
+                                                                                            <th>
+                                                                                                {{'CreatePolicies.usersListActions'
+                                                                                                | translate}}
+                                                                                            </th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr
+                                                                                            *ngFor="let user of UserList; let u=index">
+                                                                                            <td>
+                                                                                                {{user.username}}
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <span
+                                                                                                    class="text-danger">
+                                                                                                    <i class="far fa-trash-alt cursor"
+                                                                                                        (click)="onRemoveRow(u, 'users')"></i>
+                                                                                                </span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <label><b> {{'CreatePolicies.selectedGroups'
+                                                                                    | translate}}</b></label>
+                                                                            <!-- <div *ngFor="let group of GroupList">
+                                                                                {{group.group_name}}
+                                                                            </div> -->
+                                                                            <div class="right-scroll">
+                                                                                <table class="table table-hover ">
+                                                                                    <thead class="thead-dark">
+                                                                                        <tr>
+                                                                                            <th>
+                                                                                                {{'CreatePolicies.groupName'
+                                                                                                | translate}}
+                                                                                            </th>
+                                                                                            <th>
+                                                                                                {{'CreatePolicies.usersListActions'
+                                                                                                | translate}}
+                                                                                            </th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr
+                                                                                            *ngFor="let group of GroupList; let g=index">
+                                                                                            <td>
+                                                                                                {{group.group_name}}
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <span
+                                                                                                    class="text-danger">
+                                                                                                    <i class="far fa-trash-alt cursor"
+                                                                                                        (click)="onRemoveRow(g, 'groups')"></i>
+                                                                                                </span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <br>
+                                                                            <label><b> {{'CreatePolicies.selectedOus' |
+                                                                                    translate}}</b></label>
+                                                                            <div class="right-scroll">
+                                                                                <table class="table table-hover ">
+                                                                                    <thead class="thead-dark">
+                                                                                        <tr>
+                                                                                            <th>
+                                                                                                OU Name
+                                                                                            </th>
+                                                                                            <!-- <th>
+                                                                                                {{'CreatePolicies.usersListActions' | translate}}
+                                                                                            </th> -->
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr
+                                                                                            *ngFor="let org of OUList; let ou=index">
+                                                                                            <td>
+                                                                                                {{org}}
+                                                                                            </td>
+                                                                                            <!-- <td>
+                                                                                                <span
+                                                                                                    class="text-danger">
+                                                                                                    <i class="far fa-trash-alt cursor"
+                                                                                                        (click)="onRemoveRow(ou, 'OU')"></i>
+                                                                                                </span>
+                                                                                            </td> -->
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <br>
+                                                                            <label><b>
+                                                                                    {{'CreatePolicies.selectedComputers'
+                                                                                    | translate}}
+                                                                                </b></label>
+                                                                            <!-- <div *ngFor="let comp of ComputerList">
+                                                                                {{comp.username}}
+                                                                            </div> -->
+                                                                            <div class="right-scroll">
+                                                                                <table class="table table-hover ">
+                                                                                    <thead class="thead-dark">
+                                                                                        <tr>
+                                                                                            <th>
+                                                                                                {{'CreatePolicies.usersListComputername'
+                                                                                                | translate}}
+                                                                                            </th>
+                                                                                            <th>
+                                                                                                {{'CreatePolicies.usersListActions'
+                                                                                                | translate}}
+                                                                                            </th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr
+                                                                                            *ngFor="let comp of ComputerList; let c=index">
+                                                                                            <td>
+                                                                                                {{comp.username}}
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <span
+                                                                                                    class="text-danger">
+                                                                                                    <i class="far fa-trash-alt cursor"
+                                                                                                        (click)="onRemoveRow(c, 'computers')"></i>
+                                                                                                </span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <br>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="ous" role="tabpanel">
+                                                    <div class="row mt-3">
+                                                        <div class="col-md-7">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <ngx-treeview [config]="config"
+                                                                                [items]="items"
+                                                                                (selectedChange)="onSelectedChange($event, items)">
+                                                                            </ngx-treeview>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- <div class="col-md-1 recipts">
+                                                            <label>Add</label> <br>
+                                                            <img src="../../../../../assets/img/sent-alert-action/list_add.png"
+                                                                class="float-start" alt="mail" width="27" height="27">
+                                                            <br>
+                                                            <img src="../../../../../assets/img/sent-alert-action/list_remove.png"
+                                                                class="float-start" alt="mail" width="27" height="27">
+                                                            <br>
+                                                            <label>Remove</label>
+                                                        </div> -->
+
+                                                        <div class="col-md-5">
+                                                            <div class="recipt">
+                                                                <label> {{'CreatePolicies.usersRecipient' |
+                                                                    translate}}</label>
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div class="table">
+                                                                            <label><b> {{'CreatePolicies.selectedUsers'
+                                                                                    | translate}}
+                                                                                </b></label>
+                                                                            <div class="right-scroll">
+                                                                                <table class="table table-hover ">
+                                                                                    <thead class="thead-dark">
+                                                                                        <tr>
+                                                                                            <th>
+                                                                                                {{'CreatePolicies.usersListUsername'
+                                                                                                | translate}}
+                                                                                            </th>
+                                                                                            <th>
+                                                                                                {{'CreatePolicies.usersListActions'
+                                                                                                | translate}}
+                                                                                            </th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr
+                                                                                            *ngFor="let user of UserList; let u=index">
+                                                                                            <td>
+                                                                                                {{user.username}}
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <span
+                                                                                                    class="text-danger">
+                                                                                                    <i class="far fa-trash-alt cursor"
+                                                                                                        (click)="onRemoveRow(u, 'users')"></i>
+                                                                                                </span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <label><b> {{'CreatePolicies.selectedGroups'
+                                                                                    | translate}}</b></label>
+                                                                            <div class="right-scroll">
+                                                                                <table class="table table-hover ">
+                                                                                    <thead class="thead-dark">
+                                                                                        <tr>
+                                                                                            <th>
+                                                                                                {{'CreatePolicies.groupName'
+                                                                                                | translate}}
+                                                                                            </th>
+                                                                                            <th>
+                                                                                                {{'CreatePolicies.usersListActions'
+                                                                                                | translate}}
+                                                                                            </th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr
+                                                                                            *ngFor="let group of GroupList; let g=index">
+                                                                                            <td>
+                                                                                                {{group.group_name}}
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <span
+                                                                                                    class="text-danger">
+                                                                                                    <i class="far fa-trash-alt cursor"
+                                                                                                        (click)="onRemoveRow(g, 'groups')"></i>
+                                                                                                </span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <br>
+                                                                            <label><b> {{'CreatePolicies.selectedOus' |
+                                                                                    translate}}</b></label>
+                                                                            <div class="right-scroll">
+                                                                                <table class="table table-hover ">
+                                                                                    <thead class="thead-dark">
+                                                                                        <tr>
+                                                                                            <th>
+                                                                                                OU Name
+                                                                                            </th>
+                                                                                            <!-- <th>
+                                                                                                {{'CreatePolicies.usersListActions' | translate}}
+                                                                                            </th> -->
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr
+                                                                                            *ngFor="let org of OUList; let ou=index">
+                                                                                            <td>
+                                                                                                {{org}}
+                                                                                            </td>
+                                                                                            <!-- <td>
+                                                                                                <span
+                                                                                                    class="text-danger">
+                                                                                                    <i class="far fa-trash-alt cursor"
+                                                                                                        (click)="onRemoveRow(ou, 'OU')"></i>
+                                                                                                </span>
+                                                                                            </td> -->
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <br>
+                                                                            <label><b>
+                                                                                    {{'CreatePolicies.selectedComputers'
+                                                                                    | translate}}
+                                                                                </b></label>
+                                                                            <div class="right-scroll">
+                                                                                <table class="table table-hover ">
+                                                                                    <thead class="thead-dark">
+                                                                                        <tr>
+                                                                                            <th>
+                                                                                                {{'CreatePolicies.usersListComputername'
+                                                                                                | translate}}
+                                                                                            </th>
+                                                                                            <th>
+                                                                                                {{'CreatePolicies.usersListActions'
+                                                                                                | translate}}
+                                                                                            </th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        <tr
+                                                                                            *ngFor="let comp of ComputerList; let c=index">
+                                                                                            <td>
+                                                                                                {{comp.username}}
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <span
+                                                                                                    class="text-danger">
+                                                                                                    <i class="far fa-trash-alt cursor"
+                                                                                                        (click)="onRemoveRow(c, 'computers')"></i>
+                                                                                                </span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <br>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane " id="publisher" role="tabpanel">
+                                        <div class="row mt-3">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio" formControlName="publisher_view_rights_choice"
+                                                        value="all"> {{'CreatePolicies.publisherViewAllCreatedContent' |
+                                                    translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio" formControlName="publisher_view_rights_choice"
+                                                        value="selected">
+                                                    {{'CreatePolicies.publisherViewSelfCreatedContent' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane " id="AlertTemplate" role="tabpanel">
+                                        <div class="row mt-3">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio"
+                                                        formControlName="alerts_template_view_rights_choice"
+                                                        value="all"> {{'CreatePolicies.TemplateViewAllCreatedContent' |
+                                                    translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio"
+                                                        formControlName="alerts_template_view_rights_choice"
+                                                        value="selected">
+                                                    {{'CreatePolicies.TemplateViewSelfCreatedContent' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane " id="alert" role="tabpanel">
+                                        <div class="row mt-3">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio" formControlName="alert_skin_choice" value="all"
+                                                        (click)="onSkinSelected('available')">
+                                                    {{'CreatePolicies.allSkinAvailable' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio" formControlName="alert_skin_choice"
+                                                        value="selected" (click)="onSkinSelected('specified')">
+                                                    {{'CreatePolicies.onlySpecifiedSkins' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="IsSkinSelected">
+                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 mb-3" *ngFor="let skin of SkinList; let i = index">
+                                                    <input type="checkbox" [(ngModel)]="skin.selected"
+                                                        [ngModelOptions]="{standalone: true}">
+
+                                                    <div [ngStyle]="{'border': skin.border_thickness + 'px solid' + skin.border_color,
+                                                        'background-color': skin.alert_background_color, 'height': skin.height + 'px', 'width': skin.width + 'px'}"
+                                                        style="min-width: 500px; min-height: 400px;">
+                                                        <!-- <div class="">
+                                                                <div class="row" style="display: flex; padding: 3px 1px; margin: 0;"
+                                                                [ngStyle]="{'background-color': skin.header_background_color}">
+                                                                    <div class="col-md-6 mt-2">
+                                                                        {{skin.header_custom_message}}
+                                                                    </div>
+                                                                    <div class="col-md-6" style="width: 50%">
+                                                                        <div [ngStyle]="{'text-align': skin.team_image_align}">
+                                                                            <span>
+                                                                                <img *ngIf="skin.team_image" src="{{skin.team_image}}" alt="Logo" height="35px">
+                                                                                <img *ngIf="!skin.team_image" src="{{HeaderTextImg}}" alt="Logo">
+                                                                            </span>
+                                                                            <button type="button" class="close text-right mb-2" data-bs-dismiss="modal" style="background-color: transparent;
+                                                                                border: 0; font-size: 40px; padding-left: 10px; margin-right: 1px;">&times;</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row"> 
+                                                                    <div class="col-md-12">
+                                                                        <div class="">
+                                                                            <div class="row mt-3 mb-3">
+                                                                                <div class="col-md-7">
+                                                                                    <h2 class="text-white footer_body_text">
+                                                                                       Good Morning
+                                                                                    </h2>
+                                                                                </div>
+                                                                                
+                                                                            </div>
+
+                                                                            <div class="row mt-4 mb-3">
+                                                                                <div class="col-md-12">
+                                                                                    <h6 style="height: 150px; overflow-x: hidden;" id="body-text"
+                                                                                    [ngStyle]="{'height': (skin.height - 250) + 'px'}">
+                                                                                        <div class="row">
+                                                                                            <div class="col-md-12">
+                                                                                                <h5 class="text-white footer_body_text">
+                                                                                                    Have a Great Day! Keep Smiling
+                                                                                                </h5>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </h6>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="device_FooterText">
+                                                                    <div class="row" [ngStyle]="{'background-color': skin.footer_background_color}" style="margin: 0px;">
+                                                                        <div class="col-md-4" style="padding-left: 0;">
+                                                                            <div>
+                                                                                <img *ngIf="skin.footer_background_image" src="{{skin.footer_background_image}}"
+                                                                                    alt="alert pic"
+                                                                                    style="width: 180px; height: 50px;" class="mr-2">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-8" id="footer-align" [ngStyle]="{'text-align': skin.footer_align}">
+                                                                            <div class="text-right" id="footer-BgColor"
+                                                                                style="padding: 10px; letter-spacing: 3px;">
+                                                                                <p id="footer-color" [ngStyle]="{'color': skin.footer_text_color}">
+                                                                                    <span id="footer-fontSize" [ngStyle]="{'font-size': skin.footer_font_size + 'px'}">
+                                                                                        {{skin.footer_text}}
+                                                                                    </span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div> -->
+
+                                                        <div class="p-2" *ngIf="skin.show_alert_footer">
+                                                            <div class="row"
+                                                                style="display: flex; padding: 3px 1px; margin: 0;"
+                                                                [ngStyle]="{'background-color': skin.header_background_color}">
+                                                                <div class="col-md-6 mt-2">
+                                                                    {{skin.header_custom_message}}
+                                                                </div>
+                                                                <div class="col-md-6" style="width: 50%">
+                                                                    <div
+                                                                        [ngStyle]="{'text-align': skin.team_image_align}">
+                                                                        <span>
+                                                                            <img *ngIf="skin.team_image"
+                                                                                src="{{skin.team_image}}" alt="Logo"
+                                                                                height="35px">
+                                                                            <img *ngIf="!skin.team_image"
+                                                                                src="{{HeaderTextImg}}" alt="Logo">
+                                                                        </span>
+                                                                        <button type="button"
+                                                                            class="close text-right mb-2"
+                                                                            data-bs-dismiss="modal"
+                                                                            style="background-color: transparent;
+                                                                                border: 0; font-size: 40px; padding-left: 10px; margin-right: 1px;">&times;</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- <div class="row"
+                                                                    style="display: flex; padding: 2px 4px; margin: 0; background-color: #fff; font-size: 10px;">
+                                                                    <div class="col-md-5 header-center p-0" style="display: flex;">
+                                                                        {{skin.header_custom_message}}
+                                                                    </div>
+                                                                    <div class="col-md-7 header-center text-right p-0">
+                                                                        <span class="mr-2">
+                                                                            <img src="assets/img/deva-logo.png" alt="Logo" height="auto" width="110px">
+                                                                        </span>
+                                                                        <button type="button" class="close text-right" data-bs-dismiss="modal">&times;</button>
+                                                                    </div>
+                                                                </div> -->
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="">
+                                                                        <div class="row mt-3 mb-3">
+                                                                            <div class="col-md-7">
+                                                                                <h2 class="text-white footer_body_text">
+                                                                                    Good Morning
+                                                                                </h2>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        <div class="row mt-4 mb-3">
+                                                                            <div class="col-md-12">
+                                                                                <h6 style="height: 150px; overflow-x: hidden;"
+                                                                                    id="body-text"
+                                                                                    [ngStyle]="{'height': (skin.height - 250) + 'px'}">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <h5
+                                                                                                class="text-white footer_body_text">
+                                                                                                Have a Great Day! Keep
+                                                                                                Smiling
+                                                                                            </h5>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </h6>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="device_FooterText">
+                                                                <div class="row"
+                                                                    [ngStyle]="{'background-color': skin.footer_background_color}"
+                                                                    style="margin: 0px;">
+                                                                    <div class="col-md-4" style="padding-left: 0;">
+                                                                        <div>
+                                                                            <img *ngIf="skin.footer_background_image"
+                                                                                src="{{skin.footer_background_image}}"
+                                                                                alt="alert pic"
+                                                                                style="width: 180px; height: 50px;"
+                                                                                class="mr-2">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-8" id="footer-align"
+                                                                        [ngStyle]="{'text-align': skin.footer_align}">
+                                                                        <div class="text-right" id="footer-BgColor"
+                                                                            style="padding: 10px; letter-spacing: 3px;">
+                                                                            <p id="footer-color"
+                                                                                [ngStyle]="{'color': skin.footer_text_color}">
+                                                                                <span id="footer-fontSize"
+                                                                                    [ngStyle]="{'font-size': skin.footer_font_size + 'px'}">
+                                                                                    {{skin.footer_text}}
+                                                                                </span>
+                                                                            </p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- <div class="device_FooterText">
+                                                                    <div class="row" style="margin: 0px; background-color: #fff; padding: 10px 0;">
+                                                                        <div class="col-md-4" style="padding-left: 0;">
+                                                                            <div *ngIf="skin.name !== 'Message'">
+                                                                                <img src="assets/img/dewa-lines.png" alt="alert pic"
+                                                                                    style="width: 110px; height: auto;">
+                                                                            </div>
+                                                                            <div *ngIf="skin.name === 'Message'">
+                                                                                <img src="assets/img/dewa-lines.png" alt="alert pic"
+                                                                                    style="width: 120px; height: auto;">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-8 pr-2">
+                                                                            <div class="text-right">
+                                                                                <p id="footer-color" style="color: black; font-size: 12px;">
+                                                                                    <span>
+                                                                                        Innovation & The Future
+                                                                                    </span>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> -->
+                                                        </div>
+
+                                                        <div *ngIf="skin.show_alert_footer === false">
+                                                            <div class="row" style="display: flex; margin: 0;">
+                                                                <div class="col-md-10 header-center">
+                                                                    <span>
+                                                                        <img src="assets/img/Dewa_round_logo_rBZ7Nx3.jpg"
+                                                                            alt="Logo" height="auto" width="50px">
+                                                                    </span>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <button type="button"
+                                                                        class="close text-right pl-2 text-white"
+                                                                        data-bs-dismiss="modal">&times;</button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="pl-3">
+                                                                        <div class="row mt-3 mb-3">
+                                                                            <div class="col-md-7">
+                                                                                <h2 class="footer_body_text"
+                                                                                    style="color: black;"
+                                                                                    *ngIf="skin.name === 'White'">
+                                                                                    Good Morning
+                                                                                </h2>
+                                                                                <h2 class="text-white footer_body_text"
+                                                                                    *ngIf="skin.name !== 'White'">
+                                                                                    Good Morning
+                                                                                </h2>
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                        <div class="row mt-4 mb-3">
+                                                                            <div class="col-md-12">
+                                                                                <h6 style="height: 150px; overflow-x: hidden;"
+                                                                                    id="body-text"
+                                                                                    [ngStyle]="{'height': (skin.height - 250) + 'px'}">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <h5 class="footer_body_text"
+                                                                                                style="color: black;"
+                                                                                                *ngIf="skin.name === 'White'">
+                                                                                                Have a Great Day! Keep
+                                                                                                Smiling
+                                                                                            </h5>
+                                                                                            <h5 class="text-white footer_body_text"
+                                                                                                *ngIf="skin.name !== 'White'">
+                                                                                                Have a Great Day! Keep
+                                                                                                Smiling
+                                                                                            </h5>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </h6>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="device_FooterText">
+                                                                <div class="row">
+                                                                    <div class="col-md-12 text-right"
+                                                                        style="padding-left: 0;">
+                                                                        <div *ngIf="skin.name !== 'White'">
+                                                                            <img src="assets/img/dewa_white_lines_jndrEgp.png"
+                                                                                alt="alert pic"
+                                                                                style="width: 290px; height: auto;">
+                                                                        </div>
+                                                                        <div *ngIf="skin.name === 'White'">
+                                                                            <img src="assets/img/dewa_lines_original.png"
+                                                                                alt="alert pic"
+                                                                                style="width: 250px; height: auto;">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+
+
+                                                    <!-- <div class="alert-change"
+                                                        [ngStyle]="{'border': skin.border_thickness + 'px solid' + skin.border_color}">
+                                                        <div class="row mt-3 mb-4">
+                                                            <div class="col-md-10">
+                                                                <div [ngStyle]="{'text-align': skin.team_image_align}">
+                                                                    <img src="{{skin.team_image}}" alt="Logo" width="40"
+                                                                        height="40">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <button type="button" class="close"
+                                                                    data-bs-dismiss="modal">&times;</button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <h6>   {{'CreatePolicies.policiesLoremIpsum' | translate}}
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="btn-group">
+                                                            <button type="button"
+                                                                class="btn btn-secondary dropdown-toggle"
+                                                                data-bs-toggle="dropdown">
+                                                                {{'CreatePolicies.minuteButton' | translate}}
+                                                                <span class="caret"></span>
+                                                            </button>
+                                                            <button type="button"
+                                                                class="btn btn-outline-secondary ml-1">  {{'CreatePolicies.postponeButton' | translate}}</button>
+                                                            <button type="button"
+                                                                class="btn btn-outline-secondary ml-1">  {{'CreatePolicies.okButton' | translate}}</button>
+                                                        </div>
+
+                                                        <div class="row mt-3 mb-4">
+                                                            <div class="col-md-12"
+                                                                [ngStyle]="{'text-align': skin.footer_align}">
+                                                                <div class="p-3"
+                                                                    [ngStyle]="{'background-color': skin.footer_background_color}">
+                                                                    <p [ngStyle]="{'color': skin.footer_text_color}">
+                                                                        <span
+                                                                            [ngStyle]="{'font-size': skin.footer_font_size + 'px'}">
+                                                                            {{skin.footer_text}}
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                            <!-- <label>all type of skin available</label> -->
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane " id="settings" role="tabpanel">
+                                        <div class="row mt-3">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio" value="all"
+                                                        formControlName="alert_setting_choice" value="all"
+                                                        (click)="onAlertSelected('all')">
+                                                    {{'CreatePolicies.alertSettingsAll' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio" value="selected"
+                                                        formControlName="alert_setting_choice" value="selected"
+                                                        (click)="onAlertSelected('selected')">
+                                                    {{'CreatePolicies.alertSettingsSelected' | translate}}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div *ngIf="IsAlertSelected">
+                                            <div *ngFor="let setting of AlertSettingList; let i=index">
+                                                <input type="checkbox" [(ngModel)]="setting.checked"
+                                                    [ngModelOptions]="{standalone: true}"> {{setting.name}} <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="tab-pane " id="opt" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio" value="send"
+                                                        (click)="onOrganizationSelected('send')"> Can send notifications
+                                                    to entire organization
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <input type="radio" value="notification"
+                                                        (click)="onOrganizationSelected('notification')"> Can send
+                                                    notifications to specified recipients only
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="IsOrganizationSelected">
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <label>Search groups </label>
+                                                            <div class="input-group">
+                                                                <div class="form-outline">
+                                                                    <input id="search-input" placeholder="Search here"
+                                                                        type="search" id="form" class="form-control"
+                                                                        style="padding: 17.7px; width: 210px;" />
+                                                                </div>
+                                                                <button type="submit" class="btn btn-success ml-3">
+                                                                    Search
+                                                                </button>
+                                                            </div>
+                                                            <div class="scroll">
+                                                                <table class="table mt-2">
+                                                                    <thead class="thead-black">
+                                                                        <tr>
+                                                                            <th>
+                                                                                #
+                                                                            </th>
+                                                                            <th>
+                                                                                Opt-in lists
+                                                                            </th>
+                                                                        </tr>
+                                                                    <tbody>
+                                                                        <tr *ngFor="let opt of OptList | paginate: { id:'first', itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                                                            <input type="checkbox" (click)="IsPolicyOPT($event, opt)">
+                                                                            <td>
+                                                                                {{opt.name}}
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr *ngIf="OptList.length === 0">
+                                                                            No Record Found!
+                                                                        </tr>
+                                                                    </tbody>
+
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="width: 100%">
+                                                            <div class="col-md-10 text-right">
+                                                                <pagination-controls
+                                                                    (pageChange)="onPageChange($event, '1')" id="first">
+                                                                </pagination-controls>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <select id="PerPage" class="form-control"
+                                                                    (change)="onPageChange($event, '2')">
+                                                                    <option *ngFor="let item of PageTotalNumber"
+                                                                        [value]="item">
+                                                                        {{ item }}
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-5">
+                                                    <div class="recipt-opt">
+                                                        <label>Recipients</label>
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="table">
+                                                                    <label><b>List of selected users:
+                                                                        </b></label>
+                                                                    <div class="right-scroll">
+                                                                        <table class="table table-hover ">
+                                                                            <thead class="thead-dark">
+                                                                                <tr>
+                                                                                    <th>
+                                                                                        OPT
+                                                                                    </th>
+                                                                                    <th>
+                                                                                        Action
+                                                                                    </th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <tr
+                                                                                    *ngFor="let OPT of OptListSelected; let o=index">
+                                                                                    <td>
+                                                                                        {{OPT.username}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <i class="fa fa-trash cursor"
+                                                                                            (click)="onRemoveRow(o, 'OPT')"></i>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 mt-4">
+                            <div class="bbpt-4 text-right">
+                                <button type="button" class="btn btn-outline-secondary mr-1"
+                                    routerLink="/policies">{{'CreatePolicies.cancelButton' | translate}}</button>
+                                <button type="submit" class="btn btn-success mr-1">{{'CreatePolicies.saveButton' |
+                                    translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="WarningPolicyModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title mt-2">Warning</h4>
+                <button type="button" class="close text-white" style="font-size: 30px;" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h3>
+                    Selecting this option will allow the user with this policy to send alerts to entire organiztion!!
+                </h3>
+                
+            </div>
+        </div>
+    </div>
+</div>

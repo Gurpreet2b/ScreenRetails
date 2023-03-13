@@ -1,0 +1,526 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="scroll" *ngIf="authService.TitleName === 'DASHBOARD'">
+                <label> {{ 'Help.dashboardPageHelp' | translate}}</label>
+                <h4> {{'Help.dashboardWidgets' | translate}}</h4>
+                <label> {{'Help.dashboardAddWidget' | translate}}
+                    <br>
+                    {{'Help.dashboardWidgetMinimizeOrClose' | translate}}
+                </label>
+                <h4>{{'Help.dashboardWidgetNote' | translate}}</h4>
+                <label> {{'Help.addManyWidgetsToSlowDownThePage' | translate}} <br>
+                    {{'Help.threeWidgetsAdded' | translate}} </label>
+                <h4>{{'Help.activityMonitorDashboard' | translate}} </h4>
+                <label> {{'Help.activityMonitorDisplayDashboard' | translate}} </label>
+                <h4> {{'Help.createAlertDashboard' | translate}} </h4>
+                <label> {{'Help.createAlertWidget' | translate}} </label>
+                <h4> {{'Help.calenderDashboard' | translate}}</h4>
+                <label> {{'Help.calenderWidgetDashboard' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Create Alert'">
+                <h4> {{'Help.createAlertRecordVideoMessage' | translate}}</h4>
+                <label> {{'Help.alertRecordVideoMessage' | translate}} <br>
+                    {{'Help.alertChooseVideo' | translate}}
+                </label>
+                <h4> {{'Help.alertSelectingSkin' | translate}} </h4>
+                <label> {{'Help.alertSelectBoderColor' | translate}} <br>
+                    {{'Help.alertMessagePriority' | translate}}<br>
+                    {{'Help.alertSkinSuitCompanyStyle' | translate}}
+                    <br>
+                    {{'Help.alertAllSkinsAreAvailable' | translate}}
+                </label>
+                <h4> {{'Help.alertComposingTheMessage' | translate}} <br>
+                    {{'Help.alertTypeSelecting' | translate}} </h4>
+                <label>{{'Help.alertTypes' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.usualAlertTypes' | translate}} <br>
+                    <i class='fas fa-circle mr-2' style="font-size: 7px;"></i>{{'Help.scrollingTickerAlertType' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.rsvpAlertType' | translate}}
+                </label>
+                <h4> {{'Help.alertUsingMessageTemplate' | translate}} </h4>
+                <label> {{'Help.alertUsingMessageTemplateDropdown' | translate}}
+                </label>
+                <h4> {{'Help.alertContent' | translate}} </h4>
+                <label> {{'Help.createAlertTextEditor' | translate}}
+                    <br>
+                    {{'Help.createAlertTextEditorFeatures' | translate}}
+                </label>
+                <h4> {{'Help.dashboardWidgetNote' | translate}} </h4>
+                <label> {{'Help.createAlertTextEditorForUser' | translate}}
+                </label>
+                <h4> {{'Help.alertAdditionalOptions' | translate}} </h4>
+                <label> {{'Help.alertAdditionalControls' | translate}} <br>
+                    {{'Help.urgentAlerts' | translate}} <br>
+                    {{'Help.checkScheduleCheckboxToSendAlerts' | translate}}
+                </label>
+                <h4>{{'Help.adjustingAlertType' | translate}} </h4>
+                <label> {{'Help.chooseAdjustingAlertType' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.desktopAlert' | translate}} <br>
+                    <i class='fas fa-circle mr-2' style="font-size: 7px;"></i>{{'Help.emailAlert' | translate}}<br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.smsAlert' | translate}}<br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.blogPost' | translate}}
+                </label>
+                <h4> {{'Help.buttonControls' | translate}}</h4>
+                <label> {{'Help.buttons' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.previewButton' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.saveButton' | translate}}
+                    <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.save&PreviewButton' | translate}}
+                </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Sent Alerts'">
+                <label>{{'Help.recordsDisplayed' | translate}}</label>
+                <h4>{{'Help.sentAlertHelpActions' | translate}}</h4>
+                <label>{{'Help.sentAlertTableActions' | translate}}<br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.sentStop_StartScheduleAlert' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.sentPreviewAlert' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.sentDuplicateAlert' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.sentDirectLink' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.sentAlertReport' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.sentRescheduleAlert' | translate}} </label>
+                <h4> {{'Help.sentAddingAlert' | translate}}</h4>
+                <label>{{'Help.sentAddAlertButtons' | translate}}</label>
+                <h4>{{'Help.sentDeletingAlert' | translate}}</h4>
+                <label>{{'Help.sentDeleteButton' | translate}}</label>
+                <h4>{{'Help.sentAlertTypeIcons' | translate}}</h4>
+                <label>{{'Help.sentUnobtrusiveOption' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Multiple Alert'">
+                <label> {{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Settings'">
+                <label> {{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Common Settings'">
+                <label> {{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Approval'">
+                <label> {{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Rejected'">
+                <label> {{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Edit Skin'">
+                <label> {{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Alerts'">
+                <h4> {{'Help.recipientSelect' | translate}}</h4>
+                <label> {{'Help.recipientSelectPage' | translate}}<br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>  {{'Help.messageBroadcasting' | translate}}
+                    <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.recipientSelectingOption' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.ipGroupSelect' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.clickSendButton' | translate}}  </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Profile Settings'">
+                <label> {{'Help.profileSettings' | translate}}<br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.loginprofileChange' | translate}} <br>  
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.profilePasswordChange' | translate}}<br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.profileAddEmail' | translate}} <br>
+                    {{'Help.saveButtonForProfile' | translate}}
+                </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'System Health '">
+                <label> {{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Draft Alerts'">
+                <label> {{'Help.draftAlertHelp' | translate}}</label>
+                <h4>Actions</h4>
+                <label> {{'Help.draftAlertActionTypes' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.draftSendAlert' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.draftEditAlert' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.draftPreviewAlert' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.draftDirectLink' | translate}}</label>
+                <h4> {{'Help.sentAddingAlert' | translate}}</h4>
+                <label> {{'Help.draftAddAlertButton' | translate}}</label>
+                <h4> {{'Help.sentDeletingAlert' | translate}}</h4>
+                <label> {{'Help.sentDeleteButton' | translate}} </label>
+                <h4> {{'Help.sentAlertTypeIcons' | translate}}</h4>
+                <label> {{'Help.sentUnobtrusiveOption' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Message Templates'">
+                <label>{{'Help.messageTemplateHelp' | translate}} </label>
+                <h4>{{'Help.createMessageTemplate' | translate}} </h4>
+                <label> {{'Help.createMessageTemplateAddButton' | translate}} </label>
+                <h4> {{'Help.usingMessageTemplates' | translate}} </h4>
+                <label> {{'Help.messageDropdownList' | translate}}</label>
+                <h4> {{'Help.messageEditTemplates' | translate}}</h4>
+                <label>
+                    {{'Help.messageEdit&SaveTemplates' | translate}}
+                </label>
+
+                <h4> {{'Help.messageDeleteTemplates' | translate}} </h4>
+                <label>{{'Help.messageDeleteButton' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Edit Message Template'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Create Message Template'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Digital signage devices'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Send Content Alerts'">
+                <h4> {{'Help.createAlertRecordVideoMessage' | translate}}</h4>
+                <label> {{'Help.alertRecordVideoMessage' | translate}} <br>
+                    {{'Help.alertChooseVideo' | translate}}
+                </label>
+                <h4> {{'Help.alertSelectingSkin' | translate}} </h4>
+                <label> {{'Help.alertSelectBoderColor' | translate}} <br>
+                    {{'Help.alertMessagePriority' | translate}}<br>
+                    {{'Help.alertSkinSuitCompanyStyle' | translate}}
+                    <br>
+                    {{'Help.alertAllSkinsAreAvailable' | translate}}
+                </label>
+                <h4> {{'Help.alertComposingTheMessage' | translate}} <br>
+                    {{'Help.alertTypeSelecting' | translate}} </h4>
+                <label>{{'Help.alertTypes' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.usualAlertTypes' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.scrollingTickerAlertType' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.rsvpAlertType' | translate}}
+                </label>
+                <h4> {{'Help.alertUsingMessageTemplate' | translate}} </h4>
+                <label> {{'Help.alertUsingMessageTemplateDropdown' | translate}}
+                </label>
+                <h4> {{'Help.alertContent' | translate}} </h4>
+                <label> {{'Help.createAlertTextEditor' | translate}}
+                    <br>
+                    {{'Help.createAlertTextEditorFeatures' | translate}}
+                </label>
+                <h4> {{'Help.dashboardWidgetNote' | translate}} </h4>
+                <label> {{'Help.createAlertTextEditorForUser' | translate}}
+                </label>
+                <h4> {{'Help.alertAdditionalOptions' | translate}} </h4>
+                <label> {{'Help.alertAdditionalControls' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.urgentAlerts' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.acknowledgementAlertRequireReadingConfirmation' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.checkScheduleCheckboxToSendAlerts' | translate}}
+                </label>
+                <h4>{{'Help.adjustingAlertType' | translate}} </h4>
+                <label> {{'Help.chooseAdjustingAlertType' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.desktopAlert' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.emailAlert' | translate}}<br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.smsAlert' | translate}}<br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.blogPost' | translate}}
+                </label>
+                <h4> {{'Help.buttonControls' | translate}}</h4>
+                <label>{{'Help.buttons' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.previewButton' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.saveButton' | translate}}
+                    <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.save&PreviewButton' | translate}}
+                </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Create Survey'">
+                <label> {{'Help.createSurveyHelp' | translate}} <br> 
+                    {{'Help.createSurveyRecipient' | translate}}
+                    <br> 
+                    {{'Help.surveyInFewSteps' | translate}}
+                </label>
+                <h4>{{'Help.surveyType' | translate}} </h4>
+                <label>{{'Help.surveyDewaTicker' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.simpleSurvey' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.quizSurvey' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.pollSurvey' | translate}} </label>
+                <h4> {{'Help.surveyComposing' | translate}} <br>
+                    {{'Help.surveySpecifyingName&Schedule' | translate}} </h4>
+                <label>{{'Help.scheduleSurvey' | translate}} </label>
+                <h4> {{'Help.surveyAppearance' | translate}}</h4>
+                <label> {{'Help.surveyResizable' | translate}} </label>
+                <h4>{{'Help.surveySkinChange' | translate}} </h4>
+                <label> {{'Help.alertSelectBoderColor' | translate}} <br>
+                    {{'Help.alertMessagePriority' | translate}} <br>
+                    {{'Help.alertSkinSuitCompanyStyle' | translate}}
+                    <br>
+                    {{'Help.previewSkin' | translate}}
+                </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Active Surveys'">
+                <label> {{'Help.activeSurveyHelp' | translate}}</label>
+                <h4> {{'Help.sentAlertHelpActions' | translate}}</h4>
+                <label>{{'Help.activeActionAvailable' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.cloneSurvey' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.viewSurveyResult' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.stopSurvey' | translate}}</label>
+                <h4> {{'Help.addingSurveys' | translate}} </h4>
+                <label> {{'Help.addButton' | translate}}</label>
+                <h4> {{'Help.surveyDelete' | translate}}</h4>
+                <label> {{'Help.deleteButtonsInTable' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Archived Surveys'">
+                <label>{{'Help.archivedSurveyHelp' | translate}} </label>
+                <h4> {{'Help.sentAlertHelpActions' | translate}}</h4>
+                <label> {{'Help.activeActionAvailable' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.cloneSurvey' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.viewSurveyResult' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.stopSurvey' | translate}}</label>
+                <h4> {{'Help.addingSurveys' | translate}}</h4>
+                <label>{{'Help.addButton' | translate}}</label>
+                <h4>{{'Help.surveyDelete' | translate}}</h4>
+                <label> {{'Help.deleteButtonsInTable' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Survey Templates'">
+                <label> {{'Help.noHelpAboutThisPage' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Create Wallpaper'">
+                <label><i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.createWallpaperHelp' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.user/GroupWallpaper' | translate}} </label>
+                <h4>{{'Help.wallpaperChooseImage' | translate}}</h4>
+                <label> {{'Help.dewaSmartWallpaper' | translate}}</label>
+                <h4>{{'Help.selectRecipient' | translate}}</h4>
+                <label> {{'Help.wallpaperSaveButton' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Wallpapers List'">
+                <label>{{'Help.wallpaperHelp' | translate}} </label>
+                <h4>{{'Help.sentAlertHelpActions' | translate}} </h4>
+                <label> {{'Help.actionsAvialableInWallpaperList' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.start/stopWallpaper' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.duplicateWallpaper' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>  {{'Help.previousWallpaper' | translate}}</label>
+                <h4> {{'Help.wallpaperAdd' | translate}}</h4>
+                <label>{{'Help.wallpaperAddButton' | translate}} </label>
+                <h4> {{'Help.deleteWallpaper' | translate}}</h4>
+                <label> {{'Help.wallpaperDeleteButton' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Draft Wallpapers'">
+                <label> {{'Help.draftWallpaper' | translate}} </label>
+                <h4> {{'Help.sentAlertHelpActions' | translate}} </h4>
+                <label> {{'Help.actionsAvialableInWallpaperList' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.sendWallpaper' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.editWallpaper' | translate}} </label>
+                <h4> {{'Help.wallpaperAdd' | translate}}</h4>
+                <label> {{'Help.wallpaperAddButton' | translate}}</label>
+                <h4> {{'Help.deleteWallpaper' | translate}}</h4>
+                <label> {{'Help.wallpaperDeleteButton' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Create Lockscreen'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Edit Policy'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Lockscreens List'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Lockscreens Draft'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Create Emergency Alert'">
+                <h4> {{'Help.videoMessageRecord' | translate}}</h4>
+                <label> {{'Help.emergencyAlertHelp' | translate}} <br>
+                    {{'Help.videoRecordButton' | translate}}
+                </label>
+                <h4>{{'Help.alertSelectingSkin' | translate}} </h4>
+                <label>{{'Help.alertSelectBoderColor' | translate}} <br>
+                    {{'Help.alertMessagePriority' | translate}} <br>
+                    {{'Help.alertSkinSuitCompanyStyle' | translate}}
+                    <br>
+                    {{'Help.alertAllSkinsAreAvailable' | translate}}
+                </label>
+                <h4> {{'Help.alertComposingTheMessage' | translate}} <br>
+                    {{'Help.alertTypeSelecting' | translate}} </h4>
+                <label> {{'Help.alertTypes' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.usualAlertTypes' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.scrollingTickerAlertType' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.rsvpAlertType' | translate}}
+                </label>
+                <h4>{{'Help.alertUsingMessageTemplate' | translate}}</h4>
+                <label>{{'Help.alertUsingMessageTemplateDropdown' | translate}}</label>
+                <h4>{{'Help.alertContent' | translate}}</h4>
+                <label> {{'Help.createAlertTextEditor' | translate}} <br>
+                    {{'Help.createAlertTextEditorFeatures' | translate}} </label>
+                <h4> {{'Help.dashboardWidgetNote' | translate}} </h4>
+                <label> {{'Help.createAlertTextEditorForUser' | translate}} </label>
+                <h4>{{'Help.alertAdditionalOptions' | translate}}</h4>
+                <label>{{'Help.alertAdditionalControls' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.urgentAlerts' | translate}}<br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.acknowledgementAlertRequireReadingConfirmation' | translate}}<br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.checkScheduleCheckboxToSendAlerts' | translate}}</label>
+                <h4> {{'Help.adjustingAlertType' | translate}}</h4>
+                <label>{{'Help.chooseAdjustingAlertType' | translate}}<br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.desktopAlert' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.emailAlert' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.smsAlert' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.blogPost' | translate}} </label>
+                <h4> {{'Help.buttonControls' | translate}}</h4>
+                <label>{{'Help.buttons' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.previewButton' | translate}}
+                    <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>  {{'Help.saveButton' | translate}}<br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.save&PreviewButton' | translate}}
+                </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Emergency Alerts'">
+                <h4>{{'Help.sendNowHelp' | translate}}</h4>
+                <label> {{'Help.instantMessages' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Color Codes'">
+                <label><i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.emergencyColorCodes' | translate}}<br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.createEmergencyColorCodes' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.instantSendMessageColorCodes' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Create shortcut'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Create Screensaver'">
+                <label> {{'Help.screensaverHelp' | translate}} </label>
+                <h4> {{'Help.screensaverContentSource' | translate}} </h4>
+                <label> {{'Help.creatingScreensaverViaDewaSmartTicker' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.importingFromPowerpoint' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.imageUseAsScreensaver' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.htmlScreensaver' | translate}} </label>
+                <h4> {{'Help.screensaverCompose' | translate}} </h4>
+                <label> {{'Help.contentSource' | translate}}<br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.screensaverCreatingForPowerPoint' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.selectImage&Upload' | translate}}<br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.createHtmlScreensaver' | translate}} <br> 
+                    {{'Help.previewButtonScreensaver' | translate}} <br> 
+                    {{'Help.screensaverOptions' | translate}} <br> 
+                    {{'Help.screensaverSave&NextButton' | translate}}
+                </label>
+                <h4>{{'Help.screensaverRecipient' | translate}} </h4>
+                <label> {{'Help.screensaverDewaSmartTicker' | translate}} <br>
+                    {{'Help.screensaverSendButton' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Screensavers List'">
+                <label> {{'Help.currentScreensaver' | translate}} </label>
+                <h4>{{'Help.sentAlertHelpActions' | translate}} </h4>
+                <label> {{'Help.actionsAvialableInScreensaverList' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.start/StopScreensaver' | translate}}<br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.duplicateScreensaver' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>{{'Help.previewScreensaver' | translate}} </label>
+                <h4> {{'Help.addingScreensaver' | translate}}</h4>
+                <label> {{'Help.addScreensaver' | translate}} </label>
+                <h4> {{'Help.deleteScreensaver' | translate}} </h4>
+                <label> {{'Help.deleteButtonInScreensaver' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Screensavers Draft'">
+                <label>{{'Help.draftScreensaver' | translate}} </label>
+                <h4>{{'Help.sentAlertHelpActions' | translate}}</h4>
+                <label>{{'Help.actionsAvialableInScreensaverList' | translate}}<br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.sendScreensaver' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.editScreensaver' | translate}} </label>
+                <h4>{{'Help.addingScreensaver' | translate}}</h4>
+                <label>{{'Help.addScreensaver' | translate}}</label>
+                <h4>{{'Help.deleteScreensaver' | translate}}</h4>
+                <label>{{'Help.deleteScreensaverButton' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Domains'">
+                <label><i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.domainsHelp' | translate}} <br>
+
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.domainsAddedTool' | translate}}  <br>
+
+                    {{'Help.toLearnMoreClickSynchronizationButton' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Add a group based on AD Filter'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Import from files'">
+                <label> {{'Help.noHelpAboutThisPage' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Synchronizations'">
+                <label> {{'Help.synchronizationPageHelp' | translate}} </label>
+                <h4> {{'Help.startingSynchronization' | translate}} </h4>
+                <label> {{'Help.synchronizationIcons' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Ad Synchronizing'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Organization/Audience'">
+                <label> {{'Help.organization/AudienceHelpPage' | translate}}</label>
+                <h4> {{'Help.objectsType' | translate}} </h4>
+                <label> {{'Help.objectsAvialable' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i>  {{'Help.organizationUsers' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.organizationGroups' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.organizationComputers' | translate}} </label>
+                <h4> {{'Help.users_groupAdding' | translate}} </h4>
+                <label> {{'Help.addUser' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'View AD filter based groups '">
+                <label>{{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Add group/ Create audience '">
+                <label>{{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Add User '">
+                <label>{{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Create Skin'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Skin List'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Publishers'">
+                <h4> {{'Help.publisherHelpPage' | translate}}</h4>
+                <label> {{'Help.publisherDewaSmartEditor' | translate}}</label>
+                <h4> {{'Help.editorAdd' | translate}}</h4>
+                <label> {{'Help.newEditorPolicies' | translate}} <br> 
+                    {{'Help.addEditor/Publisher' | translate}}</label>
+                <h4> {{'Help.editorEdit' | translate}} </h4>
+                <label> {{'Help.editorEditIcon' | translate}} </label>
+                <h4> {{'Help.editorDelete' | translate}} </h4>
+                <label> {{'Help.editorDeleteButton' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Policies'">
+                <label> {{'Help.policiesHelpPage' | translate}} </label>
+                <h4> {{'Help.createPolicy' | translate}} </h4>
+                <label> {{'Help.addPolicyButton' | translate}} </label>
+                <h4> {{'Help.editPolicy' | translate}}</h4>
+                <label> {{'Help.editPolicyDuplicateButton' | translate}} </label>
+                <h4> {{'Help.deletePolicies' | translate}} </h4>
+                <label> {{'Help.deletePoliciesButton' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Add Policy'">
+                <label> {{'Help.noHelpAboutThisPage' | translate}}</label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'IP groups'">
+                <label> {{'Help.ipGroupHelpPage' | translate}}</label>
+                <h4> {{'Help.ipUsage' | translate}} </h4>
+                <label> {{'Help.ipGroupSelectUser' | translate}} <br> 
+                    {{'Help.ipGroupSelectUserRecipient' | translate}} </label>
+                <h4> {{'Help.ipGroupCreate' | translate}} </h4>
+                <label>{{'Help.ipGroupAddButton' | translate}} </label>
+                <h4>{{'Help.sentAlertHelpActions' | translate}}</h4>
+                <label> {{'Help.ipgroupActions' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.ipgroupEdit' | translate}}
+                    <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.ipgroupView' | translate}}
+                </label>
+                <h4> {{'Help.ipgroupDelete' | translate}}</h4>
+                <label> {{'Help.ipgroupDeleteButton' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Subscription List'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Reports'">
+                <label>{{'Help.noHelpAboutThisPage' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Create Video Alert'">
+                <label><i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.videoAlertHelpPAge' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.videoAlert' | translate}}
+                    <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.internetVideoAlert' | translate}}
+                </label>
+                <h4> {{'Help.videoTailoring' | translate}} </h4>
+                <label> {{'Help.videoTailoringPreviewButton' | translate}} </label>
+            </div>
+            <div class="scroll" *ngIf="authService.TitleName === 'Video List'">
+                <label> {{'Help.videoListHelpPage' | translate}} </label>
+                <h4>{{'Help.sentAlertHelpActions' | translate}} </h4>
+                <label> {{'Help.sentAlertTableActions' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.sentDuplicateAlert' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.sentStop_StartScheduleAlert' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.sentPreviewAlert' | translate}} <br> 
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.sentDirectLink' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.sentAlertReport' | translate}} <br>
+                    <i class='fas fa-circle mr-1' style="font-size: 7px;"></i> {{'Help.sentRescheduleAlert' | translate}}</label>
+                <h4>{{'Help.sentAddingAlert' | translate}}</h4>
+                <label> {{'Help.sentAddAlertButtons' | translate}}</label>
+                <h4>{{'Help.sentDeletingAlert' | translate}}</h4>
+                <label>{{'Help.sentDeleteButton' | translate}}</label>
+            </div>
+        </div>
+    </div>
+</div>

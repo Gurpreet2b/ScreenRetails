@@ -1,0 +1,847 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <div *ngIf="loading" class="dot-opacity-loader">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <form [formGroup]="surveyForm">
+                    <div class="row use pt-3 pb-3">
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <input type="text" class="form-control" placeholder="{{ 'Survey.surveyPlaceholderTitle' | translate}}"
+                                        formControlName="title"
+                                        [ngClass]="{'error': submitted && mySurveyForm.title.errors}"
+                                        (keyup)="IsSurveyTitle($event)">
+                                    <div class="invalid-feedback"
+                                        *ngIf="submitted && mySurveyForm.title.errors?.required">
+                                        <sup>*</sup>{{ 'Survey.surveyEnterTitle' | translate}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <button type="button" class="btn btn-outline-secondary mr-1" data-bs-toggle="modal"
+                                        data-bs-target="#SurveyHtmlModal" (click)="OnPreviewRestart()">{{ 'Survey.surveyPreviewButton' | translate}}</button>
+                                    <button type="submit" class="btn btn-success" (click)="OnSubmit('')">{{ 'Survey.surveySave&NextButton' | translate}}</button>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>{{ 'Survey.surveyTemplate' | translate}}</label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <select class="form-control" (change)="IsTemplateSurvey($event)">
+                                            <option value="">{{ 'Survey.surveyNoTemplate' | translate}}</option>
+                                            <option *ngFor="let surveyTemplate of SurveyTemplateList" [value]="surveyTemplate.id">
+                                                {{surveyTemplate.name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <button type="button" class="btn btn-success" (click)="OnSubmit('')">{{ 'Survey.surveySaveAsTemplate' | translate}}</button>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-lg-3">
+                                    <input class="" type="radio" name="" value="classic_survey" id="" checked
+                                        formControlName="type" (click)="IsSurveyCheck('classic_survey')"> {{ 'Survey.surveyClassic' | translate}}
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="form-group">
+                                        <input class="" type="radio" name="" id="" value="quiz" formControlName="type"
+                                            (click)="IsSurveyCheck('quiz')"> {{ 'Survey.surveyScoreCorrectAns' | translate}}
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <input style="margin-left: -35px;" type="radio" name="" id="" value="poll"
+                                        formControlName="type" (click)="IsSurveyCheck('poll')">{{ 'Survey.surveyRecipientResult' | translate}}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <input class="" type="checkbox" name="" id="" formControlName="allow_to_close">
+                                    {{ 'Survey.surveyAllowToClose' | translate}}
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <input class="" type="checkbox" name="" id=""
+                                            formControlName="anonymous_survey">  {{ 'Survey.surveyAnonymousSurvey' | translate}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 use pt-2 pb-2">
+                            <h6> {{ 'Survey.surveyScheduled' | translate}}</h6>
+
+                            <input type="checkbox" formControlName="lifetime_boolean"> {{ 'Survey.surveyLifetime' | translate}}
+                            <input type="number" class="mr-1" placeholder="1" style="width: 70px;"
+                                formControlName="lifetime" [(ngModel)]="DefaultSettingList.lifetime_count" />
+                            <select class="" aria-label="Default select example" style="height: 26px;"
+                                formControlName="lifetime_choice" [(ngModel)]="DefaultSettingList.lifetime_choice">
+                                <option value="minutes"> {{ 'Survey.surveyLifetimeOptMin' | translate}}</option>
+                                <option value="hours"> {{ 'Survey.surveyLifetimeOptHr' | translate}}</option>
+                                <option value="day"> {{ 'Survey.surveyLifetimeOptDay' | translate}}</option>
+                            </select>
+
+                            <div> {{ 'Survey.surveyAlertWillExpire' | translate}}</div>
+
+                            <div>
+                                <input type="checkbox" value="" formControlName="scheduled"> {{ 'Survey.surveySchedule' | translate}}
+                                <!-- <input class="ml-2" type="checkbox" value="" formControlName="recurrence"> {{ 'Survey.surveyRecurrence' | translate}} -->
+                            </div>
+
+                            <label for="">{{ 'Survey.surveyStartDate' | translate}}</label>
+                            <div class="md-form md-outline input-with-post-icon datepicker">
+                                <input type="datetime-local" id="example" class="form-control"
+                                    formControlName="schedule_start_date">
+                            </div>
+
+                            <label for="">{{ 'Survey.surveyEndDate' | translate}}</label>
+                            <div class="md-form md-outline input-with-post-icon datepicker">
+                                <input type="datetime-local" id="example" class="form-control"
+                                    formControlName="schedule_end_date">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-10 text-center">
+                        <div class="form-group">
+                            <i class='fas fa-grip-horizontal' style='font-size:24px'></i>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="box-row mt-2" *ngFor="let rows of AddNewRow; let IR=index let last = last;">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <input type="text" placeholder="{{ 'Survey.surveyQuestionTitle' | translate}}"
+                                                class="form-control use" name="" id="" [(ngModel)]="rows.question"
+                                                [ngModelOptions]="{standalone: true}">
+                                        </div>
+                                        <img *ngIf="rows.UrlQuestion" src="{{rows.UrlQuestion}}" alt="" style="width: 60px; height: 60px;">
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="form-group">
+                                            <span>
+                                                <!-- <i class='far fa-file-alt cursor mt-2' style='font-size:20px'
+                                                data-bs-toggle="modal" data-bs-target="#FileUploadSurveyImageModal"
+                                                (click)="OnFileImageModel('QuestionCheck', IR)"></i> -->
+
+                                                <!-- <i class='far fa-file-alt cursor' style='font-size:20px'
+                                                    href="javascript:void(0)" (click)="file.click()"></i>
+                                                <input type="file" #file (change)="onFileChangeQues($event, IR)"
+                                                    style="display:none" /> -->
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <select class="form-control" aria-label="Default select example"
+                                                [(ngModel)]="rows.choice" [ngModelOptions]="{standalone: true}"
+                                                (change)="OnSelectedChoice($event, IR)">
+                                                <option value="single-choice" selected>{{ 'Survey.surveySingleChoice' | translate}}</option>
+                                                <!-- <option value="multiple-choice">{{ 'Survey.surveyMultipleChoice' | translate}}</option>
+                                                <option value="intermediary-step">{{ 'Survey.surveyIntermediaryStep' | translate}} </option>
+                                                <option value="free-answer">{{ 'Survey.surveyFreeAns' | translate}}</option>
+                                                <option value="early-survey-finish">{{ 'Survey.surveyEarlyFinish' | translate}}</option>
+                                                <option value="linear-scale">{{ 'Survey.surveyLinearScale' | translate}}</option> -->
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="rows.choice === 'single-choice'">
+
+                                    <div *ngFor="let option of rows.rowAns; let i=index">
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="radio" disabled value="" id="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="{{ 'Survey.surveyAnsText' | translate}}"
+                                                        class="form-control use" name="" id=""
+                                                        [(ngModel)]="option.answer1"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                </div>
+                                                <img *ngIf="option.Url" src="{{option.Url}}" alt="" style="width: 60px; height: 60px;">
+                                            </div>
+                                            <div class="col-md-3 user">
+                                                <div class="form-group">
+                                                    <input type="checkbox" [(ngModel)]="option.selectedVal"
+                                                        [ngModelOptions]="{standalone: true}" class="mr-1"
+                                                        *ngIf="IsCheckedSurvey === 'quiz'" title="Correct Option" />
+                                                    <span>
+                                                        <!-- <i class='far fa-file-alt cursor mt-2' style='font-size:20px'
+                                                            data-bs-toggle="modal" data-bs-target="#FileUploadSurveyImageModal"
+                                                            (click)="OnFileImageModelAns('AnswerSingleCheck', IR, i)">
+                                                        </i> -->
+
+                                                        <!-- <i class='far fa-file-alt cursor' style='font-size:20px'
+                                                            href="javascript:void(0)" (click)="file.click()"></i>
+                                                        <input type="file" #file (change)="onFileChange($event, IR, i)"
+                                                            style="display:none" /> -->
+                                                    </span>
+                                                    <!-- <i class='fas fa-user-friends' style='font-size:20px'></i> -->
+                                                    <i class='fas fa-trash cursor mt-2' style='font-size:20px'
+                                                        (click)="IsRemoveOption(IR, i)"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <input class="form-control" type="radio" disabled value="" id="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mt-2">
+                                            <div class="form-group">
+                                                <label class="cursor" (click)="IsAddOption(IR)">{{ 'Survey.surveyAddOption' | translate}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right user">
+                                            <div class="form-group">
+                                                <!-- <i class='far fa-copy' style='font-size:20px'></i> -->
+                                                <i class='fas fa-trash cursor' style='font-size:20px'
+                                                    (click)="onRemoveRow(IR)"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="rows.choice === 'multiple-choice'">
+                                    
+                                    <div *ngFor="let option of rows.rowAns; let i=index">
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="checkbox" disabled value="" id="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="{{ 'Survey.surveyAnsText' | translate}}"
+                                                        class="form-control use" name="" id=""
+                                                        [(ngModel)]="option.answer1"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                </div>
+                                                <img *ngIf="option.Url" src="{{option.Url}}" alt="" style="width: 60px; height: 60px;">
+                                            </div>
+                                            <div class="col-md-3 user">
+                                                <div class="form-group">
+                                                    <input type="checkbox" [(ngModel)]="option.selectedVal"
+                                                        [ngModelOptions]="{standalone: true}" class="mr-1"
+                                                        *ngIf="IsCheckedSurvey === 'quiz'" title="Correct Option" />
+                                                    <span>
+                                                        <i class='far fa-file-alt cursor' style='font-size:20px'
+                                                            data-bs-toggle="modal" data-bs-target="#FileUploadSurveyImageModal"
+                                                            (click)="OnFileImageModelAns('AnswerSingleCheck', IR, i)">
+                                                        </i>
+                                                        <!-- <i class='far fa-file-alt cursor' style='font-size:20px'
+                                                            href="javascript:void(0)" (click)="file.click()"></i>
+                                                        <input type="file" #file (change)="onFileChange($event, IR, i)"
+                                                            style="display:none" /> -->
+                                                    </span>
+                                                    <!-- <i class='fas fa-user-friends' style='font-size:20px'></i> -->
+                                                    <i class='fas fa-trash cursor' style='font-size:20px'
+                                                        (click)="IsRemoveOption(IR, i)"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <input class="form-control" type="checkbox"  disabled value="" id="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mt-2">
+                                            <div class="form-group">
+                                                <label class="cursor" (click)="IsAddOption(IR)">{{ 'Survey.surveyAddOption' | translate}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right user">
+                                            <div class="form-group">
+                                                <!-- <i class='far fa-copy' style='font-size:20px'></i> -->
+                                                <i class='fas fa-trash cursor' style='font-size:20px'
+                                                    (click)="onRemoveRow(IR)"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="rows.choice === 'intermediary-step'">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <textarea class="form-control use" name="" id="" rows="5"
+                                                    placeholder="{{ 'Survey.surveyEnterDescription' | translate}}" [(ngModel)]="rows.intermAnswer"
+                                                    [ngModelOptions]="{standalone: true}"></textarea>
+                                            </div>
+                                            <img *ngIf="rows.intermUrl" src="{{rows.intermUrl}}" alt="" style="width: 60px; height: 60px;">
+                                        </div>
+                                        <div class="col-md-2 user">
+                                            <div class="form-group">
+                                                <span>
+                                                    <i class='far fa-file-alt cursor' style='font-size:20px'
+                                                        data-bs-toggle="modal" data-bs-target="#FileUploadSurveyImageModal"
+                                                        (click)="OnFileImageModelInterm('AnswerintermCheck', IR)">
+                                                    </i>
+                                                    <!-- <i class='far fa-file-alt cursor' style='font-size:20px' 
+                                                    href="javascript:void(0)" (click)="file.click()"></i>
+                                                    <input type="file" #file
+                                                    (change)="onFileChangeInterm($event, IR)"
+                                                        style="display:none" /> -->
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right user">
+                                            <div class="form-group">
+                                                <!-- <i class='far fa-copy' style='font-size:20px'></i> -->
+                                                <i class='fas fa-trash cursor' style='font-size:20px'
+                                                    (click)="onRemoveRow(IR)"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="rows.choice === 'free-answer'">
+                                    <div class="row">
+                                        <div class="col-md-12 text-right user">
+                                            <div class="form-group">
+                                                <!-- <i class='far fa-copy' style='font-size:20px'></i> -->
+                                                <i class='fas fa-trash cursor' style='font-size:20px'
+                                                    (click)="onRemoveRow(IR)"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="rows.choice === 'early-survey-finish'">
+                                    <div *ngFor="let option of rows.rowAns; let i=index">
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="radio" disabled value="" id="">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="{{ 'Survey.surveyAnsText' | translate}}"
+                                                        class="form-control use" name="" id=""
+                                                        [(ngModel)]="option.answer1"
+                                                        [ngModelOptions]="{standalone: true}">
+                                                </div>
+                                                <img *ngIf="option.Url" src="{{option.Url}}" alt="" style="width: 60px; height: 60px;">
+                                            </div>
+                                            <div class="col-md-3 user">
+                                                <div class="form-group">
+                                                    <input type="checkbox" [(ngModel)]="option.selectedVal"
+                                                        [ngModelOptions]="{standalone: true}" class="mr-1"
+                                                        title="Early Survey End" />
+                                                    <span>
+                                                        <i class='far fa-file-alt cursor' style='font-size:20px'
+                                                            data-bs-toggle="modal" data-bs-target="#FileUploadSurveyImageModal"
+                                                            (click)="OnFileImageModelAns('AnswerSingleCheck', IR, i)">
+                                                        </i>
+                                                        <!-- <i class='far fa-file-alt cursor' style='font-size:20px'
+                                                            href="javascript:void(0)" (click)="file.click()"></i>
+                                                        <input type="file" #file (change)="onFileChange($event, IR, i)"
+                                                            style="display:none" /> -->
+                                                    </span>
+                                                    <!-- <i class='fas fa-user-friends' style='font-size:20px'></i> -->
+                                                    <i class='fas fa-trash cursor' style='font-size:20px'
+                                                        (click)="IsRemoveOption(IR, i)"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <div class="form-group">
+                                                <input class="form-control" type="radio" disabled value="" id="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mt-2">
+                                            <div class="form-group">
+                                                <label class="cursor" (click)="IsAddOption(IR)">{{ 'Survey.surveyAddOption' | translate}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right user">
+                                            <div class="form-group">
+                                                <!-- <i class='far fa-copy' style='font-size:20px'></i> -->
+                                                <i class='fas fa-trash cursor' style='font-size:20px'
+                                                    (click)="onRemoveRow(IR)"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="rows.choice === 'linear-scale'">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input class="form-control" type="number" value="0" id=""
+                                                    [(ngModel)]="rows.minNumber" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <input type="text" placeholder="{{ 'Survey.surveyLabel' | translate}}" class="form-control use" name=""
+                                                    id="" [(ngModel)]="rows.minLabel"
+                                                    [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <input class="form-control" type="number" value="10" id=""
+                                                    [(ngModel)]="rows.maxNumber" [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <input type="text" placeholder="{{ 'Survey.surveyLabel' | translate}}" class="form-control use" name=""
+                                                    id="" [(ngModel)]="rows.maxLabel"
+                                                    [ngModelOptions]="{standalone: true}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-right user">
+                                            <div class="form-group">
+                                                <!-- <i class='far fa-copy' style='font-size:20px'></i> -->
+                                                <i class='fas fa-trash cursor' style='font-size:20px'
+                                                    (click)="onRemoveRow(IR)"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+
+                            </div>
+
+                            <div class="col-lg-12 mt-2">
+                                <div class="form-group">
+                                    <button (click)="onAddRows()" type="button">{{ 'Survey.surveyAddQues' | translate}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 right-side mt-2">
+                            <div class="form-group pt-3">
+                                <label for="exampleFormControlSelect1">{{ 'Survey.surveyChangeSkin' | translate}}</label>
+                                <select class="form-control" (change)="IsColorChange($event)">
+                                    <option *ngFor="let skin of SkinList" [value]="skin.id">
+                                        {{skin.name}}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div [ngStyle]="{'background-color': AlertBgColor}">
+                                        <div class="alert-change" [ngStyle]="{'border': Think + 'px solid' + HeaderBorder}">
+
+                                            <div class="row p-1 m-0"
+                                                [ngStyle]="{'background-color': HeaderBgColor}">
+                                                <div class="col-md-3" [ngStyle]="{'color': footerColor}">
+                                                    <!-- <div [ngStyle]="{'font-size': HeaderFontSize + 'px'}"
+                                                        class="mt-2" style="font-family: system-ui; font-weight: bold; color: #7e7e7e;">
+                                                        {{HeaderTitle}}
+                                                    </div> -->
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <div [ngStyle]="{'text-align': HeaderLogo}">
+                                                        <img *ngIf="HeaderTextImg" src="{{HeaderTextImg}}"
+                                                            alt="Skin pic" style="margin-left: -14px; width: 180px;">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h6 style="margin-top: 25px; color: #fff;">{{ 'Survey.surveyLoremIpsum' | translate}}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                            <div class="row pt-1 pb-1 m-0"
+                                            [ngStyle]="{'background-color': FooterBgColor}">
+                                            <div class="col-md-5" style="padding-left: 0;">
+                                                <div [ngStyle]="{'text-align': FooterLogo}">
+                                                    <img *ngIf="FooterImageUrl" src="{{FooterImageUrl}}"
+                                                        alt="Wallpaper pic"
+                                                        style="width: 180px; height: 50px;" class="mr-2">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7" [ngStyle]="{'color': footerColor}">
+                                                <div [ngStyle]="{'font-size': FooterFontSize + 'px'}"
+                                                    class="mt-2">
+                                                    {{FooterText}}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <h6 class="form-group"> {{ 'Survey.surveyAppearance' | translate}}</h6>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <input type="radio" value="sized" formControlName="fullscreen_or_size"> {{ 'Survey.surveyAppearanceSize' | translate}}
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <input type="radio" value="fullscreen" formControlName="fullscreen_or_size">
+                                            {{ 'Survey.surveyAppearanceFullscreen' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label> {{ 'Survey.surveyAppearanceWidth' | translate}}</label>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="500"
+                                                formControlName="width">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <label>{{ 'Survey.surveyAppearanceHeight' | translate}}</label>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control" placeholder="400"
+                                                formControlName="height">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <input class="" type="checkbox" name="" id="" formControlName="resizable">
+                                            {{ 'Survey.surveyAppearanceResizable' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <h6>{{ 'Survey.surveyAppearancePosition' | translate}}</h6>
+                                <div class="col-lg-12 size p-3">
+                                    <div class="row ">
+                                        <div class="col-lg-6 ">
+                                            <input type="radio" value="top-left" formControlName="position">
+                                        </div>
+                                        <div class="col-lg-6 text-right">
+                                            <input type="radio" value="top-right" formControlName="position">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <input type="radio" value="center" formControlName="position">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <input type="radio" value="bottom-left" formControlName="position">
+                                        </div>
+                                        <div class="col-lg-6 text-right">
+                                            <input type="radio" value="bottom-right" checked formControlName="position">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="bbpt-4 text-right">
+                                <button type="button" class="btn btn-outline-secondary mr-1" data-bs-toggle="modal"
+                                    data-bs-target="#SurveyHtmlModal" (click)="OnPreviewRestart()">{{ 'Survey.surveyPreviewButton' | translate}}</button>
+                                <!-- <button type="submit" class="btn btn-outline-secondary mr-1">{{ 'Survey.surveySaveButton' | translate}}</button> -->
+                                <button type="submit" class="btn btn-success" (click)="OnSubmit('')">{{ 'Survey.surveySave&NextButton' | translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="SurveyHtmlModal">
+    <div class="modal-dialog" style="margin: 0;">
+        <div class="modal-content">
+        <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/dubai">
+            <div class="" id="survey-width" style="position: relative; min-width: 500px; min-height: 400px;">
+                <div style="padding: 16px;">
+                    <div class="modal-content" id="survey-Bg-color" style="border: 0;">
+                        <!-- Modal Header -->
+                        <div style="position: relative;">
+                            <div id="survey-header-Bg-color">
+                                <div class="row" style="display: flex; padding: 3px 15px; justify-content: space-between; align-items: center;">
+
+                                    <div class="col-md-5" style="width: 100%; display: inline-flex;">
+                                        <div id="survey-header-text-skin" style="font-family: system-ui; display: flex; align-items: center;
+                                            font-size: 16px; font-weight: bold; color: #7e7e7e;letter-spacing: 2px;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div id="Header-Survey-img" style="text-align: right;">
+                                            <span id="header-Survey-img"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="close" data-bs-dismiss="modal"
+                                            style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer;
+                                            font-weight: 300;">&times;</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="modal-body" style="padding: 10px; margin: 0;">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="row">
+                                            <div class="col-md-10">
+                                                <h2 id="header-Survey-text" style="color: #fff; font-family: 'Dubai-Bold', sans-serif !important;">
+
+                                                </h2>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div style="height: 180px; overflow: auto; border: 1px solid; padding: 5px; color: #fff;">
+
+                                                    <div *ngFor="let preview of AddNewRow; let i=index; let first = first; let last = last;">
+                                                        <div *ngIf="i === show">
+                                                            <b>{{preview.question}}</b>
+                                                            <img *ngIf="preview.UrlQuestion" src="{{preview.UrlQuestion}}" alt="" style="width: 60px; height: 60px;">
+                                                            <hr *ngIf="preview.choice !== 'Submitted'">
+                                                            <div *ngFor="let ans of preview.rowAns; let ansIndex=index">
+                                                                <span *ngIf="preview.choice === 'single-choice'">
+                                                                    <input type="radio" />
+                                                                    <span> {{ans.answer1}} </span>
+                                                                    <img *ngIf="ans.Url" src="{{ans.Url}}" alt="" style="width: 60px; height: 60px;">
+                                                                </span>
+                                                                
+                                                                <span *ngIf="preview.choice === 'multiple-choice'">
+                                                                    <input type="checkbox" />
+                                                                    {{ans.answer1}}
+                                                                    <img *ngIf="ans.Url" src="{{ans.Url}}" alt="" style="width: 60px; height: 60px;">
+                                                                </span>
+                                                                <span *ngIf="preview.choice === 'intermediary-step'">
+                                                                    {{preview.intermAnswer}}
+                                                                <img *ngIf="preview.intermUrl" src="{{preview.intermUrl}}" alt="" style="width: 60px; height: 60px;">
+                                                                </span>
+                                                                <span *ngIf="preview.choice === 'free-answer'">
+                                                                </span>
+                                                                <span *ngIf="preview.choice === 'early-survey-finish'">
+                                                                    <input type="radio" />
+                                                                    {{ans.answer1}}
+                                                                    <img *ngIf="ans.Url" src="{{ans.Url}}" alt="" style="width: 60px; height: 60px;">
+                                                                </span>
+                                                                <span *ngIf="preview.choice === 'linear-scale'">
+                                                                    {{preview.minLabel}} <input type="range" id="vol" name="vol"
+                                                                        min="0" max="50" /> {{preview.maxLabel}}
+                                                                </span>
+
+                                                                <div *ngIf="preview.choice === 'Submitted'">
+                                                                    <div style="text-align: center;">  {{ 'Survey.surveyHtmlSubmit' | translate}} 
+                                                                        <!-- Your survey was submitted -->
+                                                                    </div>
+                                                                    <div style="text-align: center; margin-top: 20px;">
+                                                                        <button style="border: 1px solid #e1dcdc; margin-right: 5px;"
+                                                                            data-bs-dismiss="modal" (click)="ClosePreview()">
+                                                                            {{ 'Survey.surveyHtmlClose' | translate}} 
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <button style="border: 1px solid #e1dcdc; margin-right: 5px;"
+                                                                (click)="OnNextSubmit(i, last)" *ngIf="preview.choice !== 'Submitted'">
+                                                                {{ 'Survey.surveyHtmlSubmitButton' | translate}} 
+                                                            </button>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="position: absolute; bottom: 1rem; right: 1rem; left: 1rem;">
+                        <div class="row">
+                            <div class="col-md-12" id="footer-Survey-align" [ngStyle]="{'text-align': FooterLogo}">
+                                <div id="footer-Survey-BgColor" [ngStyle]="{'background-color': FooterBgColor}"
+                                    style="display: flex;  background-color: rgb(255, 255, 255); 
+                                    justify-content: space-between; align-items: center;">
+                                    <div id="survey-footer-img"></div>
+                                    <p id="footer-Survey-color" [ngStyle]="{'color': footerColor}"  style="padding: 0 1rem;">
+                                        <span id="footer-Survey-fontSize" [ngStyle]="{'font-size': FooterFontSize + 'px'}"
+                                        style="font-size: 17px; font-family: sans-serif; letter-spacing: 3px;  color: #555;">
+                                            {{FooterText}}
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="FileUploadSurveyImageModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <div class="modal-header">
+                <h4 class="modal-title">File Upload</h4>
+                <button type="button" class="close text-white" style="font-size: 30px;"  data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid plr_30  pt_30">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label> <b>Upload Image File</b> </label>
+                                <input type="file" id="picture" accept="image/*"
+                                    (change)="onFileChangeQues($event)">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="mb-5"></label>
+                                <button type="submit" class="btn btn-success" 
+                                (click)="UploadImageDatebase()">
+                                    Upload    
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <form [formGroup]="formImageSurvey" (ngSubmit)="onSearchImageSurvey(formImageSurvey.value)">
+                                            <div class="input-group">
+                                                <div class="form-outline">
+                                                    <input id="search-input" formControlName="search" placeholder="{{'DraftScreensaver.searchButtonPlaceholder' | translate}}" type="search"
+                                                        id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-success">
+                                            {{'DraftScreensaver.searchButton' | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                                            <table class="table table-hover ">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th class="text-left">
+                                                            Image
+                                                        </th>
+                                                        <th>
+                                                            File Name
+                                                        </th>
+                                                        <th>
+                                                            {{'DraftScreensaver.draftActions' | translate}}
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                
+                                                <tbody>
+                                                    <tr *ngFor="let image of SuveryImageList  | paginate: { itemsPerPage: 10, currentPage: currentPageImage, totalItems: totalItemsImage }; let i=index">
+                                                        
+                                                        <td class="text-left">
+                                                            <img src="{{image.image.thumbnail}}" alt="{{image.name}}" width="30" height="30">
+                                                        </td>
+                                                        <td>
+                                                            <span class="cursor" (click)="IsImageUrlSelected(image)"><u>{{image.name}}</u></span> 
+                                                        </td>
+                                                        <td class="marg">
+                                                            <span class="text-danger cursor" (click)="deleteImage(image.id)">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </span>
+                                                        </td>
+                                                      
+                                                    </tr>
+                                                    <tr *ngIf="SuveryImageList.length === 0">
+                                                        {{'DraftScreensaver.draftListRecord' | translate}}
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="row" style="width: 100%">
+                                                <div class="col-md-10 text-right">
+                                                    <pagination-controls (pageChange)="onPageImageChange($event, '1')"></pagination-controls>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <select id="PerPage" class="form-control" (change)="onPageImageChange($event, '2')">
+                                                        <option *ngFor="let item of PageTotalNumberImage" [value]="item">
+                                                            {{ item }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

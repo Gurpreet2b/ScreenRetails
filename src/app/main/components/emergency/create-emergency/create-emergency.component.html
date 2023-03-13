@@ -1,0 +1,48 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box">
+                <form [formGroup]="colorCodeForm" (ngSubmit)="OnSubmit()">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label> {{ 'CreateEmergency.colorCode' | translate}}</label>
+                                <input type="text" placeholder="{{ 'CreateEmergency.colorCodePlaceholder' | translate}}" class="form-control"
+                                    formControlName="name"
+                                    [ngClass]="{'error': submitted && myEmergencyForm.name.errors}">
+                                <div class="invalid-feedback"
+                                    *ngIf="submitted && myEmergencyForm.name.errors?.required">
+                                    <sup>*</sup>{{ 'CreateEmergency.colorCodePlaceholder' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label> {{ 'CreateEmergency.color' | translate}}</label>
+                                <input type="color" class="form-control" formControlName="code"
+                                    [ngClass]="{'error': submitted && myEmergencyForm.code.errors}">
+                                <div class="invalid-feedback"
+                                    *ngIf="submitted && myEmergencyForm.code.errors?.required">
+                                    <sup>*</sup> {{ 'CreateEmergency.enterColorCode' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-outline-secondary mr-1"
+                                    data-bs-dismiss="modal">{{ 'CreateEmergency.cancelButton' | translate}}</button>
+                                <button type="submit" class="btn btn-success mr-1" *ngIf="!colorCodeId">{{ 'CreateEmergency.saveButton' | translate}}</button>
+                                <button type="submit" class="btn btn-success" *ngIf="colorCodeId">{{ 'CreateEmergency.updateButton' | translate}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,109 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <label> {{'Policies.searchPolicyTitle' | translate}}</label>
+                <div class="row">
+                    <div class="col-md-8">
+                        <form [formGroup]="formPolicy" (ngSubmit)="onSearchPolicy(formPolicy.value)">
+                            <div class="input-group">
+                                <div class="form-outline">
+                                    <input id="search-input" formControlName="search"
+                                        placeholder="{{'Policies.searchButtonPlaceholder' | translate}}" type="search"
+                                        id="form" class="form-control" style="padding: 17.7px; width: 210px;" />
+                                </div>
+                                <button type="submit" class="btn btn-success ml-3">
+                                    {{'Policies.searchButton' | translate}}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success" routerLink="/policies/add">
+                                {{'Policies.addPolicy' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                            <table class="table table-hover ">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>
+                                            {{'Policies.policyListName' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'Policies.policyListPublisherName' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'Policies.policyListActions' | translate}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        *ngFor="let policies of PoliciesList | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                        <td>
+                                            {{policies.name}}
+                                        </td>
+                                        <td>{{policies.user_count}}</td>
+                                        <td>
+                                            <span class="mr-2 cursor" title="Edit Policy"
+                                                [routerLink]="['/policies/add', policies.id]">
+                                                <i class='far fa-edit'> </i>
+                                            </span>
+                                            <span class="mr-2 cursor" title="Duplicate Policy"
+                                                (click)="GetPolicyDuplicate(policies.id)">
+                                                <img src="assets/img/sent-alert-action/duplicate.png" alt="">
+                                            </span>
+                                            <span class="text-danger cursor" (click)="delete(policies.id)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="row" style="width: 100%">
+                                <div class="col-md-10 text-right">
+                                    <pagination-controls (pageChange)="onPageChange($event, '1')"></pagination-controls>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                        <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                            {{ item }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="modal fade bd-example" id="CreatePoliciesModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Policy</h3>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <app-create-policies   [policiesId]="policiesId" (valueChange)='ValueChanged($event)'></app-create-policies>
+            </div>
+
+        </div>
+    </div>
+</div> -->

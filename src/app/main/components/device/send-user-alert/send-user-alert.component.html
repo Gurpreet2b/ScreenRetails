@@ -1,0 +1,138 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <h6> {{ 'DeviceSendUser.userChooseRecipients' | translate}}
+                            </h6>
+                            <select class="form-control" (change)="onSelectedUserType($event)">
+                                <option value="" selected>{{ 'DeviceSendUser.userSelectAlertType' | translate}}</option>
+                                <!-- <option value="broadcast">Broadcast</option> -->
+                                <option value="select-recipients">{{ 'DeviceSendUser.userSelectRecipients' | translate}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div *ngIf="UserType === 'broadcast'">
+                    <p>
+                        Caution: sending the content via Broadcast will deliver it to every
+                        User/Group/Computer/Organizational Unit within your policy. Please note the following:
+                    </p>
+                    <p>   
+                        1. If the alert is received by a Computer, it is immediately stored for all users working on it.
+                        So, if you want to send the message only to users currently online, sending to Computers (or by
+                        Broadcast) is not a good idea.
+                    </p>
+                    <p>
+                        2. Emails (SMS messages) are delivered to any users with email addresses (phone numbers)
+                        specified, even if they do not have DeskAlerts clients. This may lead to the license limit
+                        exceeding and/or additional costs (in SMS messages case).
+                    </p>
+                </div> -->
+
+                <div class="row" *ngIf="UserType === 'select-recipients'">
+                    <div class="col-md-9">
+                        <form [formGroup]="formSend" (ngSubmit)="onSearchSend(formSend.value)">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input type="text" formControlName="search"
+                                            placeholder="{{ 'DeviceSendUser.userSearchPlaceholder' | translate}}"
+                                            class="form-control" name="" id="">
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-success">{{
+                                            'DeviceSendUser.userSearchButton' | translate}}</button>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-md-6">
+                                    {{ 'DeviceSendUser.userShow' | translate}}
+                                    <input type="checkbox" [(ngModel)]="Users" [ngModelOptions]="{standalone: true}"
+                                        (change)="IsSelectedUsers()" /> {{ 'DeviceSendUser.userUsersButton' |
+                                    translate}}
+                                    <input type="checkbox" [(ngModel)]="Groups" [ngModelOptions]="{standalone: true}"
+                                        (change)="IsSelectedUsers()" /> {{ 'DeviceSendUser.userGroupsButton' |
+                                    translate}}
+                                    <input type="checkbox" [(ngModel)]="Computers" [ngModelOptions]="{standalone: true}"
+                                        (change)="IsSelectedUsers()" /> {{ 'DeviceSendUser.userComputersButton' |
+                                    translate}}
+                                </div> -->
+                            </div>
+                        </form>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <div *ngIf="loading" class="dot-opacity-loader">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </div>
+                                    <table class="table table-hover ">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>
+                                                    #
+                                                </th>
+                                                <th>
+                                                    {{ 'DeviceSendUser.userListName' | translate}}
+                                                </th>
+                                                <th>
+                                                    Unique Code
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let org of OrganizationList | paginate: { itemsPerPage: 10, currentPage: currentPage, totalItems: totalItems }; let i=index">
+                                                <td>
+                                                    <input type="checkbox" (change)="IsSelectedOrgList($event, org)" />
+                                                </td>
+                                                <td>
+                                                    {{org.name}}
+                                                </td>
+                                                <td>
+                                                    {{org.unique_code}}
+                                                </td>
+                                            </tr>
+
+                                            <tr *ngIf="OrganizationList.length === 0">
+                                                {{ 'DeviceSendUser.userListRecord' | translate}}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="row" style="width: 100%">
+                                        <div class="col-md-10 text-right">
+                                            <pagination-controls (pageChange)="onPageChange($event, '1')"></pagination-controls>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <select id="PerPage" class="form-control" (change)="onPageChange($event, '2')">
+                                                <option *ngFor="let item of PageTotalNumber" [value]="item">
+                                                    {{ item }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <div class="bbpt-4 text-right">
+                            <button type="submit" class="btn btn-success" (click)="SendAlert()"> {{
+                                'DeviceSendUser.userSendButton' | translate}}</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

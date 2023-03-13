@@ -1,0 +1,1350 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <div class="row mb_30">
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs dash-tabs" role="tablist">
+                            <!-- <li class="nav-item active" (click)="OnAlertTabChange('popup')">
+                                <a class="nav-link active accord" data-bs-toggle="tab" href="#alert" role="tab">
+                                    {{ 'SendContent.popUpAlertTab' | translate}}
+
+                                </a>
+                            </li>
+                            <li class="nav-item" (click)="OnAlertTabChange('ticker')">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#ticker" role="tab"> {{
+                                    'SendContent.scrollingTickerTab' | translate}}
+                                </a>
+                            </li> -->
+                            <li class="nav-item active" (click)="OnAlertTabChange('device')">
+                                <a class="nav-link active accord" data-bs-toggle="tab" href="#device" role="tab">
+                                    Digital Signage
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div *ngIf="loading" class="dot-opacity-loader">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="tab-content" style="width: 100%;">
+                    <div class="tab-pane" id="alert" role="tabpanel">
+                        <form [formGroup]="alertForm" (ngSubmit)="OnSubmit()">
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="form-group">
+
+                                        <h6>{{ 'SendContent.alertTitle' | translate}}</h6>
+
+                                        <editor [init]="configTinyTitle.init" apiKey="test" formControlName="title"
+                                            (onKeyUp)="IsEditorTitle($event)" [(ngModel)]="AlertEditTitle"
+                                            class="tiny-opacity"></editor>
+                                        <!-- <div class="invalid-feedback" *ngIf="submitted && myForm.title.errors?.required">
+                                            <sup>*</sup> {{ 'SendContent.alertTextCondition' | translate}}
+                                        </div> -->
+
+
+                                        <!-- <angular-editor  [config]="config" formControlName="title"
+                                        (keyup)="IsEditorTitle($event)"
+                                        [ngClass]="{'error': submitted && myForm.title.errors}"></angular-editor>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && myForm.title.errors?.required">
+                                            <sup>*</sup> {{ 'SendContent.alertTextCondition' | translate}}
+                                        </div>  -->
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="bbpt-4 send_content_button">
+                                        <button type="button" class="btn btn-outline-secondary mr-1"
+                                            data-bs-toggle="modal" data-bs-target="#alertContentHtmlModal"> {{
+                                            'SendContent.alertPreviewButton' |
+                                            translate}}</button>
+                                        <!-- <button type="submit" class="btn btn-outline-secondary mr-1">{{
+                                            'SendContent.alertSaveButton' | translate}}</button> -->
+                                        <button type="submit" class="btn btn-success"> {{
+                                            'SendContent.alertSave&NextButton' | translate}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1"> {{ 'SendContent.alertText' |
+                                            translate}}</label>
+                                        <!-- <label>{{ 'SendContent.alertText' | translate}}</label> -->
+                                        <!-- <angular-editor [config]="config1" formControlName="title"
+                                            (keyup)="IsEditorTitle($event)"
+                                            [ngClass]="{'error': submitted && myForm.title.errors}"></angular-editor>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && myForm.title.errors?.required">
+                                            <sup>*</sup> {{ 'SendContent.alertTextCondition' | translate}}
+                                        </div> -->
+
+                                        <!-- <h6>{{ 'SendContent.alertText' | translate}}</h6>  -->
+
+                                        <editor [init]="configTiny.init" apiKey="test" formControlName="body"
+                                            (onKeyUp)="IsEditorBody($event)" (onDrop)="OnDropImage($event)"
+                                            (onChange)="IsEditorBody($event)" [(ngModel)]="AlertEditBody"
+                                            [ngClass]="{'error': submitted && myForm.body.errors}" class="tiny-opacity">
+                                        </editor>
+                                        <div class="invalid-feedback" *ngIf="submitted && myForm.body.errors?.required">
+                                            <sup>*</sup> {{ 'CreateAlert.enterYourAlertTitle' | translate}}
+                                        </div>
+
+
+                                        <!-- <angular-editor [config]="config1" formControlName="body"
+                                            (keyup)="IsEditorBody($event)"
+                                            [ngClass]="{'error': submitted && myForm.body.errors}"></angular-editor>
+                                        <div class="invalid-feedback" *ngIf="submitted && myForm.body.errors?.required">
+                                            <sup>*</sup>{{ 'SendContent.alertTextForTitle' | translate}}
+                                        </div> -->
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-5 right-side">
+                                    <div class="cursor" *ngIf="SkinId || SkinList.length" data-bs-toggle="modal"
+                                        data-bs-target="#SkinContentPreviewModal">
+                                        <div class="row" *ngIf="IsColorValue">
+                                            <div class="col-md-12" style="padding: 3rem;">
+                                                <div [ngStyle]="{'background-color': AlertBgColor}">
+                                                    <div class="alert-change"
+                                                        [ngStyle]="{'border': Think + 'px solid' + HeaderBorder}">
+                                                        <div class="row p-1 m-0"
+                                                            [ngStyle]="{'background-color': HeaderBgColor}">
+                                                            <div class="col-md-5 p-0"
+                                                                [ngStyle]="{'color': footerColor}">
+                                                                <div [ngStyle]="{'font-size': HeaderFontSize + 'px'}"
+                                                                    class="mt-2"
+                                                                    style="font-family: system-ui; font-weight: bold; color: #7e7e7e;">
+                                                                    {{HeaderTitle}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-7 p-0">
+                                                                <div [ngStyle]="{'text-align': HeaderLogo}">
+                                                                    <img *ngIf="HeaderTextImg" src="{{HeaderTextImg}}"
+                                                                        alt="Skin pic" style="width: 180px;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <h3 [innerHTML]="AlertEditTitlePreview"
+                                                                    style="color: #fff; word-wrap: break-word;">
+                                                                    <!-- {{AlertEditTitlePreview}} -->
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <h6 [innerHTML]="AlertEditBodyPreview"
+                                                                    style="height: 128px; overflow: auto; color: #fff; word-wrap: break-word;">
+                                                                    {{AlertEditBodyPreview}}
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row pt-1 pb-1 m-0"
+                                                            [ngStyle]="{'background-color': FooterBgColor}">
+                                                            <div class="col-md-5" style="padding-left: 0;">
+                                                                <div [ngStyle]="{'text-align': FooterLogo}">
+                                                                    <img *ngIf="FooterImageUrl" src="{{FooterImageUrl}}"
+                                                                        alt="skin pic"
+                                                                        style="width: 180px; height: 50px;"
+                                                                        class="mr-2">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-7 text-right"
+                                                                [ngStyle]="{'color': footerColor}">
+                                                                <div [ngStyle]="{'font-size': FooterFontSize + 'px'}"
+                                                                    class="mt-2" style="color: #7e7e7e;">
+                                                                    {{FooterText}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" *ngIf="IsColorValue === false">
+                                            <div class="col-md-12" style="padding: 4rem;">
+                                                <div [ngStyle]="{'background-color': AlertBgColor}">
+                                                    <div class=""
+                                                        [ngStyle]="{'border': Think + 'px solid' + HeaderBorder}">
+                                                        <div class="row m-0"
+                                                            [ngStyle]="{'background-color': HeaderBgColor}">
+                                                            <div class="col-md-12 text-right">
+                                                                <div [ngStyle]="{'text-align': HeaderLogo}">
+                                                                    <img *ngIf="HeaderTextImg" src="{{HeaderTextImg}}"
+                                                                        alt="Skin pic" style="width: 70px;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <h3 [innerHTML]="AlertEditTitlePreview"
+                                                                    [ngClass]="{'colorChange': IsWhiteColor === true}"
+                                                                    style="color: #fff; word-wrap: break-word;">
+                                                                    <!-- {{AlertEditTitlePreview}} -->
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <h6 [innerHTML]="AlertEditBodyPreview"
+                                                                    [ngClass]="{'colorChange': IsWhiteColor === true}"
+                                                                    style="height: 130px; color: #fff; overflow: auto; word-wrap: break-word;">
+                                                                    <!-- {{AlertEditBodyPreview}} -->
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row"
+                                                            [ngStyle]="{'background-color': FooterBgColor}">
+                                                            <div class="col-md-12" style="padding-left: 0;">
+                                                                <div [ngStyle]="{'text-align': FooterLogo}">
+                                                                    <img *ngIf="FooterImgUrl" src="{{FooterImgUrl}}"
+                                                                        alt="skin pic"
+                                                                        style="width: 300px; height: auto;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="text-danger">
+                                        {{ 'SendContent.alertPreviewFeature' | translate}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="main">
+                                        <div name="accordion" id="faq">
+                                            <div class="card">
+                                                <div class="card-header" id="headingFive">
+                                                    <a href="#" class="btn btn-header-link" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseFive" aria-expanded="true"
+                                                        aria-controls="collapseFive">
+                                                        {{ 'SendContent.alertAppearance' | translate}}
+                                                    </a>
+                                                </div>
+                                                <div id="collapseFive" class="collapse show"
+                                                    aria-labelledby="headingFive" data-parent="#faq">
+                                                    <div class="card-body line-space">
+                                                        <div class="row">
+                                                            <div class="col-md-3 size">
+                                                                <input type="radio"
+                                                                    (change)="IsScreenSizeAlert('window')"
+                                                                    formControlName="fullscreen"
+                                                                    [(ngModel)]="DefaultSettingList.windowed_fullscreen"
+                                                                    value="window"> {{ 'SendContent.alertDeviceWidth' |
+                                                                translate}} &nbsp;
+                                                                <input type="number" class="input-collape"
+                                                                    formControlName="width" style="width: 50px;"
+                                                                    [(ngModel)]="DefaultSettingList.width" /> {{
+                                                                'SendContent.alertDeviceWidthPx' | translate}} <br>
+                                                                <div class="ml-3">
+                                                                    {{ 'SendContent.alertDeviceHeight' | translate}}
+                                                                    <input type="number" class="input-collape ml-1"
+                                                                        formControlName="height" style="width: 50px;"
+                                                                        [(ngModel)]="DefaultSettingList.height" /> {{
+                                                                    'SendContent.alertDeviceHeightPx' | translate}} <br>
+                                                                </div>
+                                                                <input type="radio" value="fullscreen"
+                                                                    formControlName="fullscreen"
+                                                                    (change)="IsScreenSizeAlert('fullscreen')"
+                                                                    [(ngModel)]="DefaultSettingList.windowed_fullscreen">
+                                                                {{
+                                                                'SendContent.alertDeviceFullscreen' | translate}}
+                                                            </div>
+                                                        </div>
+                                                        <!-- <input type="radio" value="All" formControlName="device_type">
+                                                        {{ 'SendContent.alertAllDevices' | translate}}
+                                                        <input type="radio" value="Desktop"
+                                                            formControlName="device_type">
+                                                        {{ 'SendContent.alertDeviceDesktop' | translate}}
+                                                        <input type="radio" value="Mobile"
+                                                            formControlName="device_type">
+                                                        {{ 'SendContent.alertDeviceMobile' | translate}} -->
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- <div class="card">
+                                                <div class="card-header" id="headingSix">
+                                                    <a href="#" class="btn btn-header-link" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseSix" aria-expanded="true"
+                                                        aria-controls="collapseSix">
+                                                        {{ 'SendContent.alertDeviceType' | translate}}
+                                                    </a>
+                                                </div>
+                                                <div id="collapseSix" class="collapse" aria-labelledby="headingFive"
+                                                    data-parent="#faq">
+                                                    <div class="card-body line-space">
+
+                                                        <input type="radio" value="All" formControlName="device_type">
+                                                        {{ 'SendContent.alertAllDevices' | translate}}
+                                                        <input type="radio" value="Desktop"
+                                                            formControlName="device_type">
+                                                        {{ 'SendContent.alertDeviceDesktop' | translate}}
+                                                        <input type="radio" value="Mobile"
+                                                            formControlName="device_type">
+                                                        {{ 'SendContent.alertDeviceMobile' | translate}}
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="bbpt-4 text-right">
+                                        <button type="button" class="btn btn-outline-secondary mr-1"
+                                            data-bs-toggle="modal" data-bs-target="#alertContentHtmlModal">{{
+                                            'SendContent.popUpAlertPreviewButton' |
+                                            translate}}</button>
+                                        <!-- <button type="submit" class="btn btn-outline-secondary mr-1">{{
+                                            'SendContent.popUpAlertSaveButton' | translate}}</button> -->
+                                        <button type="submit" class="btn btn-success">{{
+                                            'SendContent.popUpAlertSave&NextButton' | translate}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane" id="ticker" role="tabpanel">
+                        <form [formGroup]="tickerForm" (ngSubmit)="OnTickerSubmit()">
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="form-group">
+
+                                        <h6 for="exampleFormControlInput1"> {{ 'SendContent.tickerTitle' |
+                                            translate}}</h6>
+
+                                        <editor [init]="configTinyTitle.init" apiKey="test" formControlName="title"
+                                            (onKeyUp)="IsScrollingEditorTitle($event)" class="tiny-opacity"></editor>
+
+                                        <!-- <angular-editor [config]="configTicker1" formControlName="title"
+                                            (keyup)="IsScrollingEditorTitle($event)"
+                                            [ngClass]="{'error': submitted && myTickerForm.title.errors}">
+                                        </angular-editor>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && myTickerForm.title.errors?.required">
+                                            <sup>*</sup>{{ 'SendContent.tickerAlertTitle' | translate}}
+                                        </div>  -->
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="bbpt-4">
+                                        <button type="button" class="btn btn-outline-secondary mr-1"
+                                            data-bs-toggle="modal" data-bs-target="#ScrollingContentHtmlModal">{{
+                                            'SendContent.tickerPreviewButton' |
+                                            translate}} </button>
+                                        <!-- <button type="submit" class="btn btn-outline-secondary mr-1">{{
+                                            'SendContent.tickerSaveButton' | translate}}</button> -->
+                                        <button type="submit" class="btn btn-success">{{
+                                            'SendContent.tickerSave&NextButton' | translate}} </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1"> {{ 'SendContent.tickerAlertText' |
+                                            translate}}</label>
+
+                                        <editor [init]="configTinyTicker.init" apiKey="test" formControlName="body"
+                                            (onKeyUp)="IsScrollingEditorBody($event)"
+                                            (onChange)="IsScrollingEditorBody($event)"
+                                            [ngClass]="{'error': submitted && myTickerForm.body.errors}"
+                                            class="tiny-opacity"></editor>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && myTickerForm.body.errors?.required">
+                                            <sup>*</sup> {{ 'SendContent.tickerAlertTextCondition' | translate}}
+                                        </div>
+
+                                        <!-- <angular-editor [config]="configTicker" formControlName="body"
+                                            (keyup)="IsScrollingEditorBody($event)"
+                                            [ngClass]="{'error': submitted && myTickerForm.body.errors}">
+                                        </angular-editor>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && myTickerForm.body.errors?.required">
+                                            <sup>*</sup> {{ 'SendContent.tickerAlertTextCondition' | translate}}
+                                        </div>  -->
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 right-side mt-4">
+                                    <!-- <div class="form-group pt-3">
+                                        <label for="exampleFormControlSelect1"> {{ 'SendContent.tickerChangeSkin' |
+                                            translate}}</label>
+                                        <select class="form-control" (change)="IsTickerColorChange($event)">
+                                            <option *ngFor="let skin of SkinList" [value]="skin.id">
+                                                {{skin.name}}
+                                            </option>
+                                        </select>
+                                    </div> -->
+
+                                    <div class="row cursor" data-bs-toggle="modal"
+                                        data-bs-target="#SkinContentTickerPreviewModal">
+                                        <div class="col-md-12 p-3">
+                                            <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/dubai">
+                                            <div style="height: 58px;" [ngStyle]="{'background-color': AlertBgColor}">
+                                                <div class="row" style="display: flex; padding: 0px 0px;">
+                                                    <div class="col-md-11" style="width: 100%">
+                                                        <div style="display: flex;">
+                                                            <span *ngIf="ShowFooterImgCheck === true">
+                                                                <img *ngIf="HeaderTextImgTicker"
+                                                                    src="{{HeaderTextImgTicker}}" alt="Skin pic" style="background: #fff; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                                                                    padding: 4px;">
+                                                            </span>
+                                                            <span *ngIf="ShowFooterImgCheck === false">
+                                                                <img *ngIf="HeaderTextImgTicker"
+                                                                    src="{{HeaderTextImgTicker}}" alt="Skin pic" style="background: #fff; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                                                                    padding: 4px; width: 53px;">
+                                                            </span>
+
+                                                            <marquee width="100%" id="header-scroll-texts"
+                                                                [ngClass]="{'colorChange': IsWhiteColor === true}"
+                                                                style="align-items: center; display: flex; color: #fff;
+                                                                font-family: 'Dubai-Bold', sans-serif !important; font-size: 20px;"
+                                                                Scrollamount="IsSpeed"
+                                                                direction="{{IsScrollingDirection}}">
+                                                                <!-- {{AlertScrollingEditTitle}} {{AlertScrollingEditBody}} -->
+                                                            </marquee>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <button type="button" class="close"
+                                                            [ngClass]="{'colorChange': IsWhiteColor === true}"
+                                                            style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer;
+                                                            font-weight: 300; margin-top: 12px; color: #fff; margin-right: 8px;">&times;</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <!-- <div class="row">
+                                        <div class="col-md-12">
+                                            <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/dubai">
+                                            <div style="height: 58px;"  [ngStyle]="{'background-color': AlertBgColor}">
+                                                <div class="row" style="display: flex; padding: 0px 0px;">
+                                                    <div class="col-md-11" style="width: 100%">
+                                                        <div style="display: flex;">
+                                                            <img *ngIf="HeaderTextImg" src="{{HeaderTextImg}}"
+                                                            alt="Skin pic" style="background: #fff; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                                                            padding: 4px;">
+                                    
+                                                            <marquee width="100%" style="align-items: center; display: flex; color: #fff;
+                                                                font-family: 'Dubai-Bold', sans-serif !important; font-size: 20px;" 
+                                                            Scrollamount="IsSpeed" direction="{{IsScrollingDirection}}">
+                                                                {{AlertScrollingEditTitle}} {{AlertScrollingEditBody}}
+                                                            </marquee>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <button type="button" class="close"
+                                                            style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer;
+                                                            font-weight: 300; margin-top: 12px; color: #fff; margin-right: 8px;">&times;</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div> -->
+
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="text-danger">
+                                        {{ 'SendContent.tickerPreviewFeature' | translate}}
+
+                                    </div>
+                                    <span class="text-danger">
+                                        {{ 'SendContent.tickerClickPreview' | translate}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 mt-2">
+                                    <div id="main">
+                                        <div class="accordion" id="faq">
+                                            <!-- <div class="card">
+                                                <div class="card-header" id="headingFifth">
+                                                    <a href="#" class="btn btn-header-link" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseFifth" aria-expanded="true"
+                                                        aria-controls="collapseFifth">
+                                                        {{ 'SendContent.alertDeviceType' | translate}}
+                                                    </a>
+                                                </div>
+                                                <div id="collapseFifth" class="collapse show"
+                                                    aria-labelledby="headingFifth" data-parent="#faq">
+                                                    <div class="card-body line-space">
+                                                        <input type="radio" checked value="All">{{
+                                                        'SendContent.tickerAllDevice' | translate}}
+                                                        <input type="radio" value="Desktop"
+                                                            formControlName="device_type" class="ml-3">
+                                                        {{ 'SendContent.tickerDeviceDesktop' | translate}}
+                                                        <input type="radio" value="Mobile" formControlName="device_type"
+                                                            class="ml-3">
+                                                        {{ 'SendContent.tickerDeviceMobile' | translate}}
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                            <div class="card">
+                                                <div class="card-header" id="headingThrice">
+                                                    <a href="#" class="btn btn-header-link collapsed"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseThrice"
+                                                        aria-expanded="false" aria-controls="collapseThrice">
+                                                        {{'CreateAlert.scrollingTickerAlertAppearance' | translate}}
+                                                    </a>
+                                                </div>
+                                                <div id="collapseThrice" class="collapse"
+                                                    aria-labelledby="headingThrice" data-parent="#faq">
+                                                    <div class="card-body line-space">
+                                                        <div class="row">
+                                                            <div class="col-md-2 size">
+                                                                <strong> Scrolling Direction </strong> <br>
+                                                                <input type="radio" value="left"
+                                                                    (change)="OnChangeDirection('left')"
+                                                                    [(ngModel)]="ScollingDirection"
+                                                                    [ngModelOptions]="{standalone: true}"> Left
+                                                                <br>
+                                                                <input type="radio" value="right"
+                                                                    (change)="OnChangeDirection('right')"
+                                                                    [(ngModel)]="ScollingDirection"
+                                                                    [ngModelOptions]="{standalone: true}"> Right
+                                                                <br>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="bbpt-4 text-right">
+                                        <button type="button" class="btn btn-outline-secondary mr-1"
+                                            data-bs-toggle="modal" data-bs-target="#ScrollingContentHtmlModal">{{
+                                            'SendContent.scrollingTickerPreviewButton' | translate}}</button>
+                                        <!-- <button type="submit" class="btn btn-outline-secondary mr-1">{{
+                                            'SendContent.scrollingTickerSaveButton' | translate}}</button> -->
+                                        <button type="submit" class="btn btn-success">{{
+                                            'SendContent.scrollingTickerSave&NextButton' | translate}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane active" id="device" role="tabpanel">
+                        <form [formGroup]="DigitalMediaForm" (ngSubmit)="OnDigitalSubmit()">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlInput1">Name</label>
+                                                <input type="text" placeholder="Enter Name" class="form-control"
+                                                    formControlName="name"
+                                                    [ngClass]="{'error': submitted && myDigitalMediaForm.name.errors}">
+
+                                                <div class="invalid-feedback"
+                                                    *ngIf="submitted && myDigitalMediaForm.name.errors?.required">
+                                                    <sup>*</sup> Please Enter Name
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6" style="margin-top: 28px; display: flex;">
+                                            <div class="form-group mr-2">
+                                                <button type="button" class="btn btn-success"
+                                                data-bs-toggle="modal" data-bs-target="#AddMediaModal"> Add Media </button>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-success"
+                                                data-bs-toggle="modal" data-bs-target="#MediaImagePreviewListModal"> Preview </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- <div class="row">
+                                        <div class="col-md-3 skin_PopupSet ticker-skin cursor"
+                                            *ngFor="let img of MediaImageList">
+                                            <img *ngIf="img.media_file" src="{{img.media_file}}" alt=""
+                                                style="width: 100%; height: 100%;">
+                                        </div>
+                                        <div class="col-md-3 skin_PopupSet ticker-skin cursor">
+                                            <img src="/assets/img/plus.png" alt="logo" title="Add media"
+                                                data-bs-toggle="modal" data-bs-target="#AddMediaModal">
+                                        </div>
+                                    </div> -->
+
+                                    <div class="row" *ngIf="MediaImageList.length > 0">
+                                        <section class="gallery-block grid-gallery">
+                                            <div class="container">
+                                                <div class="row custom-gallerey">
+                                                    <div class="col-md-6 col-lg-3 item" *ngFor="let img of MediaImageList; let i=index">
+                                                        <!-- <a class="lightbox"
+                                                        href="{{img.media_file}}" target="_blank"> -->
+                                                        <div class="closed cursor" (click)="onRemoveRow(i)" title="Delete Image">x</div>
+                                                        <img class="img-fluid image scale-on-hover cursor" (click)="OnSelectedMediaImage(img.media_file)"
+                                                        src="{{img.media_file}}" data-bs-toggle="modal" data-bs-target="#MediaImageModal">
+                                                        <!-- </a> -->
+                                                        <div class="Timer">
+                                                            <!-- <input type="time" step="1" min='13:00' max= '15:00' class="form-control text-number mt-2" 
+                                                            [(ngModel)]="img.time_to_play" [ngModelOptions]="{standalone: true}"> -->
+                                                            <input type="number" class="form-control text-number" 
+                                                            [(ngModel)]="img.hours" [ngModelOptions]="{standalone: true}"
+                                                            title="Hours" (change)="GetMediaById(img)"> <span class="colon">:</span>
+
+                                                            <input type="number" class="form-control text-number" 
+                                                            [(ngModel)]="img.minutes" [ngModelOptions]="{standalone: true}"
+                                                            title="Minutes" (change)="GetMediaById(img)"><span class="colon">:</span>
+
+                                                            <input type="number" class="form-control text-number" 
+                                                            [(ngModel)]="img.seconds" [ngModelOptions]="{standalone: true}"
+                                                            title="Seconds" (change)="GetMediaById(img)">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-success">{{
+                                                    'CreateSubscription.saveButton'
+                                                    | translate}} </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="exampleFormControlInput1">Name</label>
+                                                <input type="text" placeholder="Enter Name" class="form-control"
+                                                    formControlName="name"
+                                                    [ngClass]="{'error': submitted && myDigitalMediaForm.name.errors}">
+        
+                                                <div class="invalid-feedback"
+                                                    *ngIf="submitted && myDigitalMediaForm.name.errors?.required">
+                                                    <sup>*</sup> Please Enter Name
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label><b> Selected Media </b></label>
+                                            <div class="right-scroll">
+                                                <table class="table table-hover ">
+                                                    <thead class="thead-dark">
+                                                        <tr>
+                                                            <th class="text-left" style="width: 6vw">
+                                                                <img src="/assets/img/plus.png" alt="logo" width="40"
+                                                                    title="Add media" height="40" class="mr-5 cursor"
+                                                                    data-bs-toggle="modal" data-bs-target="#AddMediaModal">
+                                                            </th>
+                                                            <th class="text-left" style="vertical-align: middle;">
+                                                                <span> Name </span>
+                                                            </th>
+                                                            <th class="text-left" style="vertical-align: middle;">
+                                                                <span>Action</span>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let media of MediaImageList; let i=index">
+                                                            <td></td>
+                                                            <td class="text-left">
+                                                                {{media.name}}
+                                                            </td>
+                                                            <td class="text-left">
+                                                                <span class="text-danger">
+                                                                    <i class="far fa-trash-alt cursor"
+                                                                        (click)="onRemoveRow(i)"></i>
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-success">{{ 'CreateSubscription.saveButton'
+                                                    | translate}} </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div *ngFor="let img of MediaImageList; let i=index; let first = first; let last = last;">
+                                        <div *ngIf="i === ShowSlideImage">
+                                            <img *ngIf="img.media_file" src="{{img.media_file}}"
+                                                alt="" style="width: 100vw; height: 100vh;">
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <div class="modal" id="alertContentHtmlModal">
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/dubai">
+    <div class="" id="alert-width" style="position: relative; min-width: 500px; min-height: 400px;">
+        <div style="padding: 16px;">
+            <div id="alert-border" class="modal-content" style="border: 0;">
+                <div id="alert-Bg-color" style="position: relative;">
+                    <div id="header-Bg-color">
+                        <div class="row"
+                            style="display: flex; padding: 3px 15px; justify-content: space-between; align-items: center;">
+                            <div class="col-md-5" style="width: 100%; display: inline-flex;">
+                                <div id="header-text-skin" style="font-family: system-ui; display: flex; align-items: center;
+                                    font-size: 16px; font-weight: bold; color: #7e7e7e;letter-spacing: 2px;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="Header-img" style="text-align: right;">
+                                    <span id="header-text-img"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="close" data-bs-dismiss="modal" onclick="close_alert()"
+                                    style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer;">&times;</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body" style="padding: 10px; margin: 0;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h2 id="header-text" style="color: #fff; font-family: 'Dubai-Bold', sans-serif !important;"></h2>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div id="alert-max-height" style=" overflow-x: hidden; overflow-y: auto;">
+                                                <h3 id="body-text" style="color: #fff; font-family: 'Dubai-Bold', sans-serif !important;">
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div style="position: absolute; bottom: 1rem; right: 1rem; left: 1rem;">
+                <div class="row">
+                    <div id="footer-align" class="col-md-12" style="text-align: left;">
+                        <div id="footer-BgColor" style="display: flex;  background-color: rgb(255, 255, 255); 
+                        justify-content: space-between; align-items: center;">
+                            <div id="footer-img"></div>
+                            <p id="footer-color" style="padding: 0 1rem;">
+                                <span id="footer-fontSize" style="font-size: 17px; font-family: sans-serif;
+                                    letter-spacing: 3px;  color: #555;">
+                                    <span id="footer-text"></span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="modal" id="alertContentHtmlModal">
+    <div class="modal-dialog" style="margin: 0;">
+        <div class="modal-content">
+            <div id="header-text-scroll"></div>
+            <link rel="stylesheet"
+                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/dubai">
+            <div class="" id="alert-width" style="position: relative; min-width: 500px; min-height: 400px;">
+                <div style="padding: 16px;" *ngIf="ShowFooter === true">
+                    <div id="alert-border" class="" style="border: 0;">
+                        <div id="alert-Bg-color" style="position: relative;">
+                            <div id="header-Bg-color">
+                                <div class="row"
+                                    style="display: flex; padding: 3px 15px; justify-content: space-between; align-items: center;">
+                                    <div class="col-md-5" style="width: 100%; display: inline-flex;">
+                                        <div id="header-text-skin" style="font-family: system-ui; display: flex; align-items: center;
+                                            font-size: 16px; font-weight: bold; color: #7e7e7e;letter-spacing: 2px;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div id="Header-img">
+                                            <span id="header-text-img"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="close" data-bs-dismiss="modal"
+                                            onclick="close_alert()"
+                                            style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer">&times;</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body" style="padding: 10px; margin: 0;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h2 id="header-text" style="color: #fff; font-family: 'Dubai-Bold', sans-serif !important; word-wrap: break-word;
+                                                    height: 75px; overflow-x: auto;">
+                                                    </h2>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div id="alert-max-height"
+                                                        style=" overflow-x: hidden; overflow-y: auto;">
+                                                        <h3 id="body-text"
+                                                            style="color: #fff; font-family: 'Dubai-Bold', sans-serif !important; word-wrap: break-word;">
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 1rem; right: 1rem; left: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin: 10px 0px;">
+                            <div style="display: flex;">
+                                <!-- <div onclick="print_alert()" *ngIf="IsPrintf" style="cursor: pointer;">
+                                    <i class="fa fa-print" aria-hidden="true"
+                                        style="font-size: 27px; margin-right: 15px; color: #fff;"></i>
+                                </div> -->
+                                <div onclick="IsLike()" *ngIf="IsHeart" style="cursor: pointer;">
+                                    <img src="https://img.icons8.com/external-those-icons-lineal-those-icons/50/000000/external-like-feedback-those-icons-lineal-those-icons.png"
+                                        style="width: 27px; height: 27px; margin-right: 25px; background: #fff; border-radius: 50%;"
+                                        id="likebtn">
+                                </div>
+                            </div>
+
+                            <div>
+                                <div *ngIf="IsAcknowledgement">
+                                    <select style="border: 1px solid #e1dcdc; background: #efefef;
+                                    margin-right: 5px; height: 25px;" id="time">
+                                        <option value="60">1 Minute</option>
+                                        <option value="120">2 Minute</option>
+                                        <option value="300">5 Minute</option>
+                                        <option value="600">10 Minute</option>
+                                        <option value="900">15 Minute</option>
+                                        <option value="1800">30 Minute</option>
+                                        <option value="2700">45 Minute</option>
+                                    </select>
+
+                                    <button _type="button" onclick="IsPostPone()"
+                                        style="border: 1px solid #e1dcdc; margin-right: 5px; height: 25px;">Postpone</button>
+                                    <button type="button" onclick="IsPopupAlertOK()"
+                                        style="width: 70px; border: 1px solid #e1dcdc; margin-right: 5px; height: 25px;">OK</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="footer-BgColor" style="display: flex; 
+                                justify-content: space-between; align-items: center;">
+                                    <div id="footer-img"></div>
+                                    <p id="footer-color" style="padding: 0 1rem;">
+                                        <span id="footer-fontSize" style="font-size: 17px; font-family: sans-serif;
+                                            letter-spacing: 3px;  color: #555;">
+                                            <span id="footer-text"></span>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="ShowFooter === false">
+                    <div class="" style="border: 0;">
+                        <div style="position: relative;">
+                            <div>
+                                <div class="row"
+                                    style="display: flex; padding: 1px 7px; justify-content: space-between;">
+                                    <!-- <div class="col-md-5" style="width: 100%; display: inline-flex;">
+                                        <div id="header-text-skin" style="font-family: system-ui; display: flex; align-items: center;
+                                            font-size: 16px; font-weight: bold; color: #7e7e7e;letter-spacing: 2px;">
+                                        </div>
+                                    </div> -->
+                                    <div class="col-md-11">
+                                        <div>
+                                            <span id="header-text-img-white"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <button type="button" class="close" data-bs-dismiss="modal"
+                                            onclick="close_alert()"
+                                            style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer">&times;</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body" style="padding: 10px; margin: 0;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h2 id="header-text"
+                                                        [ngStyle]="IsWhiteColor?{'color': 'black'} : {'color': '#fff'}"
+                                                        style="color: #fff; font-family: 'Dubai-Bold', sans-serif !important; word-wrap: break-word;
+                                                        height: 75px; overflow-x: auto;">
+                                                    </h2>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div id="alert-max-height-check"
+                                                        style=" overflow-x: hidden; overflow-y: auto;">
+                                                        <h3 id="body-text"
+                                                            [ngStyle]="IsWhiteColor?{'color': 'black'} : {'color': '#fff'}"
+                                                            style="font-family: 'Dubai-Bold', sans-serif !important; word-wrap: break-word;">
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 0rem; right: 1rem; left: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin: 10px 0px;">
+                            <div style="display: flex;">
+                                <div onclick="IsLike()" *ngIf="IsHeart" style="cursor: pointer;">
+                                    <img src="https://img.icons8.com/external-those-icons-lineal-those-icons/50/000000/external-like-feedback-those-icons-lineal-those-icons.png"
+                                        style="width: 27px; height: 27px; margin-right: 25px; background: #fff; border-radius: 50%;"
+                                        id="likebtn">
+                                </div>
+                            </div>
+
+                            <div>
+                                <div *ngIf="IsAcknowledgement">
+                                    <select style="border: 1px solid #e1dcdc; background: #efefef;
+                                    margin-right: 5px; height: 25px;" id="time">
+                                        <option value="60">1 Minute</option>
+                                        <option value="120">2 Minute</option>
+                                        <option value="300">5 Minute</option>
+                                        <option value="600">10 Minute</option>
+                                        <option value="900">15 Minute</option>
+                                        <option value="1800">30 Minute</option>
+                                        <option value="2700">45 Minute</option>
+                                    </select>
+
+                                    <button _type="button" onclick="IsPostPone()"
+                                        style="border: 1px solid #e1dcdc; margin-right: 5px; height: 25px;">Postpone</button>
+                                    <button type="button" onclick="IsPopupAlertOK()"
+                                        style="width: 70px; border: 1px solid #e1dcdc; margin-right: 5px; height: 25px;">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-right p-0">
+                                <div id="footer-img"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg" id="ScrollingContentHtmlModal">
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/dubai">
+    <div class="modal-dialog modal-lg modal-static1">
+        <div class="modal-content" id="alert-Scroll-border" style="height: 62px;">
+            <div class="row" style="display: flex; padding: 0px 15px;">
+                <div class="col-md-11" style="width: 100%">
+                    <div style="display: flex;">
+                        <span id="header-scroll-img" style="background: #fff; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                        padding: 4px;">
+
+                        </span>
+                        <marquee width="100%" [ngStyle]="IsWhiteColor?{'color': 'black'} : {'color': '#fff'}"
+                            style="align-items: center; display: flex; font-family: 'Dubai-Bold', sans-serif !important;"
+                            id="header-scroll-text" Scrollamount="IsSpeed" direction="{{IsScrollingDirection}}">
+                        </marquee>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="close" data-bs-dismiss="modal" onclick="close_alert()"
+                        style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer; margin-top: 12px; color: #000;">&times;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg" id="SkinContentPreviewModal">
+    <div class="modal-dialog m-0">
+        <div class="modal-content" style="width: 100vw;">
+            <div class="modal-header">
+                <h3 class="modal-title">Skin Preview Alert</h3>
+                <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3 skin_PopupSet ticker-skin cursor" *ngFor="let skin of SkinList">
+                        <div data-bs-dismiss="modal" (click)="IsColorChange(skin)"
+                            [ngStyle]="{'border': skin.border_thickness + 'px solid' + skin.border_color, 'background-color': skin.alert_background_color}">
+                            <div class="p-2" *ngIf="skin.show_alert_footer">
+                                <div class="row"
+                                    style="display: flex; padding: 6px 4px; margin: 0; background-color: #fff; font-size: 10px;">
+                                    <div class="col-md-5 header-center p-0" style="display: flex;">
+                                        {{skin.header_custom_message}}
+                                    </div>
+                                    <div class="col-md-7 header-center text-right p-0">
+                                        <span class="mr-2">
+                                            <img src="assets/img/deva-logo.png" alt="Logo" height="auto" width="100px">
+                                        </span>
+                                        <button type="button" class="close text-right"
+                                            data-bs-dismiss="modal">&times;</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="row">
+                                                <div class="col-md-7">
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h6 style="height: 176px;">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+
+                                                            </div>
+                                                        </div>
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="device_FooterText">
+                                    <div class="row" style="margin: 0px; background-color: #fff; padding: 10px 0;">
+                                        <div class="col-md-4" style="padding-left: 0;">
+                                            <div *ngIf="skin.name !== 'Message'">
+                                                <img src="assets/img/dewa-lines.png" alt="alert pic"
+                                                    style="width: 110px; height: auto;">
+                                            </div>
+                                            <div *ngIf="skin.name === 'Message'">
+                                                <img src="assets/img/dewa-lines.png" alt="alert pic"
+                                                    style="width: 120px; height: auto;">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 pr-2">
+                                            <div class="text-right">
+                                                <p id="footer-color" style="color: black; font-size: 11px;">
+                                                    <span>
+                                                        Innovation & The Future
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="skin.show_alert_footer === false">
+                                <div class="row" style="display: flex; margin: 0;">
+                                    <div class="col-md-10 header-center">
+                                        <span>
+                                            <img src="assets/img/Dewa_round_logo_rBZ7Nx3.jpg" alt="Logo" height="auto"
+                                                width="50px">
+                                        </span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="close text-right pl-2 text-white"
+                                            data-bs-dismiss="modal">&times;</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="row mt-3 mb-3">
+                                                <div class="col-md-7">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-4 mb-3">
+                                                <div class="col-md-12">
+                                                    <h6 style="height: 130px; overflow-x: hidden;">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+
+                                                            </div>
+                                                        </div>
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="device_FooterText">
+                                    <div class="row">
+                                        <div class="col-md-12 text-right" style="padding-left: 0;">
+                                            <div *ngIf="skin.name !== 'White'">
+                                                <img src="assets/img/dewa_white_lines_jndrEgp.png" alt="alert pic"
+                                                    style="width: 290px; height: auto;">
+                                            </div>
+                                            <div *ngIf="skin.name === 'White'">
+                                                <img src="assets/img/dewa_lines_original.png" alt="alert pic"
+                                                    style="width: 250px; height: auto;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="SkinContentTickerPreviewModal">
+    <div class="modal-dialog m-0">
+        <div class="modal-content" style="width: 100vw;">
+            <div class="modal-header">
+                <h3 class="modal-title">Skin Ticker Preview Alert</h3>
+                <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3 skin_PopupSet cursor ticker-skin" *ngFor="let skin of SkinList">
+                        <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/dubai">
+                        <div style="height: 58px;" [ngStyle]="{'background-color': skin.alert_background_color}"
+                            (click)="IsTickerColorChange(skin)" data-bs-dismiss="modal">
+                            <div class="row" style="display: flex; padding: 0px 0px;">
+                                <div class="col-md-10" style="width: 100%">
+                                    <div style="display: flex;">
+                                        <img src="../../../../../assets/img/deva-ticker.png" alt="Skin pic" style="background: #fff; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                                        padding: 2px;">
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-1 ml-3">
+                                    <button type="button" class="close"
+                                        style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer;
+                                        font-weight: 300; margin-top: 12px; color: #fff; margin-right: 8px;">&times;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="AddMediaModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add Media</h4>
+                <button type="button" class="close text-white" style="font-size: 30px;"
+                    data-bs-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form [formGroup]="MediaForm" (ngSubmit)="OnMediaSubmit()">
+                    <h4>Screen Time</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Hours</label>
+                                <input type="number" placeholder="" class="form-control" formControlName="hours">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Minutes</label>
+                                <input type="number" placeholder="" class="form-control" formControlName="minutes">
+
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Seconds</label>
+                                <input type="number" placeholder="" class="form-control" formControlName="seconds">
+                                    <!-- [ngClass]="{'error': submitted && myMediaForm.time_to_play.errors}"> -->
+
+                                <!-- <div class="invalid-feedback"
+                                    *ngIf="submitted && myMediaForm.time_to_play.errors?.required">
+                                    <sup>*</sup> Please Enter Your Screen Time
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Image</label> <br>
+                                <input type="file" (change)="onFileChangeDevice($event)" accept="image/*"
+                                    formControlName="image"
+                                    [ngClass]="{'error': submitted && myMediaForm.image.errors}"><br>
+                                <div class="invalid-feedback" *ngIf="submitted && myMediaForm.image.errors?.required">
+                                    <sup>*</sup> Please Select Your Image
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-outline-secondary mr-1" data-bs-dismiss="modal">{{
+                                    'CreateDevice.deviceCancelButton' | translate}}</button>
+                                <button type="submit" class="btn btn-success">{{ 'CreateSubscription.saveButton' |
+                                    translate}} </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="MediaImageModal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 55vw;">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Preview Image</h4>
+                <button type="button" class="close text-white" style="font-size: 30px;"
+                    data-bs-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body p-0">
+                <img class="img-fluid image scale-on-hover" src="{{SelectedMediaImage}}" 
+                style="width: 55vw; height: 55vh;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="MediaImagePreviewListModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 55vw;">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Preview Slide Image List</h4>
+                <button type="button" class="close text-white" style="font-size: 30px;"
+                    data-bs-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body p-0">
+                <div class="" *ngFor="let med of MediaImageList; let i=index">
+                    <div *ngIf="i === ShowSlideImage">
+                        <div class="row chev-left">
+                            <div class="col-md-6">
+                                <span class="cursor" (click)="OnPreviousPreview(i)">
+                                    <i class="fa fa-chevron-left"></i>
+                                </span>
+                            </div>
+                            
+                            <div class="col-md-6 text-right">
+                                <span class="cursor" (click)="OnNextPreview(i)">
+                                    <i class="fa fa-chevron-right"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <img src="{{med.media_file}}" class="img-fluid image scale-on-hover" alt="med.name"
+                        style="width: 55vw; height: 55vh;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

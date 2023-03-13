@@ -1,0 +1,256 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box">
+                <form [formGroup]="lockScreenForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        {{'CreateLockscreen.addLockscreenSteps' | translate}}
+                                        <strong>{{'CreateLockscreen.addLockscreen' | translate}}</strong> <br>
+                                        <label for="exampleFormControlInput1"> {{ 'CreateLockscreen.lockscreenName' |
+                                            translate}} </label>
+                                        <input type="text"
+                                            placeholder="{{'CreateLockscreen.lockscreenNameEnter' | translate}}"
+                                            class="form-control" formControlName="name"
+                                            [ngClass]="{'error': submitted && myLockScreenForm.name.errors}">
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && myLockScreenForm.name.errors?.required">
+                                            <sup>*</sup> {{ 'CreateLockscreen.lockscreenNameEnter' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <ul class="nav nav-tabs dash-tabs" role="tablist">
+                                        <li class="nav-item active">
+                                            <a class="nav-link active accord" data-bs-toggle="tab" href="#content"
+                                                role="tab"> {{
+                                                'CreateLockscreen.lockscreenContentTab' | translate}}
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link accord" data-bs-toggle="tab" href="#Options" role="tab"> {{
+                                                'CreateLockscreen.lockscreenOptionTab' | translate}}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" style="width: 100%;">
+                                        <div class="tab-pane active" id="content" role="tabpanel">
+
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <img *ngIf="LockScreenUrl" src="{{LockScreenUrl}}"
+                                                            alt="Wallpaper pic" style="width: 200px; height: 200px;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="form-group">
+                                                        <div *ngIf="SelectedName">
+                                                            {{ 'CreateLockscreen.lockscreenFileName' | translate}}
+                                                            {{SelectedName}}
+                                                        </div>
+                                                        <div *ngIf="SelectedSize">
+                                                            {{ 'CreateLockscreen.lockscreenFileSize' | translate}}
+                                                            {{SelectedSize | number: '.0-2'}} {{
+                                                            'CreateLockscreen.lockscreenFileSizeMb' | translate}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="form-group">
+                                                        <!-- <label for="exampleFormControlInput1"> {{
+                                                    'CreateLockscreen.chooseLockscreen' | translate}}</label>
+                                                <input type="file" id="picture" accept="image/*"
+                                                    (change)="onFileLockScreenChange($event)"> -->
+                                                        <button class="btn btn-success" data-bs-toggle="modal"
+                                                            data-bs-target="#FileUploadLockScreenImageModal"
+                                                            (click)="OnFileImageModel()">
+                                                            Choose Image File
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="Options" role="tabpanel">
+                                            <div class="row mt-3">
+                                                <div class="col-md-4">
+                                                    <input type="checkbox" formControlName="scheduled"
+                                                    (change)="OnScheduleChecked($event)">
+                                                    {{'CreateLockscreen.start_date_time' | translate}}
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div>
+                                                    {{ 'CreateLockscreen.start_date' | translate}}
+                                                    <input type="datetime-local" class="input-collape"
+                                                        formControlName="start_date_time" 
+                                                        [ngClass]="{'disabledLock': !IsScheduleChecked }" />
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="ml-2">
+                                                    {{ 'CreateLockscreen.end_date' | translate}}
+                                                    <input type="datetime-local" class="input-collape mt-1"
+                                                        formControlName="end_date_time" 
+                                                        [ngClass]="{'disabledLock': !IsScheduleChecked }" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 mt-4">
+                            <div class="bbpt-4 text-right">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-outline-secondary mr-1"
+                                        (click)="OnSubmit('save')">{{ 'CreateLockscreen.saveButton' | translate}}
+                                    </button>
+                                    <button type="submit" class="btn btn-success" (click)="OnSubmit('next')">{{
+                                        'CreateLockscreen.save&NextButton' | translate}} </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="FileUploadLockScreenImageModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <div class="modal-header">
+                <h4 class="modal-title">File Upload</h4>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid plr_30  pt_30">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label> <b>Upload Image File</b> </label>
+                                <input type="file" id="picture" accept="image/*"
+                                    (change)="onFileLockScreenChange($event)">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="mb-5"></label>
+                                <button type="submit" class="btn btn-success" (click)="UploadImageDatebase()">
+                                    Upload
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="">
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <form [formGroup]="formImageLockScreen"
+                                            (ngSubmit)="onSearchImageLockScreen(formImageLockScreen.value)">
+                                            <div class="input-group">
+                                                <div class="form-outline">
+                                                    <input id="search-input" formControlName="search"
+                                                        placeholder="{{'DraftScreensaver.searchButtonPlaceholder' | translate}}"
+                                                        type="search" id="form" class="form-control"
+                                                        style="padding: 17.7px; width: 210px;" />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-success">
+                                            {{'DraftScreensaver.searchButton' | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <div *ngIf="loading" class="dot-opacity-loader">
+                                                <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </div>
+                                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                                            <table class="table table-hover ">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th class="text-left">
+                                                            Image
+                                                        </th>
+                                                        <th>
+                                                            File Name
+                                                        </th>
+                                                        <th>
+                                                            {{'DraftScreensaver.draftActions' | translate}}
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr
+                                                        *ngFor="let image of LockScreenImageList  | paginate: { itemsPerPage: 10, currentPage: currentPageImage, totalItems: totalItemsImage }; let i=index">
+
+                                                        <td class="text-left">
+                                                            <img src="{{image.image.thumbnail}}" alt="{{image.name}}"
+                                                                width="30" height="30">
+                                                        </td>
+                                                        <td>
+                                                            <span class="cursor"
+                                                                (click)="IsImageUrlSelected(image)"><u>{{image.name}}</u></span>
+                                                        </td>
+                                                        <td class="marg">
+                                                            <span class="text-danger cursor"
+                                                                (click)="deleteImage(image.id)">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </span>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr *ngIf="LockScreenImageList.length === 0">
+                                                        {{'DraftScreensaver.draftListRecord' | translate}}
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="row" style="width: 100%">
+                                                <div class="col-md-10 text-right">
+                                                    <pagination-controls (pageChange)="onPageImageChange($event, '1')">
+                                                    </pagination-controls>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <select id="PerPage" class="form-control"
+                                                        (change)="onPageImageChange($event, '2')">
+                                                        <option *ngFor="let item of PageTotalNumberImage"
+                                                            [value]="item">
+                                                            {{ item }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

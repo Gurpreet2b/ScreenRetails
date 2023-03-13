@@ -1,0 +1,1850 @@
+<div class="container-fluid plr_30  pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <div class="row mb_30">
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs dash-tabs" role="tablist" *ngIf="AlertType">
+                            <li class="nav-item" *ngIf="AlertType === 'EmergencyPopupAlert'"
+                                [ngClass]="{'active': IsActivePopupAlert === true}">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#alert" role="tab"
+                                    [ngClass]="{'active': IsActivePopupAlert === true}">{{'EmergencyAlert.popupAlertTab'
+                                    | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item active" *ngIf="AlertType === 'EmergencyTickerAlert'"
+                                [ngClass]="{'active': IsActiveTickerAlert === true}">
+                                <a class="nav-link accord active" data-bs-toggle="tab" href="#ticker" role="tab"
+                                    [ngClass]="{'active': IsActiveTickerAlert === true}">{{'EmergencyAlert.scrollingTickerTab'
+                                    | translate}}
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-tabs dash-tabs" role="tablist" *ngIf="!AlertType">
+                            <li class="nav-item active" (click)="OnAlertTabChange('popup')">
+                                <a class="nav-link active accord" data-bs-toggle="tab" href="#alert"
+                                    role="tab">{{'EmergencyAlert.popupAlertTab' | translate}}
+                                </a>
+                            </li>
+                            <li class="nav-item" (click)="OnAlertTabChange('ticker')">
+                                <a class="nav-link accord" data-bs-toggle="tab" href="#ticker"
+                                    role="tab">{{'EmergencyAlert.scrollingTickerTab' | translate}}
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div *ngIf="loading" class="dot-opacity-loader">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+
+                <div class="tab-content" style="width: 100%;">
+                    <div class="tab-pane" id="alert" role="tabpanel"
+                        [ngClass]="{'active': IsActivePopupAlert === true}">
+                        <form [formGroup]="alertForm" (ngSubmit)="OnSubmit()">
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="form-group">
+                                        <!-- <h6>{{'EmergencyAlert.alertText' | translate}} </h6> -->
+                                        <h6 for="exampleFormControlInput1">{{'EmergencyAlert.alertTitle' |
+                                            translate}}</h6>
+
+
+                                        <editor [init]="configTinyTitle.init" apiKey="test" formControlName="title" 
+                                            (onKeyUp)="IsEditorTitle($event)" [(ngModel)]="AlertEditTitle" class="tiny-opacity">
+                                        </editor>
+                                        <!-- <div class="invalid-feedback" *ngIf="submitted && myForm.title.errors?.required">
+                                            <sup>*</sup> {{ 'CreateAlert.enterAlertText' | translate}}
+                                        </div> -->
+
+                                        <!-- <angular-editor [config]="config1" formControlName="title"
+                                            (keyup)="IsEditorTitle($event)"
+                                            [ngClass]="{'error': submitted && myForm.title.errors}"></angular-editor>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && myForm.title.errors?.required">
+                                            <sup>*</sup>{{'EmergencyAlert.enterAlertTitle' | translate}}
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <div class="bbpt-4">
+                                        <button type="button" class="btn btn-outline-secondary mr-1" data-bs-toggle="modal"
+                                            data-bs-target="#alertHtmlEmergencyModal"> {{'EmergencyAlert.emergencyPreviewButton' |
+                                            translate}}</button>
+                                        <!-- <button type="submit" class="btn btn-outline-secondary mr-1">
+                                            {{'EmergencyAlert.emergencySaveButton' | translate}}</button> -->
+                                        <!-- <button type="submit" class="btn btn-success">
+                                            {{'EmergencyAlert.emergencySave&NextButton' | translate}}</button> -->
+
+                                        <span *ngIf="!IsCheckPreview">
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#alertHtmlEmergencyModal" (click)="OnPreviewCheck()"> 
+                                                Save & Preview
+                                            </button>
+                                        </span>
+                                        <span *ngIf="IsCheckPreview">
+                                            <button type="submit" class="btn btn-success" [disabled]="!IsOnLoadCompleted"> {{
+                                                'EmergencyAlert.emergencySave&NextButton' | translate}}
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div class="colorCode cursor emergency_alert"
+                                        [ngStyle]="{'background-color': SelectedColorCode}"
+                                        (click)="OnColorCodeChange()" data-bs-toggle="modal"
+                                        data-bs-target="#ColorCodeListModal">
+                                        <span [ngStyle]="{'color': colorCode}"> {{'EmergencyAlert.changeColorCode' |
+                                            translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">{{'EmergencyAlert.popupAlertText' |
+                                            translate}}</label>
+
+                                        <editor [init]="configTiny.init" apiKey="test" formControlName="body" (onKeyUp)="IsEditorBody($event)" 
+                                        (onChange)="IsEditorBody($event)" [(ngModel)]="AlertEditBody" (onDrop)="OnDropImage($event)"
+                                        [ngClass]="{'error': submitted && myForm.body.errors}" class="tiny-opacity"></editor>
+                                        <div class="invalid-feedback" *ngIf="submitted && myForm.body.errors?.required">
+                                            <sup>*</sup>{{'EmergencyAlert.popupAlertText' | translate}}
+                                        </div>   
+                                        
+                                        <!-- <angular-editor [config]="config" formControlName="body"
+                                            (keyup)="IsEditorBody($event)" (change)="IsEditorBody($event)" [(ngModel)]="AlertEditBody"
+                                            [ngClass]="{'error': submitted && myForm.body.errors}"></angular-editor>
+                                        <div class="invalid-feedback" *ngIf="submitted && myForm.body.errors?.required">
+                                            <sup>*</sup>{{'EmergencyAlert.popupAlertText' | translate}}
+                                        </div> -->
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-5 right-side emergency_alert_skin">
+
+                                    <!-- <div class="form-group pt-3">
+                                        <label for="exampleFormControlSelect1"> {{'EmergencyAlert.changeSkin' |
+                                            translate}}</label>
+                                        <select class="form-control" (change)="IsColorChange($event)">
+                                            <option *ngFor="let skin of SkinList" [value]="skin.id">
+                                                {{skin.name}}
+                                            </option>
+                                        </select>
+                                    </div> -->
+
+
+                                    <div class="cursor" *ngIf="SkinId || SkinList.length" data-bs-toggle="modal"
+                                    data-bs-target="#SkinPreviewEmergencyModal">
+                                    <div class="row" *ngIf="IsColorValue">
+                                        <div class="col-md-12" style="padding: 3rem;">
+                                            <div [ngStyle]="{'background-color': AlertBgColor}">
+                                                <div class="alert-change"
+                                                    [ngStyle]="{'border': Think + 'px solid' + HeaderBorder}">
+                                                    <div class="row p-1 m-0"
+                                                        [ngStyle]="{'background-color': HeaderBgColor}">
+                                                        <div class="col-md-5 p-0"
+                                                            [ngStyle]="{'color': footerColor}">
+                                                            <div [ngStyle]="{'font-size': HeaderFontSize + 'px'}"
+                                                                class="mt-2"
+                                                                style="font-family: system-ui; font-weight: bold; color: #7e7e7e;">
+                                                                {{HeaderTitle}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-7 p-0">
+                                                            <div [ngStyle]="{'text-align': HeaderLogo}">
+                                                                <img *ngIf="HeaderTextImg" src="{{HeaderTextImg}}"
+                                                                    alt="Skin pic" style="width: 180px;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <h3 [innerHTML]="AlertEditTitlePreview" class="alertTitle-scroll" style="color: #fff; word-wrap: break-word; height: 50px; overflow-x: auto;">
+                                                                <!-- {{AlertEditTitlePreview}} -->
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <h6 [innerHTML]="AlertEditBodyPreview"
+                                                                style="height: 150px; overflow: auto; color: #fff; word-wrap: break-word;">
+                                                                <!-- {{AlertEditBodyPreview}} -->
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row pt-1 m-0"
+                                                        [ngStyle]="{'background-color': FooterBgColor}">
+                                                        <div class="col-md-5" style="padding-left: 0;">
+                                                            <div [ngStyle]="{'text-align': FooterLogo}">
+                                                                <img *ngIf="FooterImageUrl" src="{{FooterImageUrl}}"
+                                                                    alt="skin pic"
+                                                                    style="width: 180px; height: 50px;"
+                                                                    class="mr-2">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-7 text-right"
+                                                            [ngStyle]="{'color': footerColor}">
+                                                            <div [ngStyle]="{'font-size': FooterFontSize + 'px'}"
+                                                                class="mt-2" style="color: #7e7e7e;">
+                                                                {{FooterText}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" *ngIf="IsColorValue === false">
+                                        <div class="col-md-12" style="padding: 4rem;">
+                                            <div [ngStyle]="{'background-color': AlertBgColor}">
+                                                <div class=""
+                                                    [ngStyle]="{'border': Think + 'px solid' + HeaderBorder}">
+                                                    <div class="row p-1 m-0"
+                                                        [ngStyle]="{'background-color': HeaderBgColor}">
+                                                        <div class="col-md-12 text-right">
+                                                            <div [ngStyle]="{'text-align': HeaderLogo}">
+                                                                <img *ngIf="HeaderTextImg" src="{{HeaderTextImg}}"
+                                                                    alt="Skin pic" style="width: 70px;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <h3 [innerHTML]="AlertEditTitlePreview"
+                                                                [ngStyle]="IsWhiteColor?{'color': 'black'} : {'color': '#fff'}"
+                                                                class="alertTitle-scroll" style="font-family: 'Dubai-Bold', sans-serif !important; 
+                                                                color: #fff; word-wrap: break-word; height: 50px; overflow-x: auto;">
+                                                                <!-- {{AlertEditTitlePreview}} -->
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div style=" overflow-x: hidden; overflow-y: auto;">
+                                                                <h3 [innerHTML]="AlertEditBodyPreview"
+                                                                    [ngStyle]="IsWhiteColor?{'color': 'black'} : {'color': '#fff'}"
+                                                                    style="font-family: 'Dubai-Bold', sans-serif !important; word-wrap: break-word; height: 150px;">
+                                                                    <!-- {{AlertEditBodyPreview}} -->
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- <div class="row">
+                                                        <div class="col-md-12">
+                                                            <h3 [ngClass]="{'colorChange': IsWhiteColor === true}"
+                                                                style="color: #fff; word-wrap: break-word;">
+                                                                {{AlertEditTitle}}
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <h6 [ngClass]="{'colorChange': IsWhiteColor === true}"
+                                                                style="height: 130px; color: #fff; overflow: auto; word-wrap: break-word;">
+                                                                {{AlertEditBody}}
+                                                            </h6>
+                                                        </div>
+                                                    </div> -->
+
+                                                    <div class="row"
+                                                        [ngStyle]="{'background-color': FooterBgColor}">
+                                                        <div class="col-md-12" style="padding-left: 0;">
+                                                            <div [ngStyle]="{'text-align': FooterLogo}">
+                                                                <img *ngIf="FooterImgUrl" src="{{FooterImgUrl}}"
+                                                                    alt="skin pic"
+                                                                    style="width: 300px; height: auto;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    <!-- <div class="cursor" *ngIf="SkinId || SkinList.length" data-bs-toggle="modal"
+                                        data-bs-target="#SkinPreviewEmergencyModal">
+                                        <div class="row" *ngIf="IsColorValue">
+                                            <div class="col-md-12" style="padding: 3rem;">
+                                                <div [ngStyle]="{'background-color': AlertBgColor}">
+                                                    <div class="alert-change"
+                                                        [ngStyle]="{'border': Think + 'px solid' + HeaderBorder}">
+                                                        <div class="row p-1 m-0"
+                                                            [ngStyle]="{'background-color': HeaderBgColor}">
+                                                            <div class="col-md-5" [ngStyle]="{'color': footerColor}">
+                                                                <div [ngStyle]="{'font-size': HeaderFontSize + 'px'}"
+                                                                    class="mt-2"
+                                                                    style="font-family: system-ui; font-weight: bold; color: #7e7e7e;">
+                                                                    {{HeaderTitle}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-7">
+                                                                <div [ngStyle]="{'text-align': HeaderLogo}">
+                                                                    <img *ngIf="HeaderTextImg" src="{{HeaderTextImg}}"
+                                                                        alt="Skin pic"
+                                                                        style="margin-left: -14px; width: 180px;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-7">
+                                                                <h3 style="color: #fff; word-wrap: break-word;">
+                                                                    {{AlertEditTitle}}
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <h6
+                                                                    style="height: 130px; overflow: auto; color: #fff; word-wrap: break-word;">
+                                                                    {{AlertEditBody}}
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+
+                                                     
+
+                                                        <div class="row pt-1 pb-1 m-0"
+                                                            [ngStyle]="{'background-color': FooterBgColor}">
+                                                            <div class="col-md-5" style="padding-left: 0;">
+                                                                <div [ngStyle]="{'text-align': FooterLogo}">
+                                                                    <img *ngIf="FooterImageUrl" src="{{FooterImageUrl}}"
+                                                                        alt="Skin pic"
+                                                                        style="width: 180px; height: 50px;"
+                                                                        class="mr-2">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-7" [ngStyle]="{'color': footerColor}">
+                                                                <div [ngStyle]="{'font-size': FooterFontSize + 'px'}"
+                                                                    class="mt-2">
+                                                                    {{FooterText}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" *ngIf="IsColorValue === false">
+                                            <div class="col-md-12" style="padding: 3rem;">
+                                                <div [ngStyle]="{'background-color': AlertBgColor}">
+                                                    <div class="alert-change"
+                                                        [ngStyle]="{'border': Think + 'px solid' + HeaderBorder}">
+                                                        <div class="row"
+                                                            [ngStyle]="{'background-color': HeaderBgColor}">
+                                                            
+                                                            <div class="col-md-12">
+                                                                <div [ngStyle]="{'text-align': HeaderLogo}">
+                                                                    <img *ngIf="HeaderTextImg" src="{{HeaderTextImg}}"
+                                                                        alt="Skin pic"
+                                                                        style="width: 67px;">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <h3 style="color: #fff; word-wrap: break-word;">
+                                                                    {{AlertEditTitle}}
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <h6
+                                                                    style="height: 130px; overflow: auto; color: #fff; word-wrap: break-word;">
+                                                                    {{AlertEditBody}}
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row pt-1 pb-1 m-0"
+                                                            [ngStyle]="{'background-color': FooterBgColor}">
+                                                            <div class="col-md-5" style="padding-left: 0;">
+                                                                <div [ngStyle]="{'text-align': FooterLogo}">
+                                                                    <img *ngIf="FooterImageUrl" src="{{FooterImageUrl}}"
+                                                                        alt="Skin pic"
+                                                                        style="width: 350px; height: auto; margin-left: 3.7rem;"
+                                                                        class="mr-2">
+                                                                </div>
+                                                            </div>
+                                                          
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                      
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="main">
+                                        <div class="accordion" id="faq">
+                                            <div class="card">
+                                                <div class="card-header" id="headingOne">
+                                                    <a href="#" class="btn btn-header-link" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseOne" aria-expanded="true"
+                                                        aria-controls="collapseOne">
+                                                        {{'EmergencyAlert.alertSettings' | translate}}
+                                                    </a>
+                                                </div>
+
+                                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                                    data-parent="#faq">
+                                                    <div class="card-body line-space">
+                                                        <span *ngIf="PolicyAlertSetting[3].checked">
+                                                            <input type="checkbox" formControlName="high_priority"
+                                                                [(ngModel)]="DefaultSettingList.high_priority_alert">
+                                                            {{'EmergencyAlert.alertSettingsHighPriorityAlert' |
+                                                            translate}}
+                                                            <br>
+                                                        </span>
+
+                                                        <span *ngIf="PolicyAlertSetting[0].checked">
+                                                            <input type="checkbox"
+                                                                formControlName="acknowledgement_required"
+                                                                (change)="OnChangeAcknowledgement($event)"
+                                                                [(ngModel)]="DefaultSettingList.acknowledgement_required">
+                                                            {{'EmergencyAlert.alertSettingsAcknowledgement' |
+                                                            translate}}
+                                                            <br>
+                                                        </span>
+
+                                                        <span *ngIf="PolicyAlertSetting[5].checked">
+                                                            <input type="checkbox" formControlName="self_distructive"
+                                                                [(ngModel)]="DefaultSettingList.self_destructing_alert">
+                                                            {{'EmergencyAlert.alertSettingSelf-destructingAlert' |
+                                                            translate}} <br>
+                                                        </span>
+
+                                                        <span *ngIf="PolicyAlertSetting[2].checked">
+                                                            <input type="checkbox" formControlName="auto_close"
+                                                                (change)="IsAutoCloseEmergency($event)"
+                                                                [(ngModel)]="DefaultSettingList.autoclose_boolean">
+                                                            {{'EmergencyAlert.alertSettingAutoClose' | translate}}
+                                                            <input type="number" class="input-collape"
+                                                                formControlName="auto_close_time" style="width: 50px;"
+                                                                [(ngModel)]="DefaultSettingList.autoclose_time_seconds" />
+                                                            {{'EmergencyAlert.alertSettingAutoCloseMinute' | translate}}
+                                                        </span>
+
+                                                        <input type="checkbox" formControlName="allow_manual_close"
+                                                            (change)="IsAutoCloseManual($event)"
+                                                            [(ngModel)]="DefaultSettingList.allow_manual_close">
+                                                        {{'EmergencyAlert.alertSettingAllowManual' | translate}}<br>
+
+                                                        <input type="checkbox" formControlName="lifetime_given">
+                                                        {{'EmergencyAlert.lifetime' | translate}}
+                                                        <input type="number" class="input-collape ml-3 mr-1"
+                                                            formControlName="lifetime" style="width: 50px;"
+                                                            [(ngModel)]="DefaultSettingList.lifetime_count" />
+                                                        <select class="input-collape" formControlName="lifetime_option"
+                                                            [(ngModel)]="DefaultSettingList.lifetime_choice">
+                                                            <option value="minutes"> {{'EmergencyAlert.lifetimeMinute' |
+                                                                translate}}</option>
+                                                            <option value="hours"> {{'EmergencyAlert.lifetimeHour' |
+                                                                translate}}</option>
+                                                            <option value="day"> {{'EmergencyAlert.lifetimeDay' |
+                                                                translate}}</option>
+                                                        </select> {{'EmergencyAlert.AlertWillExpire' | translate}} <br>
+                                                        <!-- <span *ngIf="PolicyAlertSetting[4].checked">
+                                                            <input type="checkbox" formControlName="add_print_button"
+                                                                (change)="OnChangePrintf($event)">
+                                                            {{'EmergencyAlert.printButton' | translate}} <br>
+                                                        </span> -->
+                                                        <input type="checkbox" formControlName="allow_feedback"
+                                                            (change)="OnChangeHeart($event)">
+                                                        {{'EmergencyAlert.userFeedback' | translate}}<br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="card">
+                                                <div class="card-header" id="headingTwo">
+                                                    <a href="#" class="btn btn-header-link collapsed"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                                        aria-expanded="false" aria-controls="collapseTwo">
+                                                        {{'EmergencyAlert.scheduleAlert' | translate}}
+                                                    </a>
+                                                </div>
+                                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                                    data-parent="#faq">
+                                                    <div class="card-body line-space">
+                                                        <div class="row">
+                                                            <div class="col-lg-3">
+                                                                <div class="form-group">
+                                                                    <input type="checkbox" formControlName="scheduled">
+                                                                    {{'EmergencyAlert.scheduleAlert' | translate}} <br>
+                                                                    <input type="radio" value="Once"
+                                                                        formControlName="schedule_option">
+                                                                    {{'EmergencyAlert.scheduleAlertOnce' | translate}}
+                                                                    <br>
+                                                                    <input type="radio" value="Daily"
+                                                                        formControlName="schedule_option">
+                                                                    {{'EmergencyAlert.scheduleAlertDaily' | translate}}
+                                                                    <br>
+                                                                    <input type="radio" value="Weekly"
+                                                                        formControlName="schedule_option">
+                                                                    {{'EmergencyAlert.scheduleAlertWeekly' | translate}}
+                                                                    <br>
+                                                                    <input type="radio" value="Monthly"
+                                                                        formControlName="schedule_option">
+                                                                    {{'EmergencyAlert.scheduleAlertMonthly' |
+                                                                    translate}}
+                                                                    <br>
+                                                                    <input type="radio" value="yearly"
+                                                                        formControlName="schedule_option">
+                                                                    {{'EmergencyAlert.scheduleAlertYearly' | translate}}
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6">
+                                                                        <div class="form-group">
+                                                                            {{'EmergencyAlert.scheduleStartDate' |
+                                                                            translate}} <input type="datetime-local"
+                                                                                name="" class="form-control"
+                                                                                formControlName="schedule_time_start">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <div class="form-group">
+                                                                            {{'EmergencyAlert.scheduleEndDate' |
+                                                                            translate}}
+                                                                            <input type="datetime-local" name=""
+                                                                                class="form-control"
+                                                                                formControlName="schedule_time_end">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <div class="form-group">
+                                                                            <input type="checkbox" name="reminder"
+                                                                                formControlName="reminder">
+                                                                            {{'EmergencyAlert.scheduleAddReminder' |
+                                                                            translate}}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <label>
+                                                                            {{'EmergencyAlert.scheduleStartDate_time' |
+                                                                            translate}}
+                                                                        </label>
+                                                                        <select class="form-control"
+                                                                            formControlName="reminder_time_list">
+                                                                            <option value="5">5</option>
+                                                                            <option value="10">10</option>
+                                                                            <option value="15">15</option>
+                                                                            <option value="20">20</option>
+                                                                            <option value="25">25</option>
+                                                                            <option value="30">30</option>
+                                                                            <option value="35">35</option>
+                                                                            <option value="40">40</option>
+                                                                            <option value="45">45</option>
+                                                                            <option value="50">50</option>
+                                                                            <option value="55">55</option>
+                                                                            <option value="60">60</option>
+                                                                            <option value="65">65</option>
+                                                                            <option value="70">70</option>
+                                                                            <option value="80">80</option>
+                                                                            <option value="85">85</option>
+                                                                            <option value="90">90</option>
+                                                                            <option value="95">95</option>
+                                                                            <option value="100">100</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                            <div class="card">
+                                                <div class="card-header" id="headingThree">
+                                                    <a href="#" class="btn btn-header-link collapsed"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                                        aria-expanded="false" aria-controls="collapseThree">
+                                                        {{'EmergencyAlert.alertAppearance' | translate}}
+                                                    </a>
+                                                </div>
+                                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                                    data-parent="#faq">
+                                                    <div class="card-body line-space">
+                                                        <div class="row">
+                                                            <div class="col-md-3 mr-2 size">
+                                                                <strong>{{'CreateAlert.rsvpAlertAppearanceSize' |
+                                                                    translate}} </strong> <br>
+                                                                <input type="radio" formControlName="fullscreen"
+                                                                    [(ngModel)]="DefaultSettingList.windowed_fullscreen"
+                                                                    value="window" (change)="IsScreenSizeAlert('window')">
+                                                                {{'EmergencyAlert.alertAppearanceWidth'
+                                                                | translate}}&nbsp;
+                                                                <input type="number" class="input-collape"
+                                                                    formControlName="width" style="width: 50px;"
+                                                                    [(ngModel)]="DefaultSettingList.width" />
+                                                                {{'EmergencyAlert.alertAppearanceWidthPx' | translate}}
+                                                                <br>
+                                                                <div class="ml-3">
+                                                                    {{'EmergencyAlert.alertAppearanceHeight' |
+                                                                    translate}}
+                                                                    <input type="number" class="input-collape ml-1"
+                                                                        formControlName="height" style="width: 50px;"
+                                                                        [(ngModel)]="DefaultSettingList.height" />
+                                                                    {{'EmergencyAlert.alertAppearanceHeightPx' |
+                                                                    translate}}
+                                                                    <br>
+                                                                    <input type="checkbox" formControlName="resizable">
+                                                                    {{'EmergencyAlert.alertAppearanceResizable' |
+                                                                    translate}} <br>
+                                                                </div>
+                                                                <input type="radio" value="fullscreen"
+                                                                    formControlName="fullscreen"
+                                                                    *ngIf="PolicyAlertSetting[1].checked"
+                                                                    (change)="IsScreenSizeAlert('fullscreen')"
+                                                                    [(ngModel)]="DefaultSettingList.windowed_fullscreen">
+                                                                {{'EmergencyAlert.alertAppearanceFullscreen' |
+                                                                translate}}
+                                                            </div>
+                                                            <div class="col-md-3 size">
+                                                                <strong>{{'CreateAlert.rsvpAlertAppearancePosition' |
+                                                                    translate}} </strong>
+                                                                <div class="row mt-3">
+                                                                    <div class="col-md-10">
+                                                                        <input type="radio" value="top-left"
+                                                                            formControlName="position"
+                                                                            [(ngModel)]="DefaultSettingList.alert_position">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <input type="radio" value="top-right"
+                                                                            formControlName="position"
+                                                                            [(ngModel)]="DefaultSettingList.alert_position">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-5">
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <input type="radio" value="center"
+                                                                            formControlName="position"
+                                                                            [(ngModel)]="DefaultSettingList.alert_position">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-10">
+                                                                        <input type="radio" value="bottom-left"
+                                                                            formControlName="position"
+                                                                            [(ngModel)]="DefaultSettingList.alert_position">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <input type="radio" value="bottom-right"
+                                                                            formControlName="position"
+                                                                            [(ngModel)]="DefaultSettingList.alert_position">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header" id="headingFour">
+                                                    <a href="#" class="btn btn-header-link collapsed"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                                                        aria-expanded="false" aria-controls="collapseFour">
+                                                        {{'EmergencyAlert.messagingChannel' | translate}}
+                                                    </a>
+                                                </div>
+                                                <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
+                                                    data-parent="#faq">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-3">
+                                                                <input type="checkbox"
+                                                                    [(ngModel)]="DefaultSettingList.text_to_call"
+                                                                    [ngModelOptions]="{standalone: true}">
+                                                                {{'EmergencyAlert.messagingChannelTextToCall' |
+                                                                translate}}
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <input type="checkbox"
+                                                                    [(ngModel)]="DefaultSettingList.email"
+                                                                    [ngModelOptions]="{standalone: true}">
+                                                                {{'EmergencyAlert.messagingChannelEmailAlert' |
+                                                                translate}}
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <input type="checkbox"
+                                                                    [(ngModel)]="DefaultSettingList.sms"
+                                                                    [ngModelOptions]="{standalone: true}">
+                                                                {{'EmergencyAlert.messagingChannelSmsAlert' |
+                                                                translate}}
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <input type="checkbox">
+                                                                {{'EmergencyAlert.messagingChannelSmTeam' | translate}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="card">
+                                                <div class="card-header" id="headingFive">
+                                                    <a href="#" class="btn btn-header-link collapsed"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseFive"
+                                                        aria-expanded="false" aria-controls="collapseFive">
+                                                        {{'EmergencyAlert.deviceType' | translate}}
+                                                    </a>
+                                                </div>
+                                                <div id="collapseFive" class="collapse" aria-labelledby="headingFive"
+                                                    data-parent="#faq">
+                                                    <div class="card-body line-space">
+                                                        <input type="radio" checked value="All devices"
+                                                            formControlName="device_type"> {{'EmergencyAlert.allDevice'
+                                                        |
+                                                        translate}}
+                                                        <input type="radio" value="Desktop"
+                                                            formControlName="device_type">
+                                                        {{'EmergencyAlert.deviceDesktop' | translate}}
+                                                        <input type="radio" value="Mobile"
+                                                            formControlName="device_type">
+                                                        {{'EmergencyAlert.deviceMobile' | translate}}
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="bbpt-4 text-right">
+                                        <button type="button" class="btn btn-outline-secondary mr-1" data-bs-toggle="modal"
+                                            data-bs-target="#alertHtmlEmergencyModal"> {{'EmergencyAlert.emergencyPreviewButton' |
+                                            translate}}</button>
+                                        <!-- <button type="submit"
+                                            class="btn btn-outline-secondary mr-1">{{'EmergencyAlert.emergencySaveButton'
+                                            | translate}}</button> -->
+                                        <!-- <button type="submit"
+                                            class="btn btn-success">{{'EmergencyAlert.emergencySave&NextButton' |
+                                            translate}}</button> -->
+
+                                            <span *ngIf="!IsCheckPreview">
+                                                <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                                data-bs-target="#alertHtmlEmergencyModal" (click)="OnPreviewCheck()"> 
+                                                    Save & Preview
+                                                </button>
+                                            </span>
+                                            <span *ngIf="IsCheckPreview">
+                                                <button type="submit" class="btn btn-success" [disabled]="!IsOnLoadCompleted"> {{
+                                                    'EmergencyAlert.emergencySave&NextButton' | translate}}
+                                                </button>
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-pane" id="ticker" role="tabpanel"
+                        [ngClass]="{'active': IsActiveTickerAlert === true}">
+                        <form [formGroup]="tickerForm" (ngSubmit)="OnTickerSubmit()">
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="form-group">
+                                        <h6> {{'EmergencyAlert.alertTitle' | translate}} </h6>
+                                        <editor [init]="configTinyTitle.init" apiKey="test" formControlName="title" 
+                                            (onKeyUp)="IsScrollingEditorTitle($event)" class="tiny-opacity"></editor>
+
+                                        <!-- <angular-editor [config]="configTicker" formControlName="title"
+                                            (keyup)="IsScrollingEditorTitle($event)"
+                                            [ngClass]="{'error': submitted && myTickerForm.title.errors}">
+                                        </angular-editor>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && myTickerForm.title.errors?.required">
+                                            <sup>*</sup>{{'EmergencyAlert.popupAlertText' | translate}}
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="bbpt-4">
+                                        <button type="button" class="btn btn-outline-secondary mr-1" data-bs-toggle="modal"
+                                            data-bs-target="#ScrollingHtmlEmergencyModal"> {{'EmergencyAlert.emergencyPreviewButton'
+                                            | translate}}</button>
+                                        <!-- <button type="submit" class="btn btn-outline-secondary mr-1">
+                                            {{'EmergencyAlert.emergencySaveButton' | translate}}</button> -->
+                                        <!-- <button type="submit" class="btn btn-success">
+                                            {{'EmergencyAlert.emergencySave&NextButton' | translate}}</button> -->
+
+                                        <span *ngIf="!IsCheckPreviewTicker">
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                            data-bs-target="#ScrollingHtmlEmergencyModal" (click)="OnPreviewTickerCheck()"> 
+                                                Save & Preview
+                                            </button>
+                                        </span>
+                                        <span *ngIf="IsCheckPreviewTicker">
+                                            <button type="submit" class="btn btn-success">{{
+                                                'EmergencyAlert.emergencySave&NextButton' | translate}}
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div class="colorCode cursor emergency_alert"
+                                        [ngStyle]="{'background-color': SelectedColorCode}"
+                                        (click)="OnColorCodeChange()" data-bs-toggle="modal"
+                                        data-bs-target="#ColorCodeListModal">
+                                        <span [ngStyle]="{'color': colorCode}"> {{'EmergencyAlert.changeColorCode' |
+                                            translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1"> {{'EmergencyAlert.alertText' |
+                                            translate}} </label>
+                                        <editor [init]="configTinyTicker.init" apiKey="test" formControlName="body" (onKeyUp)="IsScrollingEditorBody($event)" 
+                                        (onChange)="IsScrollingEditorBody($event)" class="tiny-opacity"
+                                        [ngClass]="{'error': submitted && myTickerForm.body.errors}"></editor>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && myTickerForm.body.errors?.required">
+                                            <sup>*</sup> {{'EmergencyAlert.enterAlertTitle' | translate}}
+                                        </div>
+
+                                        <!-- <angular-editor [config]="configTicker1" formControlName="body"
+                                            (keyup)="IsScrollingEditorBody($event)"
+                                            [ngClass]="{'error': submitted && myTickerForm.body.errors}">
+                                        </angular-editor>
+                                        <div class="invalid-feedback"
+                                            *ngIf="submitted && myTickerForm.body.errors?.required">
+                                            <sup>*</sup> {{'EmergencyAlert.enterAlertTitle' | translate}}
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 right-side emergency_alert_skin">
+                                    <!-- <div class="form-group pt-3">
+                                        <label for="exampleFormControlSelect1"> {{'EmergencyAlert.changeSkin' |
+                                            translate}}</label>
+                                        <select class="form-control" (change)="IsTickerColorChange($event)">
+                                            <option *ngFor="let skin of SkinList" [value]="skin.id">
+                                                {{skin.name}}
+                                            </option>
+                                        </select>
+                                    </div> -->
+
+
+                                    <div class="row cursor" data-bs-toggle="modal" data-bs-target="#SkinTickerEmergencyPreviewModal">
+                                        <div class="col-md-12 p-3">
+                                            <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/dubai">
+                                            <div style="height: 58px;" [ngStyle]="{'background-color': AlertBgColor}">
+                                                <div class="row" style="display: flex; padding: 0px 0px;">
+                                                    <div class="col-md-11" style="width: 100%">
+                                                        <div style="display: flex;">
+                                                            <span *ngIf="ShowFooterImgCheck === true">
+                                                                <img *ngIf="HeaderTextImgTicker"
+                                                                    src="{{HeaderTextImgTicker}}" alt="Skin pic" style="background: #fff; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                                                                    padding: 4px;">
+                                                            </span>
+                                                            <span *ngIf="ShowFooterImgCheck === false">
+                                                                <img *ngIf="HeaderTextImgTicker"
+                                                                    src="{{HeaderTextImgTicker}}" alt="Skin pic" style="background: #fff; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                                                                    padding: 4px; width: 53px;">
+                                                            </span>
+
+
+                                                            <marquee width="100%" id="header-scroll-texts"
+                                                            [ngStyle]="IsWhiteColor?{'color': 'black'} : {'color': '#fff'}"
+                                                                style="align-items: center; display: flex; color: #fff;
+                                                                font-family: 'Dubai-Bold', sans-serif !important; font-size: 20px;"
+                                                                Scrollamount="IsSpeed"
+                                                                direction="{{IsScrollingDirection}}">
+                                                                <!-- {{AlertScrollingEditTitle}} {{AlertScrollingEditBody}} -->
+                                                            </marquee>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <button type="button" class="close"
+                                                            style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer;
+                                                            font-weight: 300; margin-top: 12px; color: #fff; margin-right: 8px;">&times;</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="well text-danger mt-2">
+                                <div>
+                                    {{'EmergencyAlert.previewScrollingTicker' | translate}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div id="main">
+                                        <div class="accordion" id="faq">
+                                            <div class="card">
+                                                <div class="card-header" id="headingOnce">
+                                                    <a href="#" class="btn btn-header-link" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseOnce" aria-expanded="true"
+                                                        aria-controls="collapseOnce">
+                                                        {{'EmergencyAlert.alertSettings' | translate}}
+                                                    </a>
+                                                </div>
+                                                <div id="collapseOnce" class="collapse show"
+                                                    aria-labelledby="headingOnce" data-parent="#faq">
+                                                    <div class="card-body line-space">
+                                                        <input type="checkbox" formControlName="high_priority"
+                                                            [(ngModel)]="DefaultSettingList.high_priority_alert">
+                                                        {{'EmergencyAlert.alertSettingsHighPriorityAlert' |
+                                                        translate}}<br>
+                                                        <input type="checkbox"
+                                                            formControlName="acknowledgement_required"
+                                                            [(ngModel)]="DefaultSettingList.acknowledgement_required">
+                                                        {{'EmergencyAlert.alertSettingsAcknowledgement' | translate}}
+                                                        <br>
+                                                        <input type="checkbox" formControlName="self_distructive"
+                                                            [(ngModel)]="DefaultSettingList.self_destructing_alert">
+                                                        {{'EmergencyAlert.alertSettingSelf-destructingAlert' |
+                                                        translate}}
+                                                        <br>
+                                                        <input type="checkbox" formControlName="auto_close"
+                                                            [(ngModel)]="DefaultSettingList.autoclose_boolean">
+                                                        {{'EmergencyAlert.alertSettingAutoClose' | translate}}
+                                                        <input type="number" class="input-collape" placeholder="1"
+                                                            formControlName="auto_close_time" style="width: 50px;"
+                                                            [(ngModel)]="DefaultSettingList.autoclose_time_seconds" />
+                                                        {{'EmergencyAlert.alertSettingAutoCloseMinute' | translate}}
+                                                        <input type="checkbox" formControlName="allow_manual_close"
+                                                            [(ngModel)]="DefaultSettingList.allow_manual_close">
+                                                        {{'EmergencyAlert.alertSettingAllowManual' | translate}} <br>
+                                                        <input type="checkbox" formControlName="lifetime_given">
+                                                        {{'EmergencyAlert.lifetime' | translate}}
+
+                                                        <input type="number" class="input-collape mr-1 ml-3"
+                                                            formControlName="lifetime" style="width: 50px;"
+                                                            [(ngModel)]="DefaultSettingList.lifetime_count" />
+                                                        <select class="input-collape" formControlName="lifetime_option"
+                                                            [(ngModel)]="DefaultSettingList.lifetime_choice">
+                                                            <option value="minutes">{{'EmergencyAlert.lifetimeMinute' |
+                                                                translate}} </option>
+                                                            <option value="hours">{{'EmergencyAlert.lifetimeHour' |
+                                                                translate}} </option>
+                                                            <option value="day">{{'EmergencyAlert.lifetimeDay' |
+                                                                translate}}
+                                                            </option>
+                                                        </select> {{'EmergencyAlert.AlertWillExpire' | translate}} <br>
+                                                        <input type="checkbox" formControlName="allow_feedback"
+                                                            (change)="OnChangeHeart($event)">
+                                                        {{'EmergencyAlert.userFeedback'
+                                                        | translate}} <br>
+                                                        <!-- <input type="range" min="1" max="100" value="50" (change)="IsScrollingRange($event)"> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="card">
+                                                <div class="card-header" id="headingTwice">
+                                                    <a href="#" class="btn btn-header-link collapsed"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseTwice"
+                                                        aria-expanded="false" aria-controls="collapseTwice">
+                                                        {{'EmergencyAlert.scheduleAlert' | translate}}
+                                                    </a>
+                                                </div>
+                                                <div id="collapseTwice" class="collapse" aria-labelledby="headingTwice"
+                                                    data-parent="#faq">
+                                                    <div class="card-body line-space">
+                                                        <div class="row">
+                                                            <div class="col-lg-3">
+                                                                <div class="form-group">
+                                                                    <input type="checkbox" formControlName="scheduled">
+                                                                    {{'EmergencyAlert.scheduleAlert' | translate}} <br>
+                                                                    <input type="radio" value="Once"
+                                                                        formControlName="schedule_option">
+                                                                    {{'EmergencyAlert.scheduleAlertOnce' | translate}}
+                                                                    <br>
+                                                                    <input type="radio" value="Daily"
+                                                                        formControlName="schedule_option">
+                                                                    {{'EmergencyAlert.scheduleAlertDaily' | translate}}
+                                                                    <br>
+                                                                    <input type="radio" value="Weekly"
+                                                                        formControlName="schedule_option">
+                                                                    {{'EmergencyAlert.scheduleAlertWeekly' | translate}}
+                                                                    <br>
+                                                                    <input type="radio" value="Monthly"
+                                                                        formControlName="schedule_option">
+                                                                    {{'EmergencyAlert.scheduleAlertMonthly' |
+                                                                    translate}}
+                                                                    <br>
+                                                                    <input type="radio" value="yearly"
+                                                                        formControlName="schedule_option">
+                                                                    {{'EmergencyAlert.scheduleAlertYearly' | translate}}
+                                                                    <br>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-9">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6">
+                                                                        <div class="form-group">
+                                                                            {{'EmergencyAlert.scheduleStartDate' |
+                                                                            translate}} <input type="datetime-local"
+                                                                                name="" class="form-control"
+                                                                                formControlName="schedule_time_start">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <div class="form-group">
+                                                                            {{'EmergencyAlert.scheduleEndDate' |
+                                                                            translate}}
+                                                                            <input type="datetime-local" name=""
+                                                                                class="form-control"
+                                                                                formControlName="schedule_time_end">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <div class="form-group">
+                                                                            <input type="checkbox" name="reminder"
+                                                                                formControlName="reminder">
+                                                                            {{'EmergencyAlert.scheduleAddReminder' |
+                                                                            translate}}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-lg-6">
+                                                                        <label>
+                                                                            {{'EmergencyAlert.scheduleStartDate_time' |
+                                                                            translate}}
+                                                                        </label>
+                                                                        <select class="form-control"
+                                                                            formControlName="reminder_time_list">
+                                                                            <option value="5">5</option>
+                                                                            <option value="10">10</option>
+                                                                            <option value="15">15</option>
+                                                                            <option value="20">20</option>
+                                                                            <option value="25">25</option>
+                                                                            <option value="30">30</option>
+                                                                            <option value="35">35</option>
+                                                                            <option value="40">40</option>
+                                                                            <option value="45">45</option>
+                                                                            <option value="50">50</option>
+                                                                            <option value="55">55</option>
+                                                                            <option value="60">60</option>
+                                                                            <option value="65">65</option>
+                                                                            <option value="70">70</option>
+                                                                            <option value="80">80</option>
+                                                                            <option value="85">85</option>
+                                                                            <option value="90">90</option>
+                                                                            <option value="95">95</option>
+                                                                            <option value="100">100</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                            <div class="card">
+                                                <div class="card-header" id="headingThrice">
+                                                    <a href="#" class="btn btn-header-link collapsed"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseThrice"
+                                                        aria-expanded="false" aria-controls="collapseThrice">
+                                                        {{'EmergencyAlert.alertAppearance' | translate}}
+                                                    </a>
+                                                </div>
+                                                <div id="collapseThrice" class="collapse"
+                                                    aria-labelledby="headingThrice" data-parent="#faq">
+                                                    <div class="card-body line-space">
+                                                        <div class="row">
+                                                            <div class="col-md-2 size">
+                                                                <strong>{{'EmergencyAlert.alertAppearancePostion' |
+                                                                    translate}} </strong> <br>
+                                                                <input type="radio" value="top"
+                                                                    formControlName="position"
+                                                                    [(ngModel)]="DefaultSettingList.ticker_position">
+                                                                {{'EmergencyAlert.alertAppearanceTop' | translate}} <br>
+                                                                <input type="radio" value="bottom"
+                                                                    formControlName="position"
+                                                                    [(ngModel)]="DefaultSettingList.ticker_position">
+                                                                {{'EmergencyAlert.alertAppearanceBottom' | translate}}
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="card-header" id="headingFor">
+                                                    <a href="#" class="btn btn-header-link collapsed"
+                                                        data-bs-toggle="collapse" data-bs-target="#collapseFor"
+                                                        aria-expanded="false" aria-controls="collapseFor">
+                                                        {{'EmergencyAlert.messagingChannel' | translate}}
+                                                    </a>
+                                                </div>
+                                                <div id="collapseFor" class="collapse" aria-labelledby="headingFor"
+                                                    data-parent="#faq">
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-3">
+                                                                <input type="checkbox"
+                                                                    [(ngModel)]="DefaultSettingList.text_to_call"
+                                                                    [ngModelOptions]="{standalone: true}">
+                                                                {{'EmergencyAlert.messagingChannelTextToCall' |
+                                                                translate}}
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <input type="checkbox"
+                                                                    [(ngModel)]="DefaultSettingList.email"
+                                                                    [ngModelOptions]="{standalone: true}">
+                                                                {{'EmergencyAlert.messagingChannelEmailAlert' |
+                                                                translate}}
+                                                                <div class="well text-danger">
+                                                                    {{'EmergencyAlert.messagingChannelEmailModule'
+                                                                    |
+                                                                    translate}}
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <input type="checkbox"
+                                                                    [(ngModel)]="DefaultSettingList.sms"
+                                                                    [ngModelOptions]="{standalone: true}">
+                                                                {{'EmergencyAlert.messagingChannelSmsAlert' |
+                                                                translate}}
+                                                                <br>
+                                                                <button type="button"
+                                                                    class="btn btn-outline-secondary btn-sm mt-1">
+                                                                    {{'EmergencyAlert.previewSmsButton' |
+                                                                    translate}}</button>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <input type="checkbox">
+                                                                {{'EmergencyAlert.messagingChannelSmTeam' | translate}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="card">
+                                                <div class="card-header" id="headingFifth">
+                                                    <a href="#" class="btn btn-header-link collapsed"
+                                                    data-bs-toggle="collapse" data-bs-target="#collapseFifth"
+                                                    aria-expanded="false" aria-controls="collapseFifth">
+                                                    {{'EmergencyAlert.deviceType' | translate}}
+                                                </a>
+                                                </div>
+                                                <div id="collapseFifth" class="collapse" aria-labelledby="headingFifth"
+                                                    data-parent="#faq">
+                                                    <div class="card-body line-space">
+                                                        <input type="radio" checked> {{'EmergencyAlert.allDevice' |
+                                                        translate}}
+                                                        <input type="radio" value="Desktop"
+                                                            formControlName="device_type" class="ml-3">
+                                                        {{'EmergencyAlert.deviceDesktop' | translate}}
+                                                        <input type="radio" value="Mobile" formControlName="device_type"
+                                                            class="ml-3">
+                                                        {{'EmergencyAlert.deviceMobile' | translate}}
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="bbpt-4 text-right">
+                                        <button type="button" class="btn btn-outline-secondary mr-1" data-bs-toggle="modal"
+                                            data-bs-target="#ScrollingHtmlEmergencyModal"> {{'EmergencyAlert.emergencyPreviewButton'
+                                            | translate}}</button>
+                                        <!-- <button type="submit" class="btn btn-outline-secondary mr-1">
+                                            {{'EmergencyAlert.emergencySaveButton' | translate}}</button> -->
+                                        <button type="submit" class="btn btn-success">
+                                            {{'EmergencyAlert.emergencySave&NextButton' | translate}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="alertHtmlEmergencyModal">
+    <div class="modal-dialog" style="margin: 0;">
+        <div class="modal-content">
+            <div id="header-text-scroll-emergency"></div>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/dubai">
+            <div class="" id="alert-width" style="position: relative; min-width: 500px; min-height: 400px;">
+                <div style="padding: 16px;" *ngIf="ShowFooter === true">
+                    <div id="alert-border" class="" style="border: 0;">
+                        <div id="alert-Bg-color" style="position: relative;">
+                            <div id="header-Bg-color">
+                                <div class="row"
+                                    style="display: flex; padding: 3px 15px; justify-content: space-between; align-items: center;">
+                                    <div class="col-md-5" style="width: 100%; display: inline-flex;">
+                                        <div id="header-text-skin" style="font-family: system-ui; display: flex; align-items: center;
+                                            font-size: 16px; font-weight: bold; color: #7e7e7e;letter-spacing: 2px;">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div id="Header-img">
+                                            <span id="header-text-img"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1" *ngIf="IsClose">
+                                        <button type="button" class="close" data-bs-dismiss="modal" onclick="close_alert()"
+                                            style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer">&times;</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body" style="padding: 10px; margin: 0;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h2>
+                                                        <div id="header-text"
+                                                        style="color: #fff; font-family: 'Dubai-Bold', sans-serif !important; word-wrap: break-word;
+                                                        height: 75px; overflow-x: auto;">
+                                                        </div>
+                                                    </h2>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div id="alert-max-height" style=" overflow-x: hidden; overflow-y: auto;">
+                                                        <h3 id="body-text"
+                                                            style="color: #fff; font-family: 'Dubai-Bold', sans-serif !important; word-wrap: break-word;">
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 1rem; right: 1rem; left: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin: 10px 0px;">
+                            <div style="display: flex;">
+                                <!-- <div onclick="print_alert()" *ngIf="IsPrintf" style="cursor: pointer;">
+                                    <i class="fa fa-print" aria-hidden="true"
+                                        style="font-size: 27px; margin-right: 15px; color: #fff;"></i>
+                                </div> -->
+                                <div onclick="IsLike()" *ngIf="IsHeart" style="cursor: pointer;">
+                                    <img src="https://img.icons8.com/external-those-icons-lineal-those-icons/50/000000/external-like-feedback-those-icons-lineal-those-icons.png"
+                                        style="width: 27px; height: 27px; margin-right: 25px; background: #fff; border-radius: 50%;"
+                                        id="likebtn">
+                                </div>
+                            </div>
+
+                            <div>
+                                <div *ngIf="IsAcknowledgement">
+                                    <select style="border: 1px solid #e1dcdc; background: #efefef;
+                                    margin-right: 5px; height: 25px;" id="time">
+                                        <option value="60">1 Minute</option>
+                                        <option value="120">2 Minute</option>
+                                        <option value="300">5 Minute</option>
+                                        <option value="600">10 Minute</option>
+                                        <option value="900">15 Minute</option>
+                                        <option value="1800">30 Minute</option>
+                                        <option value="2700">45 Minute</option>
+                                    </select>
+
+                                    <button _type="button" onclick="IsPostPone()"
+                                        style="border: 1px solid #e1dcdc; margin-right: 5px; height: 25px;">Postpone</button>
+                                    <button type="button" onclick="IsPopupAlertOK()"
+                                        style="width: 70px; border: 1px solid #e1dcdc; margin-right: 5px; height: 25px;">OK</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="footer-BgColor" style="display: flex; 
+                                justify-content: space-between; align-items: center;">
+                                    <div id="footer-img"></div>
+                                    <p id="footer-color" style="padding: 0 1rem;">
+                                        <span id="footer-fontSize" style="font-size: 17px; font-family: sans-serif;
+                                            letter-spacing: 3px;  color: #555;">
+                                            <span id="footer-text"></span>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="ShowFooter === false">
+                    <div class="" style="border: 0;">
+                        <div style="position: relative;">
+                            <div>
+                                <div class="row" style="display: flex; padding: 1px 7px; justify-content: space-between;">
+                                    <!-- <div class="col-md-5" style="width: 100%; display: inline-flex;">
+                                        <div id="header-text-skin" style="font-family: system-ui; display: flex; align-items: center;
+                                            font-size: 16px; font-weight: bold; color: #7e7e7e;letter-spacing: 2px;">
+                                        </div>
+                                    </div> -->
+                                    <div class="col-md-11">
+                                        <div>
+                                            <span id="header-text-img-white"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1" *ngIf="IsClose">
+                                        <button type="button" class="close" data-bs-dismiss="modal" onclick="close_alert()"
+                                            style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer">&times;</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-body" style="padding: 10px; margin: 0;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h2>
+                                                        <div id="header-text"
+                                                        [ngStyle]="IsWhiteColor?{'color': 'black'} : {'color': '#fff'}"
+                                                        style="font-family: 'Dubai-Bold', sans-serif !important; word-wrap: break-word;
+                                                        height: 75px; overflow-x: auto;">
+                                                        </div>
+                                                    </h2>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div id="alert-max-height-check" style=" overflow-x: hidden; overflow-y: auto;">
+                                                        <h3 id="body-text"
+                                                            [ngStyle]="IsWhiteColor?{'color': 'black'} : {'color': '#fff'}"
+                                                            style="font-family: 'Dubai-Bold', sans-serif !important; word-wrap: break-word;">
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="position: absolute; bottom: 0rem; right: 0rem; left: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin: 10px 0px;">
+                            <div style="display: flex;">
+                                <div onclick="IsLike()" *ngIf="IsHeart" style="cursor: pointer;">
+                                    <img src="https://img.icons8.com/external-those-icons-lineal-those-icons/50/000000/external-like-feedback-those-icons-lineal-those-icons.png"
+                                        style="width: 27px; height: 27px; margin-right: 25px; background: #fff; border-radius: 50%;"
+                                        id="likebtn">
+                                </div>
+                            </div>
+
+                            <div>
+                                <div *ngIf="IsAcknowledgement">
+                                    <select style="border: 1px solid #e1dcdc; background: #efefef;
+                                    margin-right: 5px; height: 25px;" id="time">
+                                        <option value="60">1 Minute</option>
+                                        <option value="120">2 Minute</option>
+                                        <option value="300">5 Minute</option>
+                                        <option value="600">10 Minute</option>
+                                        <option value="900">15 Minute</option>
+                                        <option value="1800">30 Minute</option>
+                                        <option value="2700">45 Minute</option>
+                                    </select>
+
+                                    <button _type="button" onclick="IsPostPone()"
+                                        style="border: 1px solid #e1dcdc; margin-right: 5px; height: 25px;">Postpone</button>
+                                    <button type="button" onclick="IsPopupAlertOK()"
+                                        style="width: 70px; border: 1px solid #e1dcdc; margin-right: 5px; height: 25px;">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row m-0">
+                            <div class="col-md-12 text-right p-0">
+                                <div id="footer-img"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg" id="ScrollingHtmlEmergencyModal">
+    <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/dubai">
+    <div class="modal-dialog modal-lg modal-static1">
+        <div class="modal-content" id="alert-Scroll-border" style="height: 62px;">
+            <div class="row" style="display: flex; padding: 0px 15px;">
+                <div class="col-md-11" style="width: 100%">
+                    <div style="display: flex;">
+                        <span id="header-scroll-img" style="background: #fff; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                        padding: 4px;">
+
+                        </span>
+                        <marquee width="100%" [ngStyle]="IsWhiteColor?{'color': 'black'} : {'color': '#fff'}"
+                            style="align-items: center; display: flex; font-family: 'Dubai-Bold', sans-serif !important;"
+                            id="header-scroll-text" Scrollamount="IsSpeed" direction="{{IsScrollingDirection}}">
+                        </marquee>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="close" data-bs-dismiss="modal" onclick="close_alert()"
+                        style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer; margin-top: 12px; color: #000;">&times;</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="ColorCodeListModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="margin-left: 9rem;">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"> {{'EmergencyAlert.pickColorCode' | translate}}</h4>
+                <div class="col-md-2">
+                    <button type="button" class="close text-white" data-bs-dismiss="modal" style="background-color: transparent;
+                border: 0; font-size: 40px;">&times;</button>
+                </div>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" style="padding: 10px; margin: 0;">
+                <div class="row">
+                    <div class="col-md-12">
+                        {{'EmergencyAlert.pickColor' | translate}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3" *ngFor="let color of ColorCodeList; let i=index" data-bs-dismiss="modal">
+                        <div [ngStyle]="{'background-color': color.code}" class="bg-colorCode cursor"
+                            (click)="IsColorCode(color)">
+                            {{color.name}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="SkinPreviewEmergencyModal">
+    <div class="modal-dialog m-0">
+        <div class="modal-content" style="width: 100vw;">
+            <div class="modal-header">
+                <h3 class="modal-title">Skin Preview Emergency Alert</h3>
+                <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3 skin_PopupSet ticker-skin cursor" *ngFor="let skin of SkinList">
+                        <div data-bs-dismiss="modal" (click)="IsColorChange(skin)"
+                            [ngStyle]="{'border': skin.border_thickness + 'px solid' + skin.border_color, 'background-color': skin.alert_background_color}">
+                            <div class="p-2" *ngIf="skin.show_alert_footer">
+                                <div class="row"
+                                    style="display: flex; padding: 6px 4px; margin: 0; background-color: #fff; font-size: 10px;">
+                                    <div class="col-md-5 header-center p-0" style="display: flex;">
+                                        {{skin.header_custom_message}}
+                                    </div>
+                                    <div class="col-md-7 header-center text-right p-0">
+                                        <span class="mr-2">
+                                            <img src="assets/img/deva-logo.png" alt="Logo" height="auto" width="100px">
+                                        </span>
+                                        <button type="button" class="close text-right"
+                                            data-bs-dismiss="modal">&times;</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="row">
+                                                <div class="col-md-7">
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <h6 style="height: 176px;">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+
+                                                            </div>
+                                                        </div>
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="device_FooterText">
+                                    <div class="row" style="margin: 0px; background-color: #fff; padding: 10px 0;">
+                                        <div class="col-md-4" style="padding-left: 0;">
+                                            <div *ngIf="skin.name !== 'Message'">
+                                                <img src="assets/img/dewa-lines.png" alt="alert pic"
+                                                    style="width: 110px; height: auto;">
+                                            </div>
+                                            <div *ngIf="skin.name === 'Message'">
+                                                <img src="assets/img/dewa-lines.png" alt="alert pic"
+                                                    style="width: 120px; height: auto;">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 pr-2">
+                                            <div class="text-right">
+                                                <p id="footer-color" style="color: black; font-size: 11px;">
+                                                    <span>
+                                                        Innovation & The Future
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="skin.show_alert_footer === false">
+                                <div class="row" style="display: flex; margin: 0;">
+                                    <div class="col-md-10 header-center">
+                                        <span>
+                                            <img src="assets/img/Dewa_round_logo_rBZ7Nx3.jpg" alt="Logo" height="auto"
+                                                width="50px">
+                                        </span>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="close text-right pl-2 text-white"
+                                            data-bs-dismiss="modal">&times;</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="row mt-3 mb-3">
+                                                <div class="col-md-7">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-4 mb-3">
+                                                <div class="col-md-12">
+                                                    <h6 style="height: 130px; overflow-x: hidden;">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+
+                                                            </div>
+                                                        </div>
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="device_FooterText">
+                                    <div class="row">
+                                        <div class="col-md-12 text-right" style="padding-left: 0;">
+                                            <div *ngIf="skin.name !== 'White'">
+                                                <img src="assets/img/dewa_white_lines_jndrEgp.png" alt="alert pic"
+                                                    style="width: 290px; height: auto;">
+                                            </div>
+                                            <div *ngIf="skin.name === 'White'">
+                                                <img src="assets/img/dewa_lines_original.png" alt="alert pic"
+                                                    style="width: 250px; height: auto;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-md-3 skin_PopupSet p-1 cursor" data-bs-dismiss="modal" (click)="IsColorChange('26')">
+                        <div class="white_box p-2 mb_30"
+                            style="border: 5px solid #d1d2d1; background-color: rgb(13 98 67);">
+                            <div class="row" style="display: flex; padding: 5px 3px; margin: 0; background-color: #fff">
+                                <div class="col-md-5 header-center p-0" style="display: flex;">
+                                    Message
+                                </div>
+                                <div class="col-md-7 header-center text-right p-0">
+                                    <span>
+                                        <img src="assets/img/deva-logo.png" alt="Logo" height="auto" width="110px">
+                                    </span>
+                                    <button type="button" class="close text-right pl-2"
+                                        data-bs-dismiss="modal">&times;</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="row mt-3 mb-3">
+                                            <div class="col-md-7">
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row mt-4 mb-3">
+                                            <div class="col-md-12">
+                                                <h6 style="height: 124px; overflow-x: hidden;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+
+                                                        </div>
+                                                    </div>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="device_FooterText">
+                                <div class="row" style="margin: 0px; background-color: #fff; padding: 10px 0;">
+                                    <div class="col-md-4" style="padding-left: 0;">
+                                        <div>
+                                            <img src="assets/img/dewa-lines.png" alt="alert pic"
+                                                style="width: 110px; height: auto;" class="mr-2">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 pr-2">
+                                        <div class="text-right">
+                                            <p id="footer-color" style="color: black; font-size: 12px;">
+                                                <span>
+                                                    Innovation & The Future
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 skin_PopupSet p-1 cursor" data-bs-dismiss="modal" (click)="IsColorChange('32')">
+                        <div class="white_box p-0" style="border: 5px solid #d1d2d1; background-color: rgb(11, 177, 79);">
+                            <div class="row" style="display: flex; margin: 0;">
+                                <div class="col-md-10 header-center">
+                                    <span>
+                                        <img src="assets/img/Dewa_round_logo_rBZ7Nx3.jpg" alt="Logo" height="auto"
+                                            width="50px">
+                                    </span>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="close text-right pl-2 text-white"
+                                        data-bs-dismiss="modal">&times;</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="row mt-3 mb-3">
+                                            <div class="col-md-7">
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row mt-4 mb-3">
+                                            <div class="col-md-12">
+                                                <h6 style="height: 95px; overflow-x: hidden;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+
+                                                        </div>
+                                                    </div>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="device_FooterText">
+                                <div class="row" style="padding: 10px 0;">
+                                    <div class="col-md-12 text-right" style="padding-left: 0;">
+                                        <div>
+                                            <img src="assets/img/dewa_white_lines_jndrEgp.png" alt="alert pic"
+                                                style="width: 250px; height: auto;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 skin_PopupSet p-1 cursor" data-bs-dismiss="modal" (click)="IsColorChange('33')">
+                        <div class="white_box p-0" style="border: 5px solid #d1d2d1; background-color: #012f6d;">
+                            <div class="row" style="display: flex; margin: 0;">
+                                <div class="col-md-10 header-center">
+                                    <span>
+                                        <img src="assets/img/Dewa_round_logo_rBZ7Nx3.jpg" alt="Logo" height="auto"
+                                            width="50px">
+                                    </span>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="close text-right pl-2 text-white"
+                                        data-bs-dismiss="modal">&times;</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="row mt-3 mb-3">
+                                            <div class="col-md-7">
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row mt-4 mb-3">
+                                            <div class="col-md-12">
+                                                <h6 style="height: 95px; overflow-x: hidden;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+
+                                                        </div>
+                                                    </div>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="device_FooterText">
+                                <div class="row" style="padding: 10px 0;">
+                                    <div class="col-md-12 text-right" style="padding-left: 0;">
+                                        <div>
+                                            <img src="assets/img/dewa_white_lines_jndrEgp.png" alt="alert pic"
+                                                style="width: 250px; height: auto;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 skin_PopupSet p-1 cursor" data-bs-dismiss="modal" (click)="IsColorChange('34')">
+                        <div class="white_box p-0" style="border: 5px solid #d1d2d1; background-color: #fff;">
+                            <div class="row" style="background-color: #fff; margin: 0;">
+                                <div class="col-md-10 header-center">
+                                    <span>
+                                        <img src="assets/img/Dewa_round_logo_def.jpg" alt="Logo" height="auto"
+                                            width="50px">
+                                    </span>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="close text-right" data-bs-dismiss="modal">&times;</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="row mt-3 mb-3">
+                                            <div class="col-md-7">
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row mt-4 mb-3">
+                                            <div class="col-md-12">
+                                                <h6 style="height: 105px; overflow-x: hidden;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+
+                                                        </div>
+                                                    </div>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="device_FooterText">
+                                <div class="row">
+                                    <div class="col-md-12 text-right" style="padding-left: 0;">
+                                        <div>
+                                            <img src="assets/img/dewa_lines_original.png" alt="alert pic"
+                                                style="width: 250px; height: auto;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade bd-example-modal-lg" id="SkinTickerEmergencyPreviewModal">
+    <div class="modal-dialog m-0">
+        <div class="modal-content" style="width: 100vw;">
+            <div class="modal-header">
+                <h3 class="modal-title">Skin Ticker Preview Alert</h3>
+                <button type="button" class="close text-white" data-bs-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3 skin_PopupSet cursor ticker-skin" *ngFor="let skin of SkinList">
+                        <link rel="stylesheet" href="https://fonts.cdnfonts.com/css/dubai">
+                        <div style="height: 58px;" [ngStyle]="{'background-color': skin.alert_background_color}"
+                            (click)="IsTickerColorChange(skin)" data-bs-dismiss="modal">
+                            <div class="row" style="display: flex; padding: 0px 0px;">
+                                <div class="col-md-10" style="width: 100%">
+                                    <div style="display: flex;">
+                                        <img src="../../../../../assets/img/deva-ticker.png" alt="Skin pic" style="background: #fff; box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                                        padding: 2px;">
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-1 ml-3">
+                                    <button type="button" class="close"
+                                        style="background-color: transparent; border: 0; font-size: 30px; cursor: pointer;
+                                        font-weight: 300; margin-top: 12px; color: #fff; margin-right: 8px;">&times;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

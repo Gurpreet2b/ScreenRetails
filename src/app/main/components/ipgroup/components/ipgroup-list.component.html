@@ -1,0 +1,81 @@
+<div class="container-fluid plr_30 pt_30">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="white_box mb_30">
+                <label> {{ 'IpGroup.searchIpgroupTitle' | translate}} </label>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="text" placeholder=" {{ 'IpGroup.searchButtonPlaceholder' | translate}}"
+                                class="form-control" name="" id="">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success"> {{ 'IpGroup.searchButton' |
+                                translate}}</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                data-bs-target="#CreateIpgroupModal" (click)="onAddIpgroup()"> {{'IpGroup.addGroupButton' |
+                                translate}}</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <div *ngIf="loading" class="dot-opacity-loader">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <!-- <img src="../../../../../../assets/images/loader.gif" *ngIf="loading"> -->
+                            <table class="table table-hover ">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>
+                                            {{'IpGroup.ipgroupListName' | translate}}
+                                        </th>
+                                        <th>
+                                            {{'IpGroup.ipgroupListActions' | translate}}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let ipgroup of IpgroupList; let i=index">
+                                        <td>
+                                            {{ipgroup.name}}
+                                        </td>
+                                        <td>
+                                            <i class='far fa-edit' data-bs-toggle="modal" data-bs-target="#CreateIpgroupModal"
+                                                (click)="onEditIpgroup(ipgroup.id)">
+                                            </i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example" id="CreateIpgroupModal">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h3 class="modal-title"> {{'IpGroup.ipgroupHeaderTitle' | translate}}</h3>
+                <button type="button" class="close text-white" style="font-size: 30px;" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <app-create-ipgroup [ipgroupId]="ipgroupId" (valueChange)='ValueChanged($event)'></app-create-ipgroup>
+            </div>
+        </div>
+    </div>
+</div>

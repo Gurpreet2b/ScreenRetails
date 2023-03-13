@@ -1,0 +1,8 @@
+{
+  "/v1/sysadmin": {
+    "target": "http://2bofficedubai.ddns.net:8000",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "info"
+  }
+}
